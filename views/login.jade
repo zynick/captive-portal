@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 Login
+    form(id='login-form', method='POST', action='/')
+        input(name='username', type='text', placeholder='Username')
+        input(name='password', type='password', placeholder='Password')
+        input(name='uamip', type='hidden', value='#{uamip}')
+        input(name='uamport', type='hidden', value='#{uamport}')
+        input(name='challenge', type='hidden', value='#{challenge}')
+        input(name='mac', type='hidden', value='#{mac}')
+        input(name='ip', type='hidden', value='#{ip}')
+        input(name='ssid', type='hidden', value='#{ssid}')
+        input(name='called', type='hidden', value='#{called}')
+        input(name='nasid', type='hidden', value='#{nasid}')
+        input(name='userurl', type='hidden', value='#{userurl}')
+        input(name='md', type='hidden', value='#{md}')
+        input(type='submit', value='login')
