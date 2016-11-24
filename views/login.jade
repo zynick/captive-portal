@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1 Login
-    form(id='login-form', method='POST', action='/')
+    form(id='login-form', method='POST', action='#')
         input(name='username', type='text', placeholder='Username')
         input(name='password', type='password', placeholder='Password')
         input(name='uamip', type='hidden', value='#{uamip}')
