@@ -79,17 +79,17 @@ router.post('/', (req, res) => {
         md
     } = req.body;
 
-
-    const encPassword = encodePassword(password, challenge, UAM_SECRET);
-    const uriUsername = encodeURIComponent(username);
-    const uriPassword = encodeURIComponent(encPassword);
-
-    console.log(`>>>>>>>>>>>>> http://${uamip}:${uamport}/logon?username=${uriUsername}&password=${uriPassword}`);
-    // &redir=${userurl}
-
-    res.render('index', {
-        title: 'GAODIM'
-    });
+    if (challenge) {
+        /* encode password, but it didn't work because couldn't find the right password encoding mechanism */
+        // const encPassword = encodePassword(password, challenge, UAM_SECRET);
+        // const uriUsername = encodeURIComponent(username);
+        // const uriPassword = encodeURIComponent(encPassword);
+        res.render('index', {
+            title: 'GAODIM'
+        });
+    } else {
+        res.redirect(`http://${uamip}:${uamport}/logon?username=${uriUsername}&password=${uriPassword}`);
+    }
 });
 
 module.exports = router;

@@ -14,7 +14,7 @@ router.all('/', (req, res) => {
     console.log('PARAMS:', JSON.stringify(req.params, null, 2));
     console.log('BODY:', JSON.stringify(req.body, null, 2));
 
-    res.render('login', {
+    res.render('index', {
         title: 'Index Page'
     });
 
