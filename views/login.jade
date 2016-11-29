@@ -10,25 +10,25 @@ block content
         br
         | * dev only
         br
-        input(name='uamip', type='text', value='#{uamip}')
+        input(name='uamip', type='text', value='#{uamip || ""}')
         br
-        input(name='uamport', type='text', value='#{uamport}')
+        input(name='uamport', type='text', value='#{uamport || ""}')
         br
-        input(name='challenge', type='text', value='#{challenge}')
+        input(name='challenge', type='text', value='#{challenge || ""}')
         br
-        input(name='mac', type='text', value='#{mac}')
+        input(name='mac', type='text', value='#{mac || ""}')
         br
-        input(name='ip', type='text', value='#{ip}')
+        input(name='ip', type='text', value='#{ip || ""}')
         br
-        input(name='ssid', type='text', value='#{ssid}')
+        input(name='ssid', type='text', value='#{ssid || ""}')
         br
-        input(name='called', type='text', value='#{called}')
+        input(name='called', type='text', value='#{called || ""}')
         br
-        input(name='nasid', type='text', value='#{nasid}')
+        input(name='nasid', type='text', value='#{nasid || ""}')
         br
-        input(name='userurl', type='text', value='#{userurl}')
+        input(name='userurl', type='text', value='#{userurl || ""}')
         br
-        input(name='md', type='text', value='#{md}')
+        input(name='md', type='text', value='#{md || ""}')
         br
         br
         input(type='submit', value='login')
