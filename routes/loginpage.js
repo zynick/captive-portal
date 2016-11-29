@@ -89,7 +89,7 @@ router.post('/', (req, res) => {
             title: 'GAODIM'
         });
     } else {
-        res.redirect(`http://${uamip}:${uamport}/logon?username=${uriUsername}&password=${uriPassword}`);
+        res.redirect(`http://${uamip}:${uamport}/logon?username=${username}&password=${password}`);
     }
 });
 
