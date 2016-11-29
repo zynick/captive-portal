@@ -12,7 +12,7 @@ const UAM_SECRET = '';
 
 router.get('/', (req, res) => {
 
-    console.log('HEADERS:', JSON.stringify(req.headers, null, 2));
+    console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
     console.log('QUERY:', JSON.stringify(req.query, null, 2));
 
     const _res = req.query.res;
@@ -61,7 +61,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    console.log('HEADERS:', JSON.stringify(req.headers, null, 2));
+    console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
     console.log('BODY:', JSON.stringify(req.body, null, 2));
 
     const {
@@ -79,7 +79,8 @@ router.post('/', (req, res) => {
         md
     } = req.body;
 
-    if (challenge) {
+    console.log('### challenge: ' + challenge + ' - ' + challenge.length);
+    if (challenge && challenge.length > 0) {
         /* encode password, but it didn't work because couldn't find the right password encoding mechanism */
         // const encPassword = encodePassword(password, challenge, UAM_SECRET);
         // const uriUsername = encodeURIComponent(username);

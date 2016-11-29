@@ -8,7 +8,7 @@ router.all('/', (req, res) => {
     /* Logging */
 
     // console.log('KEYS:', Object.keys(req));
-    console.log('HEADERS:', JSON.stringify(req.headers, null, 2));
+    console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
     console.log('QUERY:', JSON.stringify(req.query, null, 2));
     console.log('COOKIES:', JSON.stringify(req.cookies, null, 2));
     console.log('PARAMS:', JSON.stringify(req.params, null, 2));
