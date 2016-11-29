@@ -45,7 +45,11 @@ router.get('/', (req, res) => {
                 md
             });
             break;
-            // case 'success':
+        case 'success':
+            res.render('success', {
+                userurl
+            });
+            break;
             // case 'failed':
             // case 'logoff':
         default:
