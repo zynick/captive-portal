@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 
     console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
     console.log('BODY:', JSON.stringify(req.body, null, 2));
