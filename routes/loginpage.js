@@ -84,14 +84,13 @@ router.post('/', (req, res) => {
     } = req.body;
 
     console.log('### challenge: ' + challenge + ' - ' + challenge.length);
+
     if (challenge && challenge.length > 0) {
         /* encode password, but it didn't work because couldn't find the right password encoding mechanism */
         // const encPassword = encodePassword(password, challenge, UAM_SECRET);
         // const uriUsername = encodeURIComponent(username);
         // const uriPassword = encodeURIComponent(encPassword);
-        res.render('index', {
-            title: 'GAODIM'
-        });
+        next(new Error('POST error - challenge parameter does not exist.'));
     } else {
         res.redirect(`http://${uamip}:${uamport}/logon?username=${username}&password=${password}`);
     }
