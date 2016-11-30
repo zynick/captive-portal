@@ -90,7 +90,7 @@ router.post('/', (req, res, next) => {
         // const encPassword = encodePassword(password, challenge, UAM_SECRET);
         // const uriUsername = encodeURIComponent(username);
         // const uriPassword = encodeURIComponent(encPassword);
-        next(new Error('POST error - challenge parameter does not exist.'));
+        next(new Error('Ops CHAP - this is not implemented yet.'));
     } else {
         res.redirect(`http://${uamip}:${uamport}/logon?username=${username}&password=${password}`);
     }
