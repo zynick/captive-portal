@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    h1 Login
+    form(id='login-form', method='POST', action='#')
+        input(name='username', type='text', placeholder='Username')
+        br
+        input(name='password', type='password', placeholder='Password')
+        br
+        br
+        | * dev only
+        br
+        input(name='uamip', type='text', placeholder='uamip', value=uamip)
+        br
+        input(name='uamport', type='text', placeholder='uamport', value=uamport)
+        br
+        input(name='challenge', type='text', placeholder='challenge', value=challenge)
+        br
+        input(name='mac', type='text', placeholder='mac', value=mac)
+        br
+        input(name='ip', type='text', placeholder='ip', value=ip)
+        br
+        input(name='ssid', type='text', placeholder='ssid', value=ssid)
+        br
+        input(name='called', type='text', placeholder='called', value=called)
+        br
+        input(name='nasid', type='text', placeholder='nasid', value=nasid)
+        br
+        input(name='userurl', type='text', placeholder='userurl', value=userurl)
+        br
+        input(name='md', type='text', placeholder='md', value=md)
+        br
+        br
+        input(type='submit', value='login')

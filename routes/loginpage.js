@@ -33,16 +33,16 @@ router.get('/', (req, res) => {
     switch (_res) {
         case 'notyet':
             res.render('login', {
-                uamip,
-                uamport,
-                challenge,
-                mac,
-                ip,
-                ssid,
-                called,
-                nasid,
-                userurl,
-                md
+                uamip: uamip || '',
+                uamport: uamport || '',
+                challenge: challenge || '',
+                mac: mac || '',
+                ip: ip || '',
+                ssid: ssid || '',
+                called: called || '',
+                nasid: nasid || '',
+                userurl: userurl || '',
+                md: md || ''
             });
             break;
         case 'success':
