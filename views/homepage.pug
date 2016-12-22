@@ -1,7 +1,18 @@
 extends layout
 
+block header
+    img(src='/img/ads-top.png')
+
 block content
-    h1 Homepage
-    p Welcome!
-    p click here to login: 
-        a(href=loginurl)= loginurl
+    h1
+        | Welcome to
+        br
+        | ACE Guest WiFi
+
+block footer
+    a.btn.btn-primary.btn-default(href='#') Sign up
+    | &nbsp;&nbsp;&nbsp;
+    a.btn.btn-default(href=loginurl) Log in
+    p
+        | Powered by&nbsp;
+        a(href='#') ACE-Tech Solutions Sdn. Bhd.

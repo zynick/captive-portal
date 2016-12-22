@@ -2,6 +2,17 @@ doctype html
 html
     head
         title= title
-        link(rel='stylesheet', href='/css/layout.css')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        block css
+            link(rel='stylesheet', href='/css/bootstrap.min.css')
+            link(rel='stylesheet', href='/css/layout.css')
     body
-        block content
+        nav.navbar.navbar-fixed-top
+            block header
+        .site-wrapper
+            .site-wrapper-inner
+                block content
+        nav.navbar.navbar-fixed-bottom
+            block footer
+        block script
+            script(src='/js/bootstrap.min.js')
