@@ -16,33 +16,38 @@ router.get('/', (req, res, next) => {
     console.log('QUERY:', JSON.stringify(req.query, null, 2));
 
     const _res = req.query.res;
+
+    // for notyet response
     // optional: uamhttps, sessionid, q
-    const {
-        uamip,
-        uamport,
-        challenge,
-        mac,
-        ip,
-        ssid,
-        called,
-        nasid,
-        userurl,
-        md
-    } = req.query;
+    const query = req.query;
+    const uamip = query.uamip || '';
+    const uamport = query.uamport || '';
+    const challenge = query.challenge || '';
+    const mac = query.mac || '';
+    const ip = query.ip || '';
+    const ssid = query.ssid || '';
+    const called = query.called || '';
+    const nasid = query.nasid || '';
+    const userurl = query.userurl || '';
+    const md = query.md || '';
+
+    // for failed response
+    const reason = query.reason || '';
+    const sessionid = query.sessionid || '';
 
     switch (_res) {
         case 'notyet':
-            res.render('login', {
-                uamip: uamip || '',
-                uamport: uamport || '',
-                challenge: challenge || '',
-                mac: mac || '',
-                ip: ip || '',
-                ssid: ssid || '',
-                called: called || '',
-                nasid: nasid || '',
-                userurl: userurl || '',
-                md: md || ''
+            res.render('loginpage', {
+                uamip,
+                uamport,
+                challenge,
+                mac,
+                ip,
+                ssid,
+                called,
+                nasid,
+                userurl,
+                md
             });
             break;
         case 'success':
@@ -50,7 +55,20 @@ router.get('/', (req, res, next) => {
                 userurl
             });
             break;
-            // case 'failed':
+        case 'failed':
+            res.render('failed', {
+                reason,
+                uamip,
+                uamport,
+                called,
+                mac,
+                ip,
+                nasid,
+                sessionid,
+                userurl,
+                md
+            });
+            break;
             // case 'logoff':
         default:
             return next(new Error('"res" parameter unknown or does not exist.'));
