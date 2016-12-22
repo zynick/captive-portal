@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 
     switch (_res) {
         case 'notyet':
-            return res.render('loginpage', {
+            return res.render('login', {
                 uamip,
                 uamport,
                 challenge,
