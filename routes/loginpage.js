@@ -10,7 +10,7 @@ const UAM_SECRET = '';
  * https://github.com/cloudtrax/docs/tree/master/captive_portal/splash_pages/external
  */
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
 
     console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
     console.log('QUERY:', JSON.stringify(req.query, null, 2));
@@ -53,12 +53,7 @@ router.get('/', (req, res) => {
             // case 'failed':
             // case 'logoff':
         default:
-            res.redirect('/');
-            // res.render('index', {
-            //     title: 'Index Page',
-            //     res: _res
-            // });
-            break;
+            return next(new Error('Expecting "res" or unknown "res" parameter.'));
     }
 
 });

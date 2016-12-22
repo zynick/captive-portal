@@ -26,7 +26,7 @@ body {
     color: #FFF;
     text-align: center;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    line-height: 2;
+    /*line-height: 2;*/
 }
 
 .site-wrapper {
@@ -45,4 +45,8 @@ body {
 .content-wrapper {
     max-width: 300px;
     margin: auto;
+}
+
+nav.navbar-fixed-bottom {
+    font-size: 0.9em;
 }
