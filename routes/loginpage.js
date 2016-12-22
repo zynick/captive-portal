@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 
     switch (_res) {
         case 'notyet':
-            res.render('loginpage', {
+            return res.render('loginpage', {
                 uamip,
                 uamport,
                 challenge,
@@ -49,14 +49,14 @@ router.get('/', (req, res, next) => {
                 userurl,
                 md
             });
-            break;
+
         case 'success':
-            res.render('success', {
+            return res.render('success', {
                 userurl
             });
-            break;
+
         case 'failed':
-            res.render('failed', {
+            return res.render('failed', {
                 reason,
                 uamip,
                 uamport,
@@ -68,8 +68,10 @@ router.get('/', (req, res, next) => {
                 userurl,
                 md
             });
-            break;
-            // case 'logoff':
+
+        case 'logoff':
+            return res.render('logoff');
+
         default:
             return next(new Error('"res" parameter unknown or does not exist.'));
     }
