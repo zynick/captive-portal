@@ -53,7 +53,7 @@ router.get('/', (req, res, next) => {
             // case 'failed':
             // case 'logoff':
         default:
-            return next(new Error('Expecting "res" or unknown "res" parameter.'));
+            return next(new Error('"res" parameter unknown or does not exist.'));
     }
 
 });
