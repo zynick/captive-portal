@@ -53,10 +53,11 @@ router.get('/', (req, res) => {
             // case 'failed':
             // case 'logoff':
         default:
-            res.render('index', {
-                title: 'Index Page',
-                res: _res
-            });
+            res.redirect('/');
+            // res.render('index', {
+            //     title: 'Index Page',
+            //     res: _res
+            // });
             break;
     }
 

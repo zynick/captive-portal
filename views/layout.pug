@@ -9,10 +9,18 @@ html
     body
         nav.navbar.navbar-fixed-top
             block header
+                img(src='/img/ads-top.png')
+
         .site-wrapper
             .site-wrapper-inner
-                block content
+                .content-wrapper
+                    block content
+
         nav.navbar.navbar-fixed-bottom
             block footer
+                p
+                    | Powered by&nbsp;
+                    a(href='#') ACE-Tech Solutions Sdn. Bhd.
+
         block script
             script(src='/js/bootstrap.min.js')

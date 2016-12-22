@@ -41,3 +41,8 @@ body {
     display: table-cell;
     vertical-align: middle;
 }
+
+.content-wrapper {
+    max-width: 300px;
+    margin: auto;
+}
