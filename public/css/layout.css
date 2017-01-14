@@ -1,17 +1,17 @@
 .debug {
     border: 1px solid black;
 }
-
 .debugr {
     border: 1px solid red;
 }
-
 .debugg {
     border: 1px solid green;
 }
-
 .debugb {
     border: 1px solid blue;
+}
+.debugw {
+    border: 1px solid white;
 }
 
 html, body {
@@ -43,7 +43,6 @@ body {
 }
 
 .content-wrapper {
-    max-width: 300px;
     margin: auto;
 }
 
