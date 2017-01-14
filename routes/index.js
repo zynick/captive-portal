@@ -1,9 +1,8 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
-router.all('/', (req, res, next) => {
+router.all('/', (req, res) => {
 
     /* Logging */
 

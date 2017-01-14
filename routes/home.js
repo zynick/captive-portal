@@ -1,8 +1,11 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
+/*
+ * This page is made for coova chilli cause it need to define home url
+ * perhaps other AP that doesn't need this just point them to the login page will do
+ */
 router.get('/', (req, res, next) => {
 
     if (req.query.loginurl) {
