@@ -1,19 +1,19 @@
 {
-  "name": "api",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "node ./bin/www",
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "blueimp-md5": "^2.5.0",
-    "body-parser": "~1.15.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.2.0",
-    "express": "~4.13.4",
-    "morgan": "~1.7.0",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "~2.3.0"
-  }
+    "name": "captive-portal",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "NODE_ENV=development node ./bin/www",
+        "start": "NODE_ENV=production node ./bin/www"
+    },
+    "dependencies": {
+        "blueimp-md5": "^2.5.0",
+        "body-parser": "~1.15.1",
+        "cookie-parser": "~1.4.3",
+        "debug": "~2.2.0",
+        "express": "~4.13.4",
+        "morgan": "~1.7.0",
+        "pug": "^2.0.0-beta6",
+        "serve-favicon": "~2.3.0"
+    }
 }
