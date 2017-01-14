@@ -1,0 +1,19 @@
+#logo {
+    /*content: url('/img/ace-logo.png');*/
+    max-height: 300px;
+    max-width: 300px;
+}
+
+#slogan {
+    margin-top: 10px;
+    font-size: 1.15em;
+}
+
+#login-form {
+    margin: 35px auto auto auto;
+    max-width: 300px;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
