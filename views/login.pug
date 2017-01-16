@@ -9,6 +9,9 @@ block content
     img#logo(src=`${logo||'/img/ace-logo.png'}`)
     p#slogan=slogan
     form#login-form(method='POST', action='#')
+        if failed
+            .form-group
+                p(style='color:#DD1111') Invalid Login.
         .form-group
             input.form-control(name='username', type='text', placeholder='Username')
         .form-group

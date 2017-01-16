@@ -19,54 +19,31 @@ router.get('/', (req, res, next) => {
     // for notyet response
     // optional: uamhttps, sessionid, q
     const query = req.query;
-    const uamip = query.uamip || '';
-    const uamport = query.uamport || '';
-    const challenge = query.challenge || '';
-    const mac = query.mac || '';
-    const ip = query.ip || '';
-    const ssid = query.ssid || '';
-    const called = query.called || '';
-    const nasid = query.nasid || '';
+    // const uamip = query.uamip || '';
+    // const uamport = query.uamport || '';
+    // const challenge = query.challenge || '';
+    // const mac = query.mac || '';
+    // const ip = query.ip || '';
+    // const ssid = query.ssid || '';
+    // const called = query.called || '';
+    // const nasid = query.nasid || '';
     const userurl = query.userurl || '';
-    const md = query.md || '';
+    // const md = query.md || '';
 
     // for failed response
-    const reason = query.reason || '';
-    const sessionid = query.sessionid || '';
+    // const reason = query.reason || '';
+    // const sessionid = query.sessionid || '';
 
     switch (_res) {
         case 'notyet':
-            return res.render('login', {
-                uamip,
-                uamport,
-                challenge,
-                mac,
-                ip,
-                ssid,
-                called,
-                nasid,
-                userurl,
-                md
-            });
+            return res.render('login', query);
 
         case 'success':
-            return res.render('success', {
-                userurl
-            });
+            return res.render('success', { userurl });
 
         case 'failed':
-            return res.render('failed', {
-                reason,
-                uamip,
-                uamport,
-                called,
-                mac,
-                ip,
-                nasid,
-                sessionid,
-                userurl,
-                md
-            });
+            query.failed = true;
+            return res.render('login', query);
 
         case 'logoff':
             return res.render('logoff');
@@ -98,7 +75,7 @@ router.post('/', (req, res, next) => {
         md
     } = req.body;
 
-    console.log('### challenge: ' + challenge + ' - ' + challenge.length);
+    console.log(`### challenge: ${challenge} - ${challenge.length}`);
 
     if (challenge && challenge.length > 0) {
         /* encode password, but it didn't work because couldn't find the right password encoding mechanism */
