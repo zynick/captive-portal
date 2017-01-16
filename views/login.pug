@@ -4,9 +4,11 @@ append css
     link(rel='stylesheet', href='/css/login.css')
 
 block content
-    h1 Login
+    //- h2 Login
     br
-    form(id='login-form', method='POST', action='#')
+    img#logo(src=`${logo||'/img/ace-logo.png'}`)
+    p#slogan=slogan
+    form#login-form(method='POST', action='#')
         .form-group
             input.form-control(name='username', type='text', placeholder='Username')
         .form-group

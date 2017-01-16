@@ -3,7 +3,7 @@
 const router = require('express').Router();
 const encodePassword = require('../utils/encodePassword');
 
-const UAM_SECRET = '';
+// const UAM_SECRET = '';
 
 /**
  * https://github.com/cloudtrax/docs/tree/master/captive_portal/splash_pages/external
