@@ -2,53 +2,71 @@
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const debug = require('debug');
 const express = require('express');
 const logger = require('morgan');
 // const favicon = require('serve-favicon');
+const http = require('http');
 const path = require('path');
 
-const routes = require('./routes/index');
-const home = require('./routes/home');
-const login = require('./routes/login');
+const log = debug('app');
+const logError = debug('error');
+const routes = require('./routes');
 
+
+/* Initialize Express */
 const app = express();
-const isProd = process.env.NODE_ENV === 'production';
-
-
-/* View Engine Setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', routes);
-app.use('/home', home);
-app.use('/login', login);
+
+// normalize environment port into a number, string (named pipe), or false.
+function normalizePort(val) {
+    let port = parseInt(val, 10);
+    if (isNaN(port)) {
+        return val;
+    }
+    if (port >= 0) {
+        return port;
+    }
+    return false;
+}
+const port = normalizePort(process.env.PORT || 3000);
+app.set('port', port);
 
 
-/* Catch 404 and Forward to Error Handler */
-app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+/* Create HTTP server. */
+const server = http.createServer(app);
+
+server.listen(port);
+
+server.on('error', (err) => {
+    if (err.syscall !== 'listen') {
+        throw err;
+    }
+    const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+    switch (err.code) {
+        case 'EACCES':
+            logError(`${bind} requires elevated privileges`);
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            logError(`${bind} is already in use`);
+            process.exit(1);
+            break;
+        default:
+            throw err;
+    }
 });
 
-/* Error Handlers */
-app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    // only print stacktrace in development, hide in production
-    err = isProd ? {} : err;
-    res.render('error', {
-        message: err.message,
-        error: err
-    });
-
+server.on('listening', () => {
+    const addr = server.address();
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+    log(`Listening on ${bind}`);
 });
-
-
-module.exports = app;
