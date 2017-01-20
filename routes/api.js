@@ -11,15 +11,17 @@ const Companies = mongoose.model('Companies');
 router.post('/type', (req, res, next) => {
 
     if (req.body.token !== apiToken) {
-        const error = { status: 401, message: 'Unauthorized' };
-        return res.status(error.status).json({ error });
+        const err = new Error('Unauthorized');
+        err.status = 401;
+        return next(err);
     }
 
     const { company, login, assests } = req.body;
 
     if (!company || !login || !assests) {
-        const error = { status: 400, message: 'missing company/login/assests parameter' };
-        return res.status(error.status).json({ error });
+        const err = new Error('"company|login|assests" parameter does not exist');
+        err.status = 400;
+        return next(err);
     }
 
     Companies.findOne({ code: company }, (err, _company) => {

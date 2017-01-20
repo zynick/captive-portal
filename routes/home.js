@@ -17,7 +17,9 @@ router.get('/', (req, res, next) => {
 
     } else {
 
-        next(new Error('"loginurl" parameter does not exist.'));
+        const err = new Error('"loginurl" parameter does not exist.');
+        err.status = 400;
+        next(err);
 
     }
 

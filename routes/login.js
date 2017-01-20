@@ -51,7 +51,9 @@ router.get('/', (req, res, next) => {
             return res.render('logoff');
 
         default:
-            return next(new Error('"res" parameter unknown or does not exist.'));
+            const err = new Error('"res" parameter unknown or does not exist.');
+            err.status = 400;
+            return next(err);
     }
 
 });
@@ -85,7 +87,9 @@ router.post('/', (req, res, next) => {
         // const encPassword = encodePassword(password, challenge, UAM_SECRET);
         // const uriUsername = encodeURIComponent(username);
         // const uriPassword = encodeURIComponent(encPassword);
-        next(new Error('Ops CHAP - this is not implemented yet.'));
+        const err = new Error('Ops CHAP - this is not implemented yet.');
+        err.status = 500;
+        next(err);
     } else {
         res.redirect(`http://${uamip}:${uamport}/logon?username=${username}&password=${password}`);
     }
