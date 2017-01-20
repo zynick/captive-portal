@@ -2,9 +2,6 @@
 
 const log = require('debug')('cp:routes:index');
 const router = require('express').Router();
-const api = require('./api');
-const home = require('./home');
-const login = require('./login');
 const isProd = process.env.NODE_ENV === 'production';
 
 
@@ -27,9 +24,9 @@ router.get('/', (req, res) => {
     res.render('index', { title: 'Index Page' });
 });
 
-router.use('/api', api);
-router.use('/home', home);
-router.use('/login', login);
+router.use('/api', require('./api'));
+router.use('/home', require('./home'));
+router.use('/login', require('./login'));
 
 
 /* 404 & Error Handlers */
