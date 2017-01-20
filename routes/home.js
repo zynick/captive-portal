@@ -4,7 +4,7 @@ const router = require('express').Router();
 
 /*
  * This page is made for coova chilli cause it need to define home url
- * perhaps other AP that doesn't need this just point them to the login page will do
+ * perhaps other AP don't need this just point them to the login page will do
  */
 router.get('/', (req, res, next) => {
 

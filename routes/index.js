@@ -1,20 +1,23 @@
 'use strict';
 
+const log = require('debug')('cp:routes:index');
 const router = require('express').Router();
+const api = require('./api');
 const home = require('./home');
 const login = require('./login');
 const isProd = process.env.NODE_ENV === 'production';
 
-router.all('/', (req, res) => {
+
+router.get('/', (req, res) => {
 
     if (!isProd) {
-        console.log('\n');
-        // console.log(`KEYS: ${Object.keys(req)}`);
-        console.log(`HEADERS: ${JSON.stringify(req.headers, null, 2)}`);
-        console.log(`QUERY: ${JSON.stringify(req.query, null, 2)}`);
-        console.log(`COOKIES: ${JSON.stringify(req.cookies, null, 2)}`);
-        console.log(`PARAMS: ${JSON.stringify(req.params, null, 2)}`);
-        console.log(`BODY: ${JSON.stringify(req.body, null, 2)}`);
+        log('==========');
+        // log(`KEYS: ${Object.keys(req)}`);
+        log(`HEADERS: ${JSON.stringify(req.headers, null, 2)}`);
+        log(`QUERY: ${JSON.stringify(req.query, null, 2)}`);
+        log(`COOKIES: ${JSON.stringify(req.cookies, null, 2)}`);
+        log(`PARAMS: ${JSON.stringify(req.params, null, 2)}`);
+        log(`BODY: ${JSON.stringify(req.body, null, 2)}`);
 
         // for development only. remove later
         // res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -24,6 +27,7 @@ router.all('/', (req, res) => {
     res.render('index', { title: 'Index Page' });
 });
 
+router.use('/api', api);
 router.use('/home', home);
 router.use('/login', login);
 

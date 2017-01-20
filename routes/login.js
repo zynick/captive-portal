@@ -1,7 +1,8 @@
 'use strict';
 
+const log = require('debug')('cp:routes:login');
 const router = require('express').Router();
-const encodePassword = require('../utils/encodePassword');
+// const encodePassword = require('../utils/encodePassword');
 
 // const UAM_SECRET = '';
 
@@ -11,8 +12,9 @@ const encodePassword = require('../utils/encodePassword');
 
 router.get('/', (req, res, next) => {
 
-    console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
-    console.log('QUERY:', JSON.stringify(req.query, null, 2));
+    log('==========');
+    log('HEADERS:', JSON.stringify(req.headers, null, 2));
+    log('QUERY:', JSON.stringify(req.query, null, 2));
 
     const _res = req.query.res;
 
@@ -27,7 +29,7 @@ router.get('/', (req, res, next) => {
     // const ssid = query.ssid || '';
     // const called = query.called || '';
     // const nasid = query.nasid || '';
-    const userurl = query.userurl || '';
+    const { userurl = '' } = query;
     // const md = query.md || '';
 
     // for failed response
@@ -57,8 +59,9 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
 
-    console.log('\nHEADERS:', JSON.stringify(req.headers, null, 2));
-    console.log('BODY:', JSON.stringify(req.body, null, 2));
+    log('\n');
+    log('HEADERS:', JSON.stringify(req.headers, null, 2));
+    log('BODY:', JSON.stringify(req.body, null, 2));
 
     const {
         username,
@@ -75,7 +78,7 @@ router.post('/', (req, res, next) => {
         md
     } = req.body;
 
-    console.log(`### challenge: ${challenge} - ${challenge.length}`);
+    log(`### challenge: ${challenge} - ${challenge.length}`);
 
     if (challenge && challenge.length > 0) {
         /* encode password, but it didn't work because couldn't find the right password encoding mechanism */
