@@ -1,0 +1,31 @@
+extends layout
+
+append css
+    link(rel='stylesheet', href='/css/login.css')
+
+block content
+    //- h2 Login
+    br
+    img#logo(src=`${logo||'/img/ace-logo.png'}`)
+    p#slogan=slogan
+    form#login-form(method='POST', action='#')
+        if failed
+            .form-group
+                p(style='color:#DD1111') Invalid Login.
+        .form-group
+            input.form-control(name='username', type='text', placeholder='Username')
+        .form-group
+            input.form-control(name='password', type='password', placeholder='Password')
+        .form-group
+            input.form-control(name='uamip', type='hidden', placeholder='uamip', value=uamip)
+            input.form-control(name='uamport', type='hidden', placeholder='uamport', value=uamport)
+            input.form-control(name='challenge', type='hidden', placeholder='challenge', value=challenge)
+            input.form-control(name='mac', type='hidden', placeholder='mac', value=mac)
+            input.form-control(name='ip', type='hidden', placeholder='ip', value=ip)
+            input.form-control(name='ssid', type='hidden', placeholder='ssid', value=ssid)
+            input.form-control(name='called', type='hidden', placeholder='called', value=called)
+            input.form-control(name='nasid', type='hidden', placeholder='nasid', value=nasid)
+            input.form-control(name='userurl', type='hidden', placeholder='userurl', value=userurl)
+            input.form-control(name='md', type='hidden', placeholder='md', value=md)
+        .form-group
+            input.form-control.btn.btn-primary.btn-default(name='submit', type='submit', value='Log in')
