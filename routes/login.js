@@ -11,10 +11,7 @@ const router = require('express').Router();
  * so better use CHAP instead.
  */
 
-router.get('/', (req, res, next) => {
-
-    // dev only
-    req.body = req.query;
+router.post('/', (req, res, next) => {
 
     const chapId = req.body['chap-id'];
     const isCHAP = chapId && chapId.length > 0 ? true : false;
