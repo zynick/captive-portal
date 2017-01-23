@@ -10,7 +10,7 @@ block content
     img#logo(src=`${logo || '/img/ace-logo.png'}`)
     p#slogan=`${slogan || 'Welcome to ACE Guest WiFi'}`
 
-    form#login-form(method='POST', action=data['link-login-only'])
+    form#form(method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
         if data.error
             .form-group
                 p(style='color:#DD1111')=data.error
@@ -23,3 +23,13 @@ block content
             input.form-control(type='hidden', name='popup', value='true')
         .form-group
             input.form-control.btn.btn-primary.btn-default(name='submit', type='submit', value='Log in')
+
+append script
+    script(src='/js/md5.js')
+    script(type='text/javascript').
+        function encryptPass() {
+            const form = document.form;
+            form.password.value = hexMD5('#{data["chap-id"]}' + form.password.value + '#{data["chap-challenge"]}');
+            // form.submit();
+            return true;
+        }
