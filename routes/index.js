@@ -5,7 +5,7 @@ const router = require('express').Router();
 const isProd = process.env.NODE_ENV === 'production';
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
 
     if (!isProd) {
         log('==========');
@@ -25,7 +25,6 @@ router.get('/', (req, res) => {
 });
 
 router.use('/api', require('./api'));
-router.use('/home', require('./home'));
 router.use('/login', require('./login'));
 
 
@@ -37,12 +36,13 @@ router.use((req, res, next) => {
 });
 
 router.use((err, req, res, next) => {
-    const status = err.status || 500;
-    const message = err.message || 'Internal Server Error';
-    const error = isProd ? {} : err; // only print stacktrace in development, hide in production
+    const { status = 500, message = 'Internal Server Error' } = err;
+    const error = { status, message };
+    // hide stacktrace in production, show otherwise
+    if (!isProd) { error.stack = err.stack; }
     res
         .status(status)
-        .render('error', { message, error });
+        .render('error', { error });
 });
 
 
