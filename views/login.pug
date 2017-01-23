@@ -10,10 +10,11 @@ block content
     img#logo(src=`${logo || '/img/ace-logo.png'}`)
     p#slogan=`${slogan || 'Welcome to ACE Guest WiFi'}`
 
-    form#form(method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
+    noscript.red Javascript required. Enable Javascript to continue.
+
+    form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
         if data.error
-            .form-group
-                p(style='color:#DD1111')=data.error
+            .form-group: p.red=data.error
         .form-group
             input.form-control(type='text', name='username', value=data.username, placeholder='Username')
         .form-group
@@ -28,8 +29,8 @@ append script
     script(src='/js/md5.js')
     script(type='text/javascript').
         function encryptPass() {
-            const form = document.form;
-            form.password.value = hexMD5('#{data["chap-id"]}' + form.password.value + '#{data["chap-challenge"]}');
+            const password = document.form.password;
+            password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
             // form.submit();
             return true;
         }

@@ -8,11 +8,15 @@
     font-size: 1.15em;
 }
 
-#form {
+#login-form {
     margin: 35px auto auto auto;
     max-width: 300px;
 }
 
 .form-group {
     margin-bottom: 8px;
+}
+
+.red {
+    color: #DD1111;
 }
