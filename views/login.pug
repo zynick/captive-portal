@@ -28,9 +28,11 @@ block content
 append script
     script(src='/js/md5.js')
     script(type='text/javascript').
+
         function encryptPass() {
             const password = document.form.password;
-            password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
+            // password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
+            password.value = md5(password.value + '#{data["chap-challenge"]}');
             // form.submit();
             return true;
         }
