@@ -30,7 +30,7 @@ router.post('/', (req, res, next) => {
     let chapId = req.body['chap-id'];
     let chapChallenge = req.body['chap-challenge'];
 
-    if (!challenge || challenge.length !== 64) {
+    if (!chapChallenge || chapChallenge.length !== 64) {
         const err = new Error('Only CHAP Authentication Protocol is allowed.');
         err.status = 400;
         next(err);
