@@ -11,23 +11,23 @@ const router = require('express').Router();
  * so better use CHAP instead.
  */
 
-const oct2hex = (octalString) => {
-    // input: "\001\002\377" output: "0102FF"
-    let hex = '';
-    octalString
-        .substr(1)
-        .split('\\')
-        .forEach((str) => {
-            let _hex = parseInt(str, 8).toString(16);
-            hex += _hex.length > 1 ? _hex : '0' + _hex;
-        });
-    return hex;
-};
+// const oct2hex = (octalString) => {
+//     // input: "\001\002\377" output: "0102FF"
+//     let hex = '';
+//     octalString
+//         .substr(1)
+//         .split('\\')
+//         .forEach((str) => {
+//             let _hex = parseInt(str, 8).toString(16);
+//             hex += _hex.length > 1 ? _hex : '0' + _hex;
+//         });
+//     return hex;
+// };
 
 router.post('/', (req, res, next) => {
 
     // chap-id not important it's MikroTik's proprietary attribute
-    let chapId = req.body['chap-id'];
+    // let chapId = req.body['chap-id'];
     let chapChallenge = req.body['chap-challenge'];
 
     if (!chapChallenge || chapChallenge.length !== 64) {
@@ -36,10 +36,12 @@ router.post('/', (req, res, next) => {
         next(err);
     }
 
-    chapId = oct2hex(chapId);
-    chapChallenge = oct2hex(chapChallenge);
+    res.render('login', { data: req.body });
 
-    res.render('login', { data: req.body, chapId, chapChallenge });
+    // chapId = oct2hex(chapId);
+    // chapChallenge = oct2hex(chapChallenge);
+    // res.render('login', { data: req.body, chapId, chapChallenge });
+
 });
 
 
