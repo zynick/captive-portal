@@ -11,18 +11,18 @@ const router = require('express').Router();
  * so better use CHAP instead.
  */
 
-// input: "\001\002\377" output: "0102FF"
-function convertOctalString2Hex(octalString) {
+const oct2hex = (octalString) => {
+    // input: "\001\002\377" output: "0102FF"
     let hex = '';
     octalString
         .substr(1)
         .split('\\')
-        .forEach(str) {
+        .forEach((str) => {
             let _hex = parseInt(str, 8).toString(16);
             hex += _hex.length > 1 ? _hex : '0' + _hex;
-        }
+        });
     return hex;
-}
+};
 
 router.post('/', (req, res, next) => {
 
@@ -36,8 +36,8 @@ router.post('/', (req, res, next) => {
         next(err);
     }
 
-    chapId = convertOctalString2Hex(chapId);
-    chapChallenge = convertOctalString2Hex(chapChallenge);
+    chapId = oct2hex(chapId);
+    chapChallenge = oct2hex(chapChallenge);
 
     res.render('login', { data: req.body, chapId, chapChallenge });
 });
