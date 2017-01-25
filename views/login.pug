@@ -7,13 +7,10 @@ block content
     //- TODO move default logo / slogan / background to config
     img#logo(src=`${logo || '/img/ace-logo.png'}`)
     p#slogan=`${slogan || 'Welcome to ACE Guest WiFi'}`
-
-    if data['chap-challenge']
-        noscript.red Javascript required. Enable Javascript to continue.
-
     form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
         if data.error
-            .form-group: p.red=data.error
+            .form-group
+                p.error=data.error
         .form-group
             input.form-control(type='text', name='username', value=data.username, placeholder='Username')
         .form-group
@@ -21,7 +18,6 @@ block content
         .form-group
             input.form-control(type='hidden', name='dst', value=data['link-orig'])
             input.form-control(type='hidden', name='popup', value='true')
-        .form-group
             input.form-control.btn.btn-primary.btn-default(name='submit', type='submit', value='Log in')
 
 append script
@@ -30,8 +26,6 @@ append script
         script(type='text/javascript').
             function encryptPass() {
                 document.form.password.value = md5(document.form.password.value + '#{data["chap-challenge"]}');
-                //- password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
-                //- form.submit();
                 return true;
             }
     else
