@@ -4,15 +4,7 @@ const log = require('debug')('cp:routes:index');
 const router = require('express').Router();
 const isProd = process.env.NODE_ENV === 'production';
 
-if (isProd) {
-
-    router.get('/', (req, res) => {
-        res.render('index', { title: 'Index Page' });
-    });
-
-} else {
-    // for development only. remove later
-
+if (!isProd) {
     router.all('/', (req, res) => {
         log('==========');
         // log(`KEYS: ${Object.keys(req)}`);
@@ -25,11 +17,13 @@ if (isProd) {
         // res.setHeader('Access-Control-Allow-Credentials', 'true');
         // res.setHeader('Access-Control-Allow-Origin', '*');
 
-        res.render('index', { title: 'Index Page' });
+        return res.render('index', { title: 'Index Page' });
     });
-
 }
 
+router.get('/', (req, res) => {
+    res.render('index', { title: 'Index Page' });
+});
 
 router.use('/api', require('./api'));
 router.use('/login', require('./login'));
