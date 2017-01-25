@@ -21,7 +21,7 @@ if (!isProd) {
 router.get('/', (req, res) => res.redirect('/login'));
 router.use('/api', require('./api'));
 router.use('/login', require('./login'));
-router.use('/adv', require('./adv'));
+router.use('/impression', require('./impression'));
 
 
 /* 404 & Error Handlers */

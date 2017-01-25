@@ -12,10 +12,10 @@ router.get('/', (req, res, next) => {
     // TODO query company info from db (based on nas id / mac address?), and then loads here
 
     res.render('login', {
-        data: req.query,
         url,
         logo,
-        slogan
+        slogan,
+        data: req.query
     });
 });
 
