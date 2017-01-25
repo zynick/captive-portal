@@ -1,0 +1,10 @@
+body {
+    background-image: none;
+}
+
+#ad {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    max-height: 80vh;
+}

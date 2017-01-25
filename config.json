@@ -1,5 +1,6 @@
 {
     "apiToken": "rp4RiDx37wW44EmzUichfQs0tVn96OvR",
+    "url": "http://tideanalytics.com",
     "mongo": {
         "host": "localhost",
         "port": 27017,

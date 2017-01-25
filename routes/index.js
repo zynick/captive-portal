@@ -7,26 +7,21 @@ const isProd = process.env.NODE_ENV === 'production';
 if (!isProd) {
     router.all('/', (req, res) => {
         log('==========');
-        // log(`KEYS: ${Object.keys(req)}`);
         log(`HEADERS: ${JSON.stringify(req.headers, null, 2)}`);
         log(`QUERY: ${JSON.stringify(req.query, null, 2)}`);
         log(`COOKIES: ${JSON.stringify(req.cookies, null, 2)}`);
         log(`PARAMS: ${JSON.stringify(req.params, null, 2)}`);
         log(`BODY: ${JSON.stringify(req.body, null, 2)}`);
-
         // res.setHeader('Access-Control-Allow-Credentials', 'true');
         // res.setHeader('Access-Control-Allow-Origin', '*');
-
-        return res.render('index', { title: 'Index Page' });
+        res.redirect('/login');
     });
 }
 
-router.get('/', (req, res) => {
-    res.render('index', { title: 'Index Page' });
-});
-
+router.get('/', (req, res) => res.redirect('/login'));
 router.use('/api', require('./api'));
 router.use('/login', require('./login'));
+router.use('/success', require('./success'));
 
 
 /* 404 & Error Handlers */
