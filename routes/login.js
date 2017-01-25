@@ -24,18 +24,24 @@ const router = require('express').Router();
 //     return hex;
 // };
 
+router.get('/', (req, res, next) => {
+    log('QUERY:', JSON.stringify(req.query, null, 2));
+    res.render('login', { data: req.query });
+});
+
 router.post('/', (req, res, next) => {
 
     // chap-id not important it's MikroTik's proprietary attribute
     // let chapId = req.body['chap-id'];
-    let chapChallenge = req.body['chap-challenge'];
+    // let chapChallenge = req.body['chap-challenge'];
 
-    if (!chapChallenge || chapChallenge.length !== 64) {
-        const err = new Error('Only CHAP Authentication Protocol is allowed.');
-        err.status = 400;
-        next(err);
-    }
+    // if (!chapChallenge || chapChallenge.length !== 64) {
+    //     const err = new Error('Only CHAP Authentication Protocol is allowed.');
+    //     err.status = 400;
+    //     next(err);
+    // }
 
+    log('BODY:', JSON.stringify(req.body, null, 2));
     res.render('login', { data: req.body });
 
     // chapId = oct2hex(chapId);

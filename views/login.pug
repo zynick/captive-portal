@@ -4,13 +4,12 @@ append css
     link(rel='stylesheet', href='/css/login.css')
 
 block content
-    //- h2 Login
-    br
     //- TODO move default logo / slogan / background to config
     img#logo(src=`${logo || '/img/ace-logo.png'}`)
     p#slogan=`${slogan || 'Welcome to ACE Guest WiFi'}`
 
-    noscript.red Javascript required. Enable Javascript to continue.
+    if data['chap-challenge']
+        noscript.red Javascript required. Enable Javascript to continue.
 
     form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
         if data.error
@@ -26,13 +25,15 @@ block content
             input.form-control.btn.btn-primary.btn-default(name='submit', type='submit', value='Log in')
 
 append script
-    script(src='/js/md5.js')
-    script(type='text/javascript').
-
-        function encryptPass() {
-            const password = document.form.password;
-            password.value = md5(password.value + '#{data["chap-challenge"]}');
-            //- password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
-            //- form.submit();
-            return true;
-        }
+    if data['chap-challenge']
+        script(src='/js/md5.js')
+        script(type='text/javascript').
+            function encryptPass() {
+                document.form.password.value = md5(document.form.password.value + '#{data["chap-challenge"]}');
+                //- password.value = md5('#{data["chap-id"]}' + password.value + '#{data["chap-challenge"]}');
+                //- form.submit();
+                return true;
+            }
+    else
+        script(type='text/javascript').
+            function encryptPass() { return true; }
