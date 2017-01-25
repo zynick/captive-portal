@@ -1,6 +1,6 @@
 #logo {
-    max-height: 300px;
-    max-width: 300px;
+    max-width: 95%;
+    max-height: 80vh;
 }
 
 #slogan {
@@ -14,7 +14,7 @@
 }
 
 .form-group {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .error {

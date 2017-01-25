@@ -5,8 +5,9 @@ append css
 
 block content
     //- TODO move default logo / slogan / background to config
-    img#logo(src=`${logo || '/img/ace-logo.png'}`)
-    p#slogan=`${slogan || 'Welcome to ACE Guest WiFi'}`
+    a(href=url)
+        img#logo(src=logo)
+    p#slogan=slogan
     form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
         if data.error
             .form-group
