@@ -1,0 +1,12 @@
+extends layout
+
+append css
+    link(rel='stylesheet', href='/css/adv.css')
+
+block content
+    a(href=adv.url)
+        img#ad(src=adv.image)
+    p
+        | Click 
+        a(href=url) here
+        | &nbsp;to continue surfing the web
