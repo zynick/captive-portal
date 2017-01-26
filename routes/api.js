@@ -8,14 +8,17 @@ const isProd = process.env.NODE_ENV === 'production';
 const Companies = mongoose.model('Companies');
 
 
-router.post('/type', (req, res, next) => {
-
-    if (req.body.token !== apiToken) {
+function routeTokenValidation(req, res, next) {
+    const { authorization } = req.headers;
+    if (authorization !== `Bearer ${apiToken}`) {
         const err = new Error('Unauthorized');
         err.status = 401;
         return next(err);
     }
+    next();
+}
 
+function routeType(req, res, next) {
     const { company, login, assests } = req.body;
 
     if (!company || !login || !assests) {
@@ -44,27 +47,30 @@ router.post('/type', (req, res, next) => {
             res.status(200).end();
         });
     });
+}
 
-});
-
-
-/* 404 & Error Handlers */
-router.use((req, res, next) => {
+function routeNotFound(req, res, next) {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
-});
+}
 
-router.use((err, req, res, next) => {
-    const status = err.status || 500;
-    const message = err.message || 'Internal Server Error';
+function routeErrorHandlerJSON(err, req, res, next) {
+    const { status = 500, message = 'Internal Server Error' } = err;
     const error = { status, message };
     // hide stacktrace in production, show otherwise
     if (!isProd) { error.stack = err.stack; }
     res
         .status(status)
         .json({ error });
-});
+}
+
+
+
+router.use(routeTokenValidation);
+router.post('/type', routeType);
+router.use(routeNotFound);
+router.use(routeErrorHandlerJSON);
 
 
 module.exports = router;
