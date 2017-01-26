@@ -11,7 +11,7 @@ const companySchema = new Schema({
     // sample format:
     // { enabled: true, email: true, facebook: true, google: true, ... }
 
-    assests: {
+    assets: {
         name: String,
         logo: String,
         url: String,
