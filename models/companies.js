@@ -5,17 +5,16 @@ const Schema = mongoose.Schema;
 
 const companySchema = new Schema({
 
-    code: { type: String, required: true, index: true },
-    name: String,
+    id: { type: String, required: true, index: true, unique: true },
 
     login: Schema.Types.Mixed,
     // sample format:
     // { enabled: true, email: true, facebook: true, google: true, ... }
 
     assests: {
+        name: String,
         logo: String,
         url: String,
-        background: String,
         slogan: String
     }
 
