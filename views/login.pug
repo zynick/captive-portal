@@ -26,7 +26,7 @@ append script
         script(src='/js/md5.js')
         script(type='text/javascript').
             function encryptPass() {
-                document.form.password.value = md5(document.form.password.value + '#{data["chap-challenge"]}');
+                document.form.password.value = md5('#{data["chap-id"]}' + document.form.password.value + '#{data["chap-challenge"]}');
                 return true;
             }
     else
