@@ -8,7 +8,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const Companies = mongoose.model('Companies');
 
 
-function routeTokenValidation(req, res, next) {
+const routeTokenValidation = (req, res, next) => {
     const { authorization } = req.headers;
     if (authorization !== `Bearer ${apiToken}`) {
         const err = new Error('Unauthorized');
@@ -16,9 +16,9 @@ function routeTokenValidation(req, res, next) {
         return next(err);
     }
     next();
-}
+};
 
-function routeType(req, res, next) {
+const routeType = (req, res, next) => {
     const { id } = req.body;
 
     if (!id) {
@@ -35,15 +35,15 @@ function routeType(req, res, next) {
             if (err) { return next(err); }
             res.status(200).end();
         });
-}
+};
 
-function routeNotFound(req, res, next) {
+const routeNotFound = (req, res, next) => {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
-}
+};
 
-function routeErrorHandlerJSON(err, req, res, next) {
+const routeErrorHandlerJSON = (err, req, res, next) => {
     const { status = 500, message = 'Internal Server Error' } = err;
     const error = { status, message };
     // hide stacktrace in production, show otherwise
@@ -51,7 +51,7 @@ function routeErrorHandlerJSON(err, req, res, next) {
     res
         .status(status)
         .json({ error });
-}
+};
 
 
 

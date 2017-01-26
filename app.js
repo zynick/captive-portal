@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', require('./routes'));
 
 // normalize environment port into a number, string (named pipe), or false.
-function normalizePort(val) {
+const normalizePort = (val) => {
     const port = parseInt(val, 10);
     if (isNaN(port)) {
         return val;
@@ -49,7 +49,7 @@ function normalizePort(val) {
         return port;
     }
     return false;
-}
+};
 const port = normalizePort(process.env.PORT || 3000);
 app.set('port', port);
 

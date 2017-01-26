@@ -5,11 +5,11 @@ const router = require('express').Router();
 const isProd = process.env.NODE_ENV === 'production';
 
 
-function routeMain(req, res) {
+const routeMain = (req, res) => {
     res.redirect('/login');
-}
+};
 
-function routeMainDebug(req, res) {
+const routeMainDebug = (req, res) => {
     log('==========');
     log(`HEADERS: ${JSON.stringify(req.headers, null, 2)}`);
     log(`QUERY: ${JSON.stringify(req.query, null, 2)}`);
@@ -19,15 +19,15 @@ function routeMainDebug(req, res) {
     // res.setHeader('Access-Control-Allow-Credentials', 'true');
     // res.setHeader('Access-Control-Allow-Origin', '*');
     res.redirect('/login');
-}
+};
 
-function routeNotFound(req, res, next) {
+const routeNotFound = (req, res, next) => {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
-}
+};
 
-function routeErrorHandlerRender(err, req, res, next) {
+const routeErrorHandlerRender = (err, req, res, next) => {
     const { status = 500, message = 'Internal Server Error' } = err;
     const error = { status, message };
     // hide stacktrace in production, show otherwise
@@ -35,7 +35,7 @@ function routeErrorHandlerRender(err, req, res, next) {
     res
         .status(status)
         .render('error', { error });
-}
+};
 
 
 
