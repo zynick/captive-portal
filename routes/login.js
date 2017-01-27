@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
         res.render('login', {
             login,
             assets,
-            query: req.query
+            data: req.query
         });
 
     });

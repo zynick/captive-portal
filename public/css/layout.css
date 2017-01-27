@@ -59,7 +59,15 @@ form {
     margin-bottom: 6px;
 }
 
+#message {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #11DD11;
+}
+
 #error {
+    font-size: 1.1em;
+    font-weight: bold;
     color: #DD1111;
 }
 

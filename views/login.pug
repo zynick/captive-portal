@@ -10,13 +10,15 @@ block content
 
         br
 
-        if query.error
-            p#error=query.error
+        if data.message
+            p#message=data.message
+        if data.error
+            p#error=data.error
 
         if login.email
-            form#login-form(name='form', method='POST', action=query['link-login-only'], onSubmit='return encryptPass()')
+            form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
                 .form-group
-                    input.form-control(type='text', name='username', value=query.username, placeholder='Email')
+                    input.form-control(type='text', name='username', value=data.username, placeholder='Email')
                 .form-group
                     input.form-control(type='password', name='password', placeholder='Password')
                 .form-group
@@ -25,15 +27,34 @@ block content
                     a(href=login.signupUrl) SIGN UP
 
         if login.guestEnabled
-            a(href='#{query["link-login-only"]}?username=T-#{query["mac"]}') LOGIN AS GUEST
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO not fucking work!!!!!
+            //- TODO where will it redirect to if no dst is set?
+            a(href='#{data["link-login-only"]}?username=T-#{data["mac"]}') LOGIN AS GUEST
 
 append script
     if login.email
-        if query['chap-challenge']
+        if data['chap-challenge']
             script(src='/js/md5.js')
             script(type='text/javascript').
                 function encryptPass() {
-                    document.form.password.value = md5('#{query["chap-id"]}' + document.form.password.value + '#{query["chap-challenge"]}');
+                    document.form.password.value = md5('#{data["chap-id"]}' + document.form.password.value + '#{data["chap-challenge"]}');
                     return true;
                 }
         else

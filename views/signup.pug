@@ -8,21 +8,22 @@ block content
 
         br
 
-        if query.error
-            p#error=query.error
+        if data.message
+            p#message=data.message
+        if data.error
+            p#error=data.error
 
         if login.email
-            form#signup-form(name='form', method='POST', action=query['link-login-only'])
+            form#signup-form(name='form', method='POST')
                 .form-group
-                    input.form-control(type='text', name='username', value=query.username, placeholder='Email')
+                    input.form-control(type='text', name='username', value=data.username, placeholder='Email')
                 .form-group
                     input.form-control(type='password', name='password', placeholder='Password')
                 .form-group
                     input.form-control(type='password', name='password2', placeholder='Confirm Password')
                 .form-group
+                    input.form-control(type='hidden', name='queryString', value=data.queryString)
+                    input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
                     input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
                 .form-group
-                    a(href=login.loginUrl) LOGIN
-
-        if login.guestEnabled
-            a(href='#{query["link-login-only"]}?username=T-#{query["mac-esc"]}') LOGIN AS GUEST
+                    a(href=data.loginUrl) LOGIN
