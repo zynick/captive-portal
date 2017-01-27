@@ -9,7 +9,7 @@ const NAS = require('mongoose').model('NAS');
 
 router.get('/', (req, res, next) => {
 
-    NAS.findOne({ id: req.query.mac }, (err, nas) => {
+    NAS.findOne({ id: req.query.identity }, (err, nas) => {
         if (err) { return next(err); }
 
         const {

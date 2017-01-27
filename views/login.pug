@@ -25,7 +25,7 @@ block content
                     a(href=login.signupUrl) SIGN UP
 
         if login.guestEnabled
-            a(href='#{query["link-login-only"]}?username=T-#{query["mac-esc"]}') LOGIN AS GUEST
+            a(href='#{query["link-login-only"]}?username=T-#{query["mac"]}') LOGIN AS GUEST
 
 append script
     if login.email
