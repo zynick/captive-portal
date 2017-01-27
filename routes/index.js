@@ -5,11 +5,7 @@ const router = require('express').Router();
 const isProd = process.env.NODE_ENV === 'production';
 
 
-const routeMain = (req, res) => {
-    res.redirect('/login');
-};
-
-const routeMainDebug = (req, res) => {
+const routeDebug = (req, res, next) => {
     log('==========');
     log(`HEADERS: ${JSON.stringify(req.headers, null, 2)}`);
     log(`QUERY: ${JSON.stringify(req.query, null, 2)}`);
@@ -18,7 +14,7 @@ const routeMainDebug = (req, res) => {
     log(`BODY: ${JSON.stringify(req.body, null, 2)}`);
     // res.setHeader('Access-Control-Allow-Credentials', 'true');
     // res.setHeader('Access-Control-Allow-Origin', '*');
-    res.redirect('/login');
+    next();
 };
 
 const routeNotFound = (req, res, next) => {
@@ -40,10 +36,9 @@ const routeErrorHandlerRender = (err, req, res, next) => {
 
 
 if (!isProd) {
-    router.all('/', routeMainDebug);
-} else {
-    router.get('/', routeMain);
+    router.use(routeDebug);
 }
+router.get('/', (req, res) => res.redirect('/login'));
 router.use('/login', require('./login'));
 router.use('/signup', require('./signup'));
 router.use('/impression', require('./impression'));
