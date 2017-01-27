@@ -1,20 +1,32 @@
 'use strict';
 
 const router = require('express').Router();
-const { url, logo, slogan } = require('../config.json').defaults;
+const NAS = require('mongoose').model('NAS');
 
 router.get('/', (req, res, next) => {
 
-    const idx = req.url.indexOf('?');
-    const queryString = idx === -1 ? '' : req.url.slice(idx);
+    NAS.findOne({ id: req.query.mac }, (err, nas) => {
+        if (err) { return next(err); }
 
-    res.render('signup', {
-        url,
-        logo,
-        slogan,
-        loginUrl: `/login${queryString}`,
-        data: req.query
+        const {
+            login = {},
+            assets = {}
+        } = nas || {};
+
+        login.guestEnabled = login.guest && req.query.trial === 'yes';
+
+        const idx = req.url.indexOf('?');
+        const queryString = idx === -1 ? '' : req.url.slice(idx);
+        login.loginUrl = `/login${queryString}`;
+
+        res.render('signup', {
+            login,
+            assets,
+            query: req.query
+        });
+
     });
+
 });
 
 

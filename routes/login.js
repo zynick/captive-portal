@@ -1,11 +1,7 @@
 'use strict';
 
-const async = require('async');
-const mongoose = require('mongoose');
 const router = require('express').Router();
-const { defaults } = require('../config.json');
-const Locations = mongoose.model('Locations');
-const NAS = mongoose.model('NAS');
+const NAS = require('mongoose').model('NAS');
 
 /**
  * http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
@@ -13,25 +9,13 @@ const NAS = mongoose.model('NAS');
 
 router.get('/', (req, res, next) => {
 
-    async.waterfall([
-        (next) => {
-            NAS.findOne({ id: req.query.mac }, next);
-        },
-        (nas, next) => {
-            if (!nas) {
-                return next();
-            }
-            Locations.findOne({ id: nas.location }, next);
-        }
-    ], (err, location) => {
-        if (err) {
-            return next(err);
-        }
-        if (!location) {
-            location = defaults;
-        }
+    NAS.findOne({ id: req.query.mac }, (err, nas) => {
+        if (err) { return next(err); }
 
-        const { login = {}, assets = {} } = location;
+        const {
+            login = {},
+            assets = {}
+        } = nas || {};
 
         login.guestEnabled = login.guest && req.query.trial === 'yes';
 
@@ -44,6 +28,7 @@ router.get('/', (req, res, next) => {
             assets,
             query: req.query
         });
+
     });
 
 });

@@ -1,23 +1,28 @@
 extends layout
 
 block content
-    a(href=url)
-        img#logo(src=logo)
-    p#slogan=slogan
+    .content-wrapper-inner
+        a(href=assets.url)
+            img#logo(src=assets.logo)
+        p#slogan=assets.slogan
 
-    br
+        br
 
-    if data.error
-        p#error=data.error
+        if query.error
+            p#error=query.error
 
-    form#signup-form(name='form', method='POST', action=data['link-login-only'])
-        .form-group
-            input.form-control(type='text', name='username', value=data.username, placeholder='Email')
-        .form-group
-            input.form-control(type='password', name='password', placeholder='Password')
-        .form-group
-            input.form-control(type='password', name='password2', placeholder='Confirm Password')
-        .form-group
-            input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
-        .form-group
-            a(href=loginUrl) LOGIN
+        if login.email
+            form#signup-form(name='form', method='POST', action=query['link-login-only'])
+                .form-group
+                    input.form-control(type='text', name='username', value=query.username, placeholder='Email')
+                .form-group
+                    input.form-control(type='password', name='password', placeholder='Password')
+                .form-group
+                    input.form-control(type='password', name='password2', placeholder='Confirm Password')
+                .form-group
+                    input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
+                .form-group
+                    a(href=login.loginUrl) LOGIN
+
+        if login.guestEnabled
+            a(href='#{query["link-login-only"]}?username=T-#{query["mac-esc"]}') LOGIN AS GUEST
