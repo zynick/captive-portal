@@ -32,6 +32,9 @@ router.get('/', (req, res, next) => {
         }
 
         const { login = {}, assets = {} } = company;
+
+        login.guestEnabled = login.guest && req.query.trial === 'yes';
+
         const idx = req.url.indexOf('?');
         const queryString = idx === -1 ? '' : req.url.slice(idx);
         login.signupUrl = `/signup${queryString}`;
