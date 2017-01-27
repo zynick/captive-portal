@@ -45,6 +45,7 @@ if (!isProd) {
     router.get('/', routeMain);
 }
 router.use('/login', require('./login'));
+router.use('/signup', require('./signup'));
 router.use('/impression', require('./impression'));
 router.use('/api', require('./api'));
 router.use(routeNotFound);

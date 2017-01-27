@@ -1,7 +1,7 @@
 'use strict';
 
 const router = require('express').Router();
-const { url, impression } = require('../config.json').default;
+const { url, impression } = require('../config.json').defaults;
 
 router.get('/', (req, res, next) => {
 

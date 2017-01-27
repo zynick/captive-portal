@@ -26,7 +26,11 @@ body {
     color: #FFF;
     text-align: center;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    /*line-height: 2;*/
+}
+
+form {
+    margin: auto;
+    max-width: 300px;
 }
 
 .site-wrapper {
@@ -46,6 +50,25 @@ body {
     margin: auto;
 }
 
-nav.navbar-fixed-bottom {
-    font-size: 0.9em;
+.content-wrapper-inner {
+    margin: auto;
+    max-width: 300px;
+}
+
+.form-group {
+    margin-bottom: 6px;
+}
+
+#error {
+    color: #DD1111;
+}
+
+#logo {
+    max-width: 95%;
+    max-height: 80vh;
+}
+
+#slogan {
+    margin-top: 10px;
+    font-size: 1.15em;
 }

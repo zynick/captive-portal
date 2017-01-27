@@ -1,9 +1,15 @@
 {
     "apiToken": "rp4RiDx37wW44EmzUichfQs0tVn96OvR",
-    "default": {
-        "url": "http://tideanalytics.com",
-        "logo": "/img/logo.png",
-        "slogan": "Welcome to ACE Guest WiFi",
+    "defaults": {
+        "login": {
+            "guest": true,
+            "email": true
+        },
+        "assets": {
+            "url": "http://tideanalytics.com",
+            "logo": "/img/logo.png",
+            "slogan": "Welcome to ACE Guest WiFi"
+        },
         "impression": {
             "image": "/img/impression.jpg",
             "url": "http://google.com"
