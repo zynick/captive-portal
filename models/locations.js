@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const companySchema = new Schema({
+const locationSchema = new Schema({
 
     id: { type: String, required: true, index: true, unique: true },
 
@@ -20,8 +20,8 @@ const companySchema = new Schema({
 
 }, {
     versionKey: false,
-    collection: 'companies',
+    collection: 'locations',
     autoIndex: process.env.NODE_ENV !== 'production'
 });
 
-mongoose.model('Companies', companySchema);
+mongoose.model('Locations', locationSchema);

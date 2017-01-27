@@ -5,7 +5,7 @@ const router = require('express').Router();
 const log = require('debug')('cp:routes:api');
 const { apiToken } = require('../config.json');
 const isProd = process.env.NODE_ENV === 'production';
-const Companies = mongoose.model('Companies');
+const Locations = mongoose.model('Locations');
 
 
 const routeTokenValidation = (req, res, next) => {
@@ -27,7 +27,7 @@ const routeType = (req, res, next) => {
         return next(err);
     }
 
-    Companies.findOneAndUpdate(
+    Locations.findOneAndUpdate(
         { id },
         req.body,
         { upsert: true },
@@ -56,7 +56,7 @@ const routeErrorHandlerJSON = (err, req, res, next) => {
 
 
 router.use(routeTokenValidation);
-router.post('/company/type', routeType);
+router.post('/location/type', routeType);
 router.use(routeNotFound);
 router.use(routeErrorHandlerJSON);
 

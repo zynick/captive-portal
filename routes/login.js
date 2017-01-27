@@ -4,7 +4,7 @@ const async = require('async');
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const { defaults } = require('../config.json');
-const Companies = mongoose.model('Companies');
+const Locations = mongoose.model('Locations');
 const NAS = mongoose.model('NAS');
 
 /**
@@ -21,17 +21,17 @@ router.get('/', (req, res, next) => {
             if (!nas) {
                 return next();
             }
-            Companies.findOne({ id: nas.company }, next);
+            Locations.findOne({ id: nas.location }, next);
         }
-    ], (err, company) => {
+    ], (err, location) => {
         if (err) {
             return next(err);
         }
-        if (!company) {
-            company = defaults;
+        if (!location) {
+            location = defaults;
         }
 
-        const { login = {}, assets = {} } = company;
+        const { login = {}, assets = {} } = location;
 
         login.guestEnabled = login.guest && req.query.trial === 'yes';
 
