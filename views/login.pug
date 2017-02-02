@@ -25,28 +25,8 @@ block content
                     input.form-control.btn.btn-primary(name='submit', type='submit', value='LOGIN')
                 .form-group
                     a(href=login.signupUrl) SIGN UP
-
         if login.guestEnabled
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO not fucking work!!!!!
-            //- TODO where will it redirect to if no dst is set?
-            a(href='#{data["link-login-only"]}?username=T-#{data["mac"]}') LOGIN AS GUEST
+            a(href=`${data["link-login-only"]}?username=T-${data["identity"]}`) LOGIN AS GUEST
 
 append script
     if login.email

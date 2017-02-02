@@ -3,24 +3,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-// TODO can do required like this ah??
-const assetsSchema = new Schema({
-    logo: String,
-    url: String,
-    slogan: String
-}, {
-    required: true
-})
-
 const nasSchema = new Schema({
 
     id: { type: String, required: true, index: true, unique: true },
@@ -44,5 +26,8 @@ const nasSchema = new Schema({
     collection: 'nas',
     autoIndex: process.env.NODE_ENV !== 'production'
 });
+
+// nasSchema.path('login').required(true);
+// nasSchema.path('assets').required(true);
 
 mongoose.model('NAS', nasSchema);
