@@ -3,5 +3,9 @@
         "host": "localhost",
         "port": 27017,
         "database": "radius"
+    },
+    "admanager": {
+        "host": "connect-dev-api.tideanalytics.com",
+        "key": "DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4"
     }
 }

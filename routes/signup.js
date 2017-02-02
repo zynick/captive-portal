@@ -21,7 +21,7 @@ router.use((req, res, next) => {
 
         req.nas = nas;
         next();
-    })
+    });
 });
 
 router.get('/', (req, res, next) => {
@@ -31,7 +31,7 @@ router.get('/', (req, res, next) => {
     const data = req.query;
     const idx = req.url.indexOf('?');
     data.queryString = idx === -1 ? '' : req.url.slice(idx+1);
-    data.loginUrl = `/login?${data.queryString}`
+    data.loginUrl = `/login?${data.queryString}`;
 
     res.render('signup', {
         login,
