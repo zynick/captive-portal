@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const nasSchema = new Schema({
 
     id: { type: String, required: true, index: true, unique: true },
-    organization: { type: String, index: true },
+    organization: { type: String, required: true, index: true },
 
     // sample format:
     // { enabled: true, email: true, facebook: true, google: true, ... }
