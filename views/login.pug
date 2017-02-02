@@ -26,7 +26,7 @@ block content
                 .form-group
                     a(href=login.signupUrl) SIGN UP
         if login.guestEnabled
-            a(href=`${data["link-login-only"]}?username=T-${data["identity"]}`) LOGIN AS GUEST
+            a(href=`${data["link-login-only"]}?username=T-${data["mac"]}`) LOGIN AS GUEST
 
 append script
     if login.email
