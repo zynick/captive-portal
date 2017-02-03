@@ -1,27 +1,30 @@
 'use strict';
 
+const argon2 = require('argon2');
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
-mongoose.Promise = global.Promise;
+
+
 
 router.use((req, res, next) => {
     const id = req.query.identity || req.body.identity;
 
-    NAS.findOne({ id }, (err, nas) => {
-        if (err) {
-            return next(err);
-        }
+    NAS
+        .findOne({ id })
+        .maxTime(10000)
+        .exec()
+        .then((nas) => {
+            if (!nas) {
+                // should not reach here unless user modify the input data
+                return next(new Error('Missing Identity Parameter.'));
+            }
+            req.nas = nas;
+            next();
+        })
+        .catch(next);
 
-        if (!nas) {
-            // should not reach here unless user modify the input data
-            return next(new Error('Missing Identity Parameter'));
-        }
-
-        req.nas = nas;
-        next();
-    });
 });
 
 router.get('/', (req, res, next) => {
@@ -33,61 +36,50 @@ router.get('/', (req, res, next) => {
     data.queryString = idx === -1 ? '' : req.url.slice(idx+1);
     data.loginUrl = `/login?${data.queryString}`;
 
-    res.render('signup', {
-        login,
-        assets,
-        data
-    });
+    res.render('signup', { login, assets, data });
 
 });
 
 router.post('/', (req, res, next) => {
 
     const { username, password, password2, queryString } = req.body;
-    const {
-        organization,
-        id: nas,
-        login = {},
-        assets = {}
-    } = req.nas;
+    const { organization, id: nasId, login, assets } = req.nas;
 
     if (!username || !password || !password2) {
-        return next(new Error('Please fill in email and passwords'));
+        const data = req.body;
+        data.error = 'Please fill in email and passwords';
+        return res.render('signup', { login, assets, data });
     }
 
     if (password !== password2) {
-        return next(new Error('Passwords do not match'));
+        const data = req.body;
+        data.error = 'Passwords do not match';
+        return res.render('signup', { login, assets, data });
     }
 
-    new Users({
-            username,
-            password,
-            organization,
-            nas
+    argon2
+        .hash(password, new Buffer(username + 'ace-tide'), {
+            type: argon2.argon2d,
+            timeCost: 3,
+            memoryCost: 11,
+            parallelism: 1,
+            raw: true
         })
-        .save()
-        .then((user) => {
-            const message = 'You have signed up successfully.';
-            res.redirect(`/login?message=${encodeURIComponent(message)}&${queryString}`);
+        .then(hash => {
+
+            const hashPass = hash.toString('hex');
+
+            new Users({ username, password: hashPass, organization, nasId })            
+                .save()
+                .then(user => {
+                    const message = 'You have signed up successfully.';
+                    res.redirect(`/login?message=${encodeURIComponent(message)}&${queryString}`);
+                })
+                .catch(next);
+
         })
-        .catch((err) => {
-            next(err);
-        });
+        .catch(next);
 
-}, (err, req, res, next) => {
-    const {
-        login = {},
-        assets = {}
-    } = req.nas;
-
-    const data = req.body;
-    data.error = err.message;
-
-    res.render('signup', {
-        login,
-        assets,
-        data
-    });
 });
 
 module.exports = router;

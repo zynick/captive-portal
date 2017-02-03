@@ -9,27 +9,30 @@ const NAS = require('mongoose').model('NAS');
 
 router.get('/', (req, res, next) => {
 
-    NAS.findOne({ id: req.query.identity }, (err, nas) => {
-        if (err) { return next(err); }
+    const data = req.query;
 
-        const {
-            login = {},
-            assets = {}
-        } = nas || {};
+    NAS
+        .findOne({ id: data.identity })
+        .maxTime(10000)
+        .exec()
+        .then((nas) => {
+            if (!nas) {
+                const err = new Error('NAS does not exist.');
+                err.status = 400;
+                return next(err);
+            }
 
-        login.guestEnabled = login.guest && req.query.trial === 'yes';
+            const { login, assets } = nas;
 
-        const idx = req.url.indexOf('?');
-        const queryString = idx === -1 ? '' : req.url.slice(idx);
-        login.signupUrl = `/signup${queryString}`;
+            login.guestEnabled = login.guest && data.trial === 'yes';
 
-        res.render('login', {
-            login,
-            assets,
-            data: req.query
-        });
+            const idx = req.url.indexOf('?');
+            const queryString = idx === -1 ? '' : req.url.slice(idx);
+            login.signupUrl = `/signup${queryString}`;
 
-    });
+            res.render('login', { login, assets, data });
+        })
+        .catch(next);
 
 });
 

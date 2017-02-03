@@ -8,12 +8,13 @@ const nasSchema = new Schema({
     id: { type: String, required: true, index: true, unique: true },
     organization: { type: String, required: true, index: true },
 
-    // sample format:
-    // { enabled: true, email: true, facebook: true, google: true, ... }
-    login: Schema.Types.Mixed,
+    login: {
+        email: { type: Boolean, required: true },
+        guest: Boolean
+    },
 
     assets: {
-        logo: String,
+        logo: { type: String, required: true },
         url: String,
         slogan: String
     },
@@ -26,8 +27,5 @@ const nasSchema = new Schema({
     collection: 'nas',
     autoIndex: process.env.NODE_ENV !== 'production'
 });
-
-// nasSchema.path('login').required(true);
-// nasSchema.path('assets').required(true);
 
 mongoose.model('NAS', nasSchema);

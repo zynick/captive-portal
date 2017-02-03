@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=staging
+      - DATABASE=database
+      - BOOTSTRAP=true
+
+  database:
+    ports:
+      - "27017:27017"
+    image: mongo:3.4

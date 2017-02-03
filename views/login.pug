@@ -16,13 +16,13 @@ block content
             p#error=data.error
 
         if login.email
-            form#login-form(name='form', method='POST', action=data['link-login-only'], onSubmit='return encryptPass()')
+            form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='hash(); return false;')
                 .form-group
                     input.form-control(type='text', name='username', value=data.username, placeholder='Email')
                 .form-group
                     input.form-control(type='password', name='password', placeholder='Password')
                 .form-group
-                    input.form-control.btn.btn-primary(name='submit', type='submit', value='LOGIN')
+                    input.form-control.btn.btn-primary(type='submit', value='LOGIN')
                 .form-group
                     a(href=login.signupUrl) SIGN UP
         if login.guestEnabled
@@ -30,13 +30,36 @@ block content
 
 append script
     if login.email
+        script(src='/js/argon2.js')
+        script(type='text/javascript').
+            function hash() {
+                let username = document.loginForm.username.value;
+                let password = document.loginForm.password.value;
+                argon2
+                    .hash({
+                        pass: password,
+                        salt: username + 'ace-tide',
+                        time: 3,
+                        mem: 2048,
+                        hashLen: 32,
+                        parallelism: 1,
+                        type: argon2.ArgonType.Argon2d,
+                        distPath: '/js'
+                    })
+                    .then(submit)
+                    .catch(e => alert(e.message + e.code))
+            }
+
         if data['chap-challenge']
             script(src='/js/md5.js')
             script(type='text/javascript').
-                function encryptPass() {
-                    document.form.password.value = md5('#{data["chap-id"]}' + document.form.password.value + '#{data["chap-challenge"]}');
-                    return true;
+                function submit(hash) {
+                    document.loginForm.password.value = md5('#{data["chap-id"]}' + hash.hashHex + '#{data["chap-challenge"]}');
+                    document.loginForm.submit();
                 }
         else
             script(type='text/javascript').
-                function encryptPass() { return true; }
+                function submit(hash) {
+                    document.loginForm.password.value = hash.hashHex;
+                    document.loginForm.submit();
+                }
