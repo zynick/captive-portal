@@ -11,16 +11,16 @@ const morgan = require('morgan');
 const http = require('http');
 const path = require('path');
 
-const { mongo } = require('./config.json');
+const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE, PORT } = require('./config.js');
 const log = debug('cp:app');
 const logError = debug('cp:error');
 
 
 /* Initialize Database */
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${mongo.host}:${mongo.port}/${mongo.database}`);
+mongoose.connect(`mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`);
 mongoose.connection.on('error', err => {
-    logError(`unable to connect to database at ${mongo.host}:${mongo.port}/${mongo.database}`);
+    logError(`unable to connect to database at ${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`);
     logError(err);
 });
 glob.sync('./models/*.js')
@@ -50,7 +50,7 @@ const normalizePort = (val) => {
     }
     return false;
 };
-const port = normalizePort(process.env.PORT || 3000);
+const port = normalizePort(PORT);
 app.set('port', port);
 
 

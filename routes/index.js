@@ -2,7 +2,8 @@
 
 const log = require('debug')('cp:routes:index');
 const router = require('express').Router();
-const isProd = process.env.NODE_ENV === 'production';
+const { NODE_ENV } = require('../config.js');
+const isProduction = NODE_ENV === 'production';
 
 
 const routeDebug = (req, res, next) => {
@@ -27,7 +28,7 @@ const routeErrorHandlerRender = (err, req, res, next) => {
     const { status = 500, message = 'Internal Server Error' } = err;
     const error = { status, message };
     // hide stacktrace in production, show otherwise
-    if (!isProd) { error.stack = err.stack; }
+    if (!isProduction) { error.stack = err.stack; }
     res
         .status(status)
         .render('error', { error });
@@ -35,7 +36,7 @@ const routeErrorHandlerRender = (err, req, res, next) => {
 
 
 
-if (!isProd) {
+if (!isProduction) {
     router.use(routeDebug);
 }
 router.get('/', (req, res) => res.redirect('/login'));
