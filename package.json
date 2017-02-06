@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development PORT=80 DEBUG=cp:* node app",
-    "local": "NODE_ENV=development PORT=3001 DEBUG=cp:* node app",
+    "local": "NODE_ENV=development PORT=3000 DEBUG=cp:* node app",
     "start": "NODE_ENV=production PORT=80 DEBUG=cp:error node app"
   },
   "dependencies": {

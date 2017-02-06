@@ -69,7 +69,7 @@ router.post('/', (req, res, next) => {
 
             const hashPass = hash.toString('hex');
 
-            new Users({ username, password: hashPass, organization, nasId })            
+            new Users({ username, password: hashPass, organization, nasId })
                 .save()
                 .then(user => {
                     const message = 'You have signed up successfully.';
