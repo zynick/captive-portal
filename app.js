@@ -11,16 +11,23 @@ const morgan = require('morgan');
 const http = require('http');
 const path = require('path');
 
-const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE, PORT } = require('./config.js');
 const log = debug('portal:app');
 const logError = debug('portal:error');
+const {
+    MONGO_USER,
+    MONGO_PASS,
+    MONGO_HOST,
+    MONGO_PORT,
+    MONGO_DB,
+    PORT
+} = require('./config.js');
 
 
 /* Initialize Database */
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`);
+mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`);
 mongoose.connection.on('error', err => {
-    logError(`unable to connect to database at ${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`);
+    logError(`unable to connect to database at ${MONGO_USER}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`);
     logError(err);
 });
 glob.sync('./models/*.js')
