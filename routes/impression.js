@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
                     if (err) { return next(err); }
 
                     if (httpRes.statusCode !== 200) {
-                        err = new Error(httpRes.statusMessage);
+                        err = new Error(`Unable to query content from AD Server: ${httpRes.statusMessage}`);
                         err.status = httpRes.statusCode;
                         return next(err);
                     }
