@@ -1,25 +1,26 @@
 version: '2'
 
 services:
+
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     environment:
       - AD_HOST=connect-dev-api.tideanalytics.com
       - AD_KEY=DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4
-      - DEBUG=cp:*
-      - MONGO_HOST=database
+      - DEBUG=portal:*
+      - MONGO_HOST=192.168.0.132
       - MONGO_PORT=27017
       - MONGO_DATABASE=radius
       - NODE_ENV=staging
       - PORT=3000
 
-      - BOOTSTRAP=true
-
-  database:
-    ports:
-      - "27017:27017"
-    image: mongo:3.4
+  # database:
+  #   ports:
+  #     - "27017:27017"
+  #   image: mongo:3.4

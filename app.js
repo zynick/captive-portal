@@ -12,8 +12,8 @@ const http = require('http');
 const path = require('path');
 
 const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE, PORT } = require('./config.js');
-const log = debug('cp:app');
-const logError = debug('cp:error');
+const log = debug('portal:app');
+const logError = debug('portal:error');
 
 
 /* Initialize Database */
