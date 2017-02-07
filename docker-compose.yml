@@ -14,11 +14,7 @@ services:
       - AD_HOST=connect-dev-api.tideanalytics.com
       - AD_KEY=DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4
       - DEBUG=portal:*
-      - MONGO_USER=radius-user
-      - MONGO_PASS=radius-punya-password
-      - MONGO_HOST=192.168.0.132
-      - MONGO_PORT=27017
-      - MONGO_DB=radius
+      - MONGO=localhost:27017/radius
       - NODE_ENV=staging
       - PORT=3000
 
