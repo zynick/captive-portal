@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const NAS = require('mongoose').model('NAS');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const routeGetNAS = (req, res, next) => {
@@ -59,7 +59,7 @@ const routeResponse = (req, res, next) => {
                 return true;
             }
 
-            res.render('impression', { asset });
+            res.render('mikrotik/impression', { asset });
 
             responded = true;
             return false;

@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const NAS = require('mongoose').model('NAS');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 /**
  * http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
@@ -69,9 +69,9 @@ const routeResponse = (req, res, next) => {
 
             const idx = req.url.indexOf('?');
             const queryString = idx === -1 ? '' : req.url.slice(idx);
-            login.signupUrl = `/signup${queryString}`;
+            login.signupUrl = `/mikrotik/signup${queryString}`;
 
-            res.render('login', { login, assets, data, ad });
+            res.render('mikrotik/login', { login, assets, data, ad });
 
             responded = true;
             return false;

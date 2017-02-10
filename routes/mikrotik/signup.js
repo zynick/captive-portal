@@ -38,9 +38,9 @@ const routeGet = (req, res, next) => {
     delete data.error;
 
     data.queryString = querystring.stringify(data);
-    data.loginUrl = `/login?${data.queryString}`;
+    data.loginUrl = `/mikrotik/login?${data.queryString}`;
 
-    res.render('signup', { login, assets, data });
+    res.render('mikrotik/signup', { login, assets, data });
 };
 
 const routePostValidation = (req, res, next) => {
@@ -103,19 +103,20 @@ const routePostResponse = (req, res, next) => {
     query.message = 'You have signed up successfully.';
     const qs = querystring.stringify(query);
 
-    res.redirect(`/login?${qs}`);
+    res.redirect(`/mikrotik/login?${qs}`);
 };
 
 const routePostErrorHandler = (err, req, res, next) => {
 
-    if (err.status !== 499 && err.name !== 'MongooseError') {
+    if (err.status !== 499 && err.name !== 'MongooseError' && err.name !== 'ValidationError') {
+        console.log(JSON.stringify(err));
         return next(err);
     }
 
     const { login, assets } = req.nas;
     const data = req.body;
     data.error = err.message;
-    res.render('signup', { login, assets, data });
+    res.render('mikrotik/signup', { login, assets, data });
 };
 
 

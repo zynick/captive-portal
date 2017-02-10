@@ -4,6 +4,7 @@ const log = require('debug')('cp:routes:index');
 const router = require('express').Router();
 const { NODE_ENV } = require('../config.js');
 const isProduction = NODE_ENV === 'production';
+const { version } = require('../package.json');
 
 
 const routeDebug = (req, res, next) => {
@@ -39,10 +40,8 @@ const routeErrorHandlerRender = (err, req, res, next) => {
 if (!isProduction) {
     router.use(routeDebug);
 }
-router.get('/', (req, res) => res.redirect('/login'));
-router.use('/login', require('./login'));
-router.use('/signup', require('./signup'));
-router.use('/impression', require('./impression'));
+router.get('/', (req, res) => res.json(`ACE-TIDE Captive Portal v${version}`));
+router.use('/mikrotik', require('./mikrotik'));
 router.use(routeNotFound);
 router.use(routeErrorHandlerRender);
 
