@@ -1,11 +1,8 @@
 extends layout
 
-append css
-    link(rel='stylesheet', href='/css/impression.css')
-
 block content
     a(href=asset.url)
-        img.img-impression(src=asset.img)
+        img#impression-img(src=asset.img)
     p
         | Click 
         a(href=asset.url) here

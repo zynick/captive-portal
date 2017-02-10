@@ -16,16 +16,12 @@
 
 html, body {
     height: 100%;
-    background-color: #333;
-    background-image: url('/img/background.jpg');
-    background-position: center;
-    background-size: cover;
+    background-color: #FFF;
 }
 
 body {
-    color: #FFF;
+    color: #333;
     text-align: center;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 form {
@@ -62,13 +58,13 @@ form {
 #message {
     font-size: 1.1em;
     font-weight: bold;
-    color: #11DD11;
+    color: #060;
 }
 
 #error {
     font-size: 1.1em;
     font-weight: bold;
-    color: #DD1111;
+    color: #600;
 }
 
 #logo {
@@ -79,4 +75,12 @@ form {
 #slogan {
     margin-top: 10px;
     font-size: 1.15em;
+}
+
+#impression-img {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    max-width: 95%;
+    max-height: 80vh;
 }

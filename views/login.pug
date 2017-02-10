@@ -1,8 +1,7 @@
-//- http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
-
 extends layout
 
 block content
+    //- http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
     .content-wrapper-inner
         a(href=assets.url)
             img#logo(src=assets.logo)
@@ -24,6 +23,7 @@ block content
                 .form-group
                     input.form-control.btn.btn-primary(type='submit', value='LOGIN')
                 .form-group
+                    br
                     a(href=login.signupUrl) SIGN UP
         if login.guestEnabled
             a(href=`${data["link-login-only"]}?username=T-${data["mac"]}`) LOGIN AS GUEST
