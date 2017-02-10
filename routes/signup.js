@@ -7,8 +7,7 @@ const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
 
 
-
-router.use((req, res, next) => {
+const routeGetNAS = (req, res, next) => {
     const id = req.query.identity || req.body.identity;
 
     NAS
@@ -24,10 +23,9 @@ router.use((req, res, next) => {
             next();
         })
         .catch(next);
+};
 
-});
-
-router.get('/', (req, res, next) => {
+const routeGet = (req, res, next) => {
 
     const { login, assets } = req.nas;
 
@@ -37,26 +35,23 @@ router.get('/', (req, res, next) => {
     data.loginUrl = `/login?${data.queryString}`;
 
     res.render('signup', { login, assets, data });
+};
 
-});
-
-router.post('/', (req, res, next) => {
-
-    setTimeout(() => {
+const routePost = (req, res,  next) => {
 
     const { username, password, password2, queryString } = req.body;
     const { organization, id: nasId, login, assets } = req.nas;
 
     if (!username || !password || !password2) {
-        const data = req.body;
-        data.error = 'Please fill in email and passwords';
-        return res.render('signup', { login, assets, data });
+        const err = new Error('Please fill in email and passwords');
+        err.status = 499;
+        return next(err);
     }
 
     if (password !== password2) {
-        const data = req.body;
-        data.error = 'Passwords do not match';
-        return res.render('signup', { login, assets, data });
+        const err = new Error('Passwords do not match.');
+        err.status = 499;
+        return next(err);
     }
 
     argon2
@@ -75,15 +70,29 @@ router.post('/', (req, res, next) => {
                 .save()
                 .then(user => {
                     const message = 'You have signed up successfully.';
-                    res.redirect(`/login?message=${encodeURIComponent(message)}&${queryString}`);
+                    res.redirect(`/login?username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}&${queryString}`);
                 })
                 .catch(next);
 
         })
         .catch(next);
+};
 
-    }, 3000);
+const routePostErrorHandler = (err, req, res, next) => {
 
-});
+    if (err.status !== 499 && err.name !== 'MongooseError') {
+        return next(err, req, res);
+    }
+
+    const { login, assets } = req.nas;
+    const data = req.body;
+    data.error = err.message;
+    res.render('signup', { login, assets, data });
+};
+
+
+router.use(routeGetNAS);
+router.get('/', routeGet);
+router.post('/', routePost, routePostErrorHandler);
 
 module.exports = router;
