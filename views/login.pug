@@ -2,31 +2,35 @@ extends layout
 
 block content
     //- http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
-    .content-wrapper-inner
-        a(href=assets.url)
-            img#logo(src=assets.logo)
-        p#slogan=assets.slogan
+    p#slogan
+        a(href=assets.url): img#logo(src=assets.logo)
+        =assets.slogan
 
-        br
+    br
 
-        if data.message
-            p#message=data.message
-        if data.error
-            p#error=data.error
+    a(href=ad.url)
+        img#impression-img(src=ad.img)
 
-        if login.email
-            form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='hash(); return false;')
-                .form-group
-                    input.form-control(type='text', name='username', value=data.username, placeholder='Email')
-                .form-group
-                    input.form-control(type='password', name='password', placeholder='Password')
-                .form-group
-                    input.form-control.btn.btn-primary(type='submit', value='LOGIN')
-                .form-group
-                    br
-                    a(href=login.signupUrl) SIGN UP
-        if login.guestEnabled
-            a(href=`${data["link-login-only"]}?username=T-${data["mac"]}`) LOGIN AS GUEST
+    br
+
+    if data.message
+        p#message=data.message
+    if data.error
+        p#error=data.error
+
+    if login.email
+        form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='hash(); return false;')
+            .form-group
+                input.form-control(type='text', name='username', value=data.username, placeholder='Email')
+            .form-group
+                input.form-control(type='password', name='password', placeholder='Password')
+            .form-group
+                input.form-control.btn.btn-primary(type='submit', value='LOGIN')
+            .form-group
+                br
+                a(href=login.signupUrl) SIGN UP
+    if login.guestEnabled
+        a(href=`${data["link-login-only"]}?username=T-${data["mac"]}`) LOGIN AS GUEST
 
 append script
     if login.email

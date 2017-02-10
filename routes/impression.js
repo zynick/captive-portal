@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const NAS = require('mongoose').model('NAS');
-const { queryAsset } = require('../lib/admanager');
+const admanager = require('../lib/admanager.js');
 
 
 router.get('/', (req, res, next) => {
@@ -15,8 +15,13 @@ router.get('/', (req, res, next) => {
         .maxTime(10000)
         .exec()
         .then(nas => {
+            if (!nas) {
+                const err = new Error('NAS does not exist.');
+                err.status = 400;
+                return next(err);
+            }
 
-            queryAsset(nas.organization, identity, mac, username,
+            admanager.asset(nas.organization, identity, mac, username,
                 (err, httpRes) => {
                     if (err) { return next(err); }
 

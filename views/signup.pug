@@ -1,30 +1,29 @@
 extends layout
 
 block content
-    .content-wrapper-inner
-        a(href=assets.url)
-            img#logo(src=assets.logo)
-        p#slogan=assets.slogan
+    p#slogan
+        a(href=assets.url): img#logo(src=assets.logo)
+        =assets.slogan
 
-        br
+    br
 
-        if data.message
-            p#message=data.message
-        if data.error
-            p#error=data.error
+    if data.message
+        p#message=data.message
+    if data.error
+        p#error=data.error
 
-        if login.email
-            form#signup-form(name='form', method='POST')
-                .form-group
-                    input.form-control(type='text', name='username', value=data.username, placeholder='Email')
-                .form-group
-                    input.form-control(type='password', name='password', placeholder='Password')
-                .form-group
-                    input.form-control(type='password', name='password2', placeholder='Confirm Password')
-                .form-group
-                    input.form-control(type='hidden', name='queryString', value=data.queryString)
-                    input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
-                    input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
-                .form-group
-                    br
-                    a(href=data.loginUrl) LOGIN
+    if login.email
+        form#signup-form(name='form', method='POST')
+            .form-group
+                input.form-control(type='text', name='username', value=data.username, placeholder='Email')
+            .form-group
+                input.form-control(type='password', name='password', placeholder='Password')
+            .form-group
+                input.form-control(type='password', name='password2', placeholder='Confirm Password')
+            .form-group
+                input.form-control(type='hidden', name='queryString', value=data.queryString)
+                input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
+                input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
+            .form-group
+                br
+                a(href=data.loginUrl) LOGIN

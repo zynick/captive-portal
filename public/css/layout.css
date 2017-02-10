@@ -46,11 +46,6 @@ form {
     margin: auto;
 }
 
-.content-wrapper-inner {
-    margin: auto;
-    max-width: 300px;
-}
-
 .form-group {
     margin-bottom: 6px;
 }
@@ -68,12 +63,12 @@ form {
 }
 
 #logo {
-    max-width: 95%;
-    max-height: 80vh;
+    max-width: 80px;
+    max-height: 80px;
 }
 
 #slogan {
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     font-size: 1.15em;
 }
 
