@@ -42,6 +42,8 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
 
+    setTimeout(() => {
+
     const { username, password, password2, queryString } = req.body;
     const { organization, id: nasId, login, assets } = req.nas;
 
@@ -79,6 +81,8 @@ router.post('/', (req, res, next) => {
 
         })
         .catch(next);
+
+    }, 3000);
 
 });
 

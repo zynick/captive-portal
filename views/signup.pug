@@ -13,7 +13,7 @@ block content
         p#error=data.error
 
     if login.email
-        form#signup-form(name='form', method='POST')
+        form(name='signupForm', method='POST', onSubmit='spinner(); return true;')
             .form-group
                 input.form-control(type='text', name='username', value=data.username, placeholder='Email')
             .form-group
@@ -23,7 +23,15 @@ block content
             .form-group
                 input.form-control(type='hidden', name='queryString', value=data.queryString)
                 input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
-                input.form-control.btn.btn-info(name='submit', type='submit', value='SIGN UP')
+                button.form-control.btn.btn-info
+                    #signup-spinner.spinner(style='display:none')
+                    | SIGN UP
             .form-group
                 br
                 a(href=data.loginUrl) LOGIN
+
+append script
+    script(type='text/javascript').
+        function spinner() {
+            document.getElementById('signup-spinner').style.display = '';
+        }

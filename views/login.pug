@@ -19,13 +19,15 @@ block content
         p#error=data.error
 
     if login.email
-        form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='hash(); return false;')
+        form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='spinner(); hash(); return false;')
             .form-group
                 input.form-control(type='text', name='username', value=data.username, placeholder='Email')
             .form-group
                 input.form-control(type='password', name='password', placeholder='Password')
             .form-group
-                input.form-control.btn.btn-primary(type='submit', value='LOGIN')
+                button.form-control.btn.btn-primary
+                    #login-spinner.spinner(style='display:none')
+                    | LOGIN
             .form-group
                 br
                 a(href=login.signupUrl) SIGN UP
@@ -36,6 +38,10 @@ append script
     if login.email
         script(src='/js/argon2.js')
         script(type='text/javascript').
+            function spinner() {
+                document.getElementById('login-spinner').style.display = '';
+            }
+
             function hash() {
                 let username = document.loginForm.username.value;
                 let password = document.loginForm.password.value;
