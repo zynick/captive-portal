@@ -1,24 +1,24 @@
 {
-  "name": "captive-portal",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "dev": "NODE_ENV=development PORT=80 DEBUG=portal:* node app",
-    "local": "NODE_ENV=development PORT=3000 DEBUG=portal:* node app",
-    "start": "NODE_ENV=production PORT=80 DEBUG=portal:error node app"
-  },
-  "dependencies": {
-    "argon2": "^0.15.0",
-    "blueimp-md5": "^2.5.0",
-    "body-parser": "~1.15.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.2.0",
-    "express": "~4.13.4",
-    "glob": "^7.1.1",
-    "mongoose": "^4.8.1",
-    "mongoose-unique-validator": "^1.0.3",
-    "morgan": "~1.7.0",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "~2.3.0"
-  }
+    "name": "captive-portal",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "NODE_ENV=development PORT=80 DEBUG=portal:* node app",
+        "local": "NODE_ENV=development PORT=3000 DEBUG=portal:* node app",
+        "start": "NODE_ENV=production PORT=80 DEBUG=portal:error node app"
+    },
+    "dependencies": {
+        "argon2": "^0.15.0",
+        "blueimp-md5": "^2.5.0",
+        "body-parser": "~1.15.1",
+        "cookie-parser": "~1.4.3",
+        "debug": "~2.2.0",
+        "express": "~4.13.4",
+        "glob": "^7.1.1",
+        "mongoose": "^4.8.1",
+        "mongoose-unique-validator": "^1.0.3",
+        "morgan": "~1.7.0",
+        "pug": "^2.0.0-beta6",
+        "serve-favicon": "~2.3.0"
+    }
 }

@@ -2,23 +2,27 @@
 
 const argon2 = require('argon2');
 const mongoose = require('mongoose');
+const querystring = require('querystring');
 const router = require('express').Router();
 const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
 
 
 const routeGetNAS = (req, res, next) => {
+
     const id = req.query.identity || req.body.identity;
 
     NAS
         .findOne({ id })
         .maxTime(10000)
         .exec()
-        .then((nas) => {
+        .then(nas => {
             if (!nas) {
-                // should not reach here unless user modify the input data
-                return next(new Error('Missing Identity Parameter.'));
+                const err = new Error('NAS does not exist.');
+                err.status = 400;
+                return next(err);
             }
+
             req.nas = nas;
             next();
         })
@@ -29,18 +33,19 @@ const routeGet = (req, res, next) => {
 
     const { login, assets } = req.nas;
 
-    const data = req.query;
-    const idx = req.url.indexOf('?');
-    data.queryString = idx === -1 ? '' : req.url.slice(idx+1);
+    let data = req.query;
+    delete data.message;
+    delete data.error;
+
+    data.queryString = querystring.stringify(data);
     data.loginUrl = `/login?${data.queryString}`;
 
     res.render('signup', { login, assets, data });
 };
 
-const routePost = (req, res,  next) => {
+const routePostValidation = (req, res, next) => {
 
-    const { username, password, password2, queryString } = req.body;
-    const { organization, id: nasId, login, assets } = req.nas;
+    const { username, password, password2 } = req.body;
 
     if (!username || !password || !password2) {
         const err = new Error('Please fill in email and passwords');
@@ -54,6 +59,13 @@ const routePost = (req, res,  next) => {
         return next(err);
     }
 
+    next();
+};
+
+const routePostHashPassword = (req, res, next) => {
+
+    const { username, password } = req.body;
+
     argon2
         .hash(password, new Buffer(username + 'ace-tide'), {
             type: argon2.argon2d,
@@ -63,25 +75,41 @@ const routePost = (req, res,  next) => {
             raw: true
         })
         .then(hash => {
-
-            const hashPass = hash.toString('hex');
-
-            new Users({ username, password: hashPass, organization, nasId })
-                .save()
-                .then(user => {
-                    const message = 'You have signed up successfully.';
-                    res.redirect(`/login?username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}&${queryString}`);
-                })
-                .catch(next);
-
+            req.hash = hash;
+            next();
         })
         .catch(next);
+};
+
+const routePostCreateUser = (req, res, next) => {
+
+    const { username } = req.body;
+    const password = req.hash.toString('hex');
+    const { organization, id: nasId } = req.nas;
+
+    new Users({ username, password, organization, nasId })
+        .save()
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(next);
+};
+
+const routePostResponse = (req, res, next) => {
+
+    let query = querystring.parse(req.body.queryString);
+    query.username = req.user.username;
+    query.message = 'You have signed up successfully.';
+    const qs = querystring.stringify(query);
+
+    res.redirect(`/login?${qs}`);
 };
 
 const routePostErrorHandler = (err, req, res, next) => {
 
     if (err.status !== 499 && err.name !== 'MongooseError') {
-        return next(err, req, res);
+        return next(err);
     }
 
     const { login, assets } = req.nas;
@@ -93,6 +121,11 @@ const routePostErrorHandler = (err, req, res, next) => {
 
 router.use(routeGetNAS);
 router.get('/', routeGet);
-router.post('/', routePost, routePostErrorHandler);
+router.post('/',
+    routePostValidation,
+    routePostHashPassword,
+    routePostCreateUser,
+    routePostResponse,
+    routePostErrorHandler);
 
 module.exports = router;
