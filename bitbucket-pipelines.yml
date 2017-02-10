@@ -1,0 +1,8 @@
+image: scr1p7ed/node-test:7
+
+pipelines:
+  default:
+    - step:
+        script:
+          - npm install
+          - npm test
