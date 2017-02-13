@@ -3,6 +3,7 @@
 const router = require('express').Router();
 const NAS = require('mongoose').model('NAS');
 const admanager = require('../../lib/admanager.js');
+const { ARGON2_SALT_SUFFIX } = require('../../config.js');
 
 /**
  * http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
@@ -71,7 +72,7 @@ const routeResponse = (req, res, next) => {
             const queryString = idx === -1 ? '' : req.url.slice(idx);
             login.signupUrl = `/mikrotik/signup${queryString}`;
 
-            res.render('mikrotik/login', { login, assets, data, ad });
+            res.render('mikrotik/login', { login, assets, data, ad, ARGON2_SALT_SUFFIX });
 
             responded = true;
             return false;

@@ -49,7 +49,7 @@ append script
                 argon2
                     .hash({
                         pass: password,
-                        salt: username + 'ace-tide',
+                        salt: username + '#{ARGON2_SALT_SUFFIX}',
                         time: 3,
                         mem: 2048,
                         hashLen: 32,

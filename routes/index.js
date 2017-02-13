@@ -41,6 +41,7 @@ if (!isProduction) {
     router.use(routeDebug);
 }
 router.get('/', (req, res) => res.json(`ACE-TIDE Captive Portal v${version}`));
+router.use('/api', require('./api'));
 router.use('/mikrotik', require('./mikrotik'));
 router.use(routeNotFound);
 router.use(routeErrorHandlerRender);

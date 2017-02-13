@@ -7,6 +7,7 @@ const router = require('express').Router();
 const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
 const admanager = require('../../lib/admanager.js');
+const { ARGON2_SALT_SUFFIX } = require('../../config.js');
 
 
 const routeGetNAS = (req, res, next) => {
@@ -68,7 +69,7 @@ const routePostHashPassword = (req, res, next) => {
     const { username, password } = req.body;
 
     argon2
-        .hash(password, new Buffer(username + 'ace-tide'), {
+        .hash(password, new Buffer(username + ARGON2_SALT_SUFFIX), {
             type: argon2.argon2d,
             timeCost: 3,
             memoryCost: 11,
