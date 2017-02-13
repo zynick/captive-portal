@@ -6,6 +6,7 @@ const querystring = require('querystring');
 const router = require('express').Router();
 const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
+const admanager = require('../../lib/admanager.js');
 
 
 const routeGetNAS = (req, res, next) => {
@@ -96,6 +97,30 @@ const routePostCreateUser = (req, res, next) => {
         .catch(next);
 };
 
+const routePostActionLog = (req, res, next) => {
+
+    const { organization, id: nas_id } = req.nas;
+    const { mac, username: id } = req.body;
+    const payload = {
+        type: 'Captive-Portal',
+        action: 'signup'
+    };
+    admanager.action(organization, nas_id, mac, id, payload,
+        (err, httpRes) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (httpRes.statusCode !== 200) {
+                const err = new Error(`Unable to communicate with AD Server: ${httpRes.statusMessage}`);
+                err.status = httpRes.statusCode;
+                return next(err);
+            }
+
+            next();
+        });
+};
+
 const routePostResponse = (req, res, next) => {
 
     let query = querystring.parse(req.body.queryString);
@@ -126,6 +151,7 @@ router.post('/',
     routePostValidation,
     routePostHashPassword,
     routePostCreateUser,
+    routePostActionLog,
     routePostResponse,
     routePostErrorHandler);
 

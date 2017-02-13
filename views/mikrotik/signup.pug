@@ -21,6 +21,7 @@ block content
             .form-group
                 input.form-control(type='password', name='password2', placeholder='Confirm Password')
             .form-group
+                input.form-control(type='hidden', name='mac', value=data.mac)
                 input.form-control(type='hidden', name='queryString', value=data.queryString)
                 input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
                 button.form-control.btn.btn-info
