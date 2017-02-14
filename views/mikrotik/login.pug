@@ -13,15 +13,15 @@ block content
 
     br
 
-    if data.message
-        p#message=data.message
-    if data.error
-        p#error=data.error
+    if query.message
+        p#message=query.message
+    if query.error
+        p#error=query.error
 
     if login.email
-        form(name='loginForm', method='POST', action=data['link-login-only'], onSubmit='spinner(); hash(); return false;')
+        form(name='loginForm', method='POST', action=query['link-login-only'], onSubmit='spinner(); hash(); return false;')
             .form-group
-                input.form-control(type='text', name='username', value=data.username, placeholder='Email')
+                input.form-control(type='text', name='username', value=query.username, placeholder='Email')
             .form-group
                 input.form-control(type='password', name='password', placeholder='Password')
             .form-group
@@ -33,7 +33,7 @@ block content
                 a(href=login.signupUrl) SIGN UP
 
     if login.guestEnabled
-        a(href=`${data["link-login-only"]}?username=T-${data["mac"]}`) LOGIN AS GUEST
+        a(href=`${query["link-login-only"]}?username=T-${query["mac"]}`) LOGIN AS GUEST
 
 append script
     if login.email
@@ -61,11 +61,11 @@ append script
                     .catch(e => alert(e.message + e.code))
             }
 
-        if data['chap-challenge']
+        if query['chap-challenge']
             script(src='/js/md5.js')
             script(type='text/javascript').
                 function submit(hash) {
-                    document.loginForm.password.value = md5('#{data["chap-id"]}' + hash.hashHex + '#{data["chap-challenge"]}');
+                    document.loginForm.password.value = md5('#{query["chap-id"]}' + hash.hashHex + '#{query["chap-challenge"]}');
                     document.loginForm.submit();
                 }
         else

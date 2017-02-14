@@ -1,6 +1,6 @@
 'use strict';
 
-const log = require('debug')('cp:routes:index');
+const log = require('debug')('portal:routes');
 const router = require('express').Router();
 const { NODE_ENV } = require('../config.js');
 const isProduction = NODE_ENV === 'production';

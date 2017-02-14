@@ -30,6 +30,18 @@ const routeGetNAS = (req, res, next) => {
         .catch(next);
 };
 
+const routeJsonp = (req, res, next) => {
+    // for app's seamless connection
+    if (req.headers.accept === 'application/javascript') {
+        return res.jsonp({
+            query: req.query,
+            salt: ARGON2_SALT_SUFFIX
+        });
+    }
+
+    next();
+}
+
 const routeGetAsset = (req, res, next) => {
 
     const { organization } = req.nas;
@@ -63,16 +75,15 @@ const routeResponse = (req, res, next) => {
                 return true;
             }
 
-            const { login, assets } = req.nas;
-            const data = req.query;
+            const { query, nas: { login, assets } } = req;
 
-            login.guestEnabled = login.guest && data.trial === 'yes';
+            login.guestEnabled = login.guest && query.trial === 'yes';
 
             const idx = req.url.indexOf('?');
             const queryString = idx === -1 ? '' : req.url.slice(idx);
             login.signupUrl = `/mikrotik/signup${queryString}`;
 
-            res.render('mikrotik/login', { login, assets, data, ad, ARGON2_SALT_SUFFIX });
+            res.render('mikrotik/login', { login, assets, query, ad, ARGON2_SALT_SUFFIX });
 
             responded = true;
             return false;
@@ -85,9 +96,9 @@ const routeResponse = (req, res, next) => {
 
 router.get('/', 
     routeGetNAS,
+    routeJsonp,
     routeGetAsset,
     routeResponse
 );
-
 
 module.exports = router;
