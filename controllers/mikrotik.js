@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const querystring = require('querystring');
 const NAS = mongoose.model('NAS');
 const Users = mongoose.model('Users');
-const { hashPassword } = require('./index.js');
 const { ARGON2_SALT_SUFFIX } = require('../config.js');
 const admanager = require('../lib/admanager.js');
+const argon2 = require('../lib/argon2.js');
 
 
 const getNAS = (req, res, next) => {
@@ -52,6 +52,17 @@ const getAsset = (req, res, next) => {
         });
 };
 
+const hashPassword = (req, res, next) => {
+
+    const { username, password } = req.body;
+
+    argon2.hashPassword(username, password,
+        (err, hash) => {
+            req.hash = hash;
+            next(err);
+        });
+};
+
 
 /* Signup */
 
@@ -91,7 +102,7 @@ const signupValidation = (req, res, next) => {
 const signupCreateUser = (req, res, next) => {
 
     const { username } = req.body;
-    const password = req.hash.toString('hex');
+    const password = req.hash;
     const { organization, id: nasId } = req.nas;
 
     new Users({ username, password, organization, nasId })

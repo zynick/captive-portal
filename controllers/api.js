@@ -2,7 +2,7 @@
 
 const Users = require('mongoose').model('Users');
 const { API_TOKEN } = require('../config.js');
-const { hashPassword } = require('./index.js');
+const argon2 = require('../lib/argon2.js');
 
 
 const tokenValidation = (req, res, next) => {
@@ -28,13 +28,24 @@ const formValidation = (req, res, next) => {
     next();
 };
 
+const hashPassword = (req, res, next) => {
+
+    const { username, password } = req.body;
+
+    argon2.hashPassword(username, password,
+        (err, hash) => {
+            req.hash = hash;
+            next(err);
+        });
+};
+
 
 /* Registration */
 
 const registerUser = (req, res, next) => {
 
     const { username, organization } = req.body;
-    const password = req.hash.toString('hex');
+    const password = req.hash;
 
     new Users({ username, password, organization, createdFrom: 'API' })
         .save()
@@ -64,7 +75,7 @@ const registerResponse = (req, res) => {
 const authenticateUser = (req, res, next) => {
 
     const { username, organization } = req.body;
-    const password = req.hash.toString('hex');
+    const password = req.hash;
 
     Users
         .findOne({ username, password, organization })

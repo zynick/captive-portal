@@ -1,8 +1,7 @@
 'use strict';
 
-const argon2 = require('argon2');
-const log = require('debug')('portal:routes');
-const { ARGON2_SALT_SUFFIX, NODE_ENV } = require('../config.js');
+const log = require('debug')('portal:controllers');
+const { NODE_ENV } = require('../config.js');
 const { version } = require('../package.json');
 
 
@@ -21,23 +20,6 @@ const debug = (req, res, next) => {
 const index = (req, res) => {
     res.json(`ACE-TIDE Captive Portal v${version}`);
 }
-
-const hashPassword = (req, res, next) => {
-    const { username, password } = req.body;
-    argon2
-        .hash(password, new Buffer(username + ARGON2_SALT_SUFFIX), {
-            type: argon2.argon2d,
-            timeCost: 3,
-            memoryCost: 11,
-            parallelism: 1,
-            raw: true
-        })
-        .then(hash => {
-            req.hash = hash;
-            next();
-        })
-        .catch(next);
-};
 
 const badRequest = (req, res, next) => {
     const err = new Error('Bad Request');
@@ -75,7 +57,6 @@ const errorHandlerRender = (err, req, res, next) => {
 module.exports = {
     debug,
     index,
-    hashPassword,
     badRequest,
     notFound,
     errorHandlerJSON,
