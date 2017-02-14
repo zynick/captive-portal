@@ -43,7 +43,7 @@ const errorHandler = (err, doc, next) => {
     err.message = keys[0] ? err.errors[keys[0]].message : err.message;
     err.status = 400;
     next(err);
-});
+};
 
 userSchema.post('save', errorHandler);
 userSchema.post('update', errorHandler);
