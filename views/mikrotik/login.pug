@@ -52,8 +52,8 @@ append script
                     .hash({
                         pass: password,
                         salt: username + '#{ARGON2_SALT_SUFFIX}',
-                        time: 2,
-                        mem: 256,
+                        time: 1,
+                        mem: 64,
                         hashLen: 32,
                         parallelism: 1,
                         type: argon2.ArgonType.Argon2d,
