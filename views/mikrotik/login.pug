@@ -46,8 +46,6 @@ append script
             function hash() {
                 let username = document.loginForm.username.value;
                 let password = document.loginForm.password.value;
-
-                let time1 = Date.now();
                 argon2
                     .hash({
                         pass: password,
@@ -59,24 +57,20 @@ append script
                         type: argon2.ArgonType.Argon2d,
                         distPath: '/js'
                     })
-                    .then(hash => submit(hash, time1))
+                    .then(hash => submit(hash))
                     .catch(e => alert(e.message + e.code))
             }
 
         if query['chap-challenge']
             script(src='/js/md5.js')
             script(type='text/javascript').
-                function submit(hash, time1) {
-                    let time2 = Date.now();
+                function submit(hash) {
                     document.loginForm.password.value = md5('#{query["chap-id"]}' + hash.hashHex + '#{query["chap-challenge"]}');
-                    let timeMD5 = (Date.now() - time2)/1000
-                    let timeArgon = (time2 - time1)/1000
-                    alert(`${timeArgon} | ${timeMD5}`)
                     document.loginForm.submit();
                 }
         else
             script(type='text/javascript').
-                function submit(hash, time1) {
+                function submit(hash) {
                     document.loginForm.password.value = hash.hashHex;
                     document.loginForm.submit();
                 }
