@@ -4,11 +4,11 @@ block content
   if message
     p#message=message
 
-  a(href='#', onClick='submit(#{impressionUrl}); return false;')
+  a(href='#', onClick=`submit('${impressionUrl}'); return false;`)
     img#impression-img(src=impressionImg)
   p
     | Please wait 5 seconds, then click 
-    a(href='#', onClick='submit(#{redirectUrl}); return false;') here
+    a(href='#', onClick=`submit('${redirectUrl}'); return false;`) here
     | &nbsp;to continue surfing the web
 
   form(name='form', method='POST', action=loginUrl)

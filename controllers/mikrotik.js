@@ -85,6 +85,7 @@ const welcomeRender = (req, res, next) => {
   login.guest = login.guest && query.trial === 'yes';
   login.signupUrl = `/mikrotik/signup?${queryString}`;
   login.successUrl = `/mikrotik/success?${queryString}`;
+  login.guestUrl = `/mikrotik/guest?${queryString}`;
 
   res.render('mikrotik/welcome', { isNewUser, query, login, assets });
 };
