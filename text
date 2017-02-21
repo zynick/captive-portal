@@ -1,0 +1,56 @@
+mac = C0:EE:FB:D5:C9:B4
+ip = 192.168.89.254   # remove
+username =            # remove
+link-orig = http://www.tideanalytics.com/
+error = 
+chap-id = \105
+chap-challenge = \323\157\020\355\274\172\335\136\363\262\152\003\354\243\157\377
+link-login-only = http://192.168.89.1/login
+trial = yes
+identity = E4:8D:8C:73:E6:5D
+redirect = login
+
+
+
+
+http://captive-portal-dev.tideanalytics.com/mikrotik/login?
+  nas=$(identity)
+  mac=$(mac)
+  loginUrl=$(link-login-only)
+  redirectUrl=$(link-orig)
+  chapId=$(chap-id)
+  chapChallenge=$(chap-challenge)
+  trial=$(trial)
+  error=$(error)
+
+
+
+
+
+/signup
+  trial (for guest)
+  nas
+  loginUrl
+  mac
+  chapId
+  chapChallenge
+  redirectUrl
+
+
+/success
+  email
+  nas
+  loginUrl
+  mac
+  token
+  chapId
+  chapChallenge
+  redirectUrl
+
+
+
+
+
+
+
+localhost:3000/mikrotik/login?nas=E4:8D:8C:73:E6:5D&mac=C0:EE:FB:D5:C9:B4&loginUrl=http://192.168.89.1/login&redirectUrl=http://www.tideanalytics.com/&chapId=\105&chapChallenge=\323\157\020\355\274\172\335\136\363\262\152\003\354\243\157\377&trial=yes

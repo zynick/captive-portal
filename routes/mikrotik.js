@@ -6,27 +6,26 @@ const mikrotik = require('../controllers/mikrotik.js');
 
 router.use(mikrotik.getNAS);
 
+router.get('/welcome',
+  mikrotik.welcomeCheckNewUser,
+  mikrotik.welcomeRender);
+
 router.get('/signup', mikrotik.signupRender);
-
 router.post('/signup',
-    mikrotik.signupValidation,
-    mikrotik.hashPassword,
-    mikrotik.signupCreateUser,
-    mikrotik.signupActionLog,
-    mikrotik.signupRedirect,
-    mikrotik.signupErrorHandlerRender);
+  mikrotik.signupValidation,
+  mikrotik.signupCreateMAC,
+  mikrotik.signupRedirect,
+  mikrotik.signupErrorHandlerRender);
 
-// http://wiki.mikrotik.com/wiki/HotSpot_external_login_page
-router.get('/login',
-    mikrotik.loginJsonp,
-    mikrotik.getAsset,
-    mikrotik.loginRender
-);
+router.get('/guest',
+  mikrotik.guestValidation,
+  mikrotik.getAds,
+  mikrotik.guestRender);
 
-router.get('/impression',
-    mikrotik.getAsset,
-    mikrotik.impressionRender
-);
-
+router.get('/success',
+  mikrotik.successValidation,
+  mikrotik.successGenerateToken,
+  mikrotik.getAds,
+  mikrotik.successRender);
 
 module.exports = router;

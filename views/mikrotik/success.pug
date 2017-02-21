@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+  if message
+    p#message=message
+
+  a(href='#', onClick='submit(#{impressionUrl}); return false;')
+    img#impression-img(src=impressionImg)
+  p
+    | Please wait 5 seconds, then click 
+    a(href='#', onClick='submit(#{redirectUrl}); return false;') here
+    | &nbsp;to continue surfing the web
+
+  form(name='form', method='POST', action=loginUrl)
+    input(type='hidden', name='username', value=mac)
+    input(type='hidden', name='password', value=token)
+    input(type='hidden', name='dst')
+
+append script
+  if chapChallenge
+    script(src='/js/md5.js')
+    script(type='text/javascript').
+      function submit(redirectUrl) {
+        const form = document.form;
+        const password = form.password.value;
+        form.password.value = md5('#{chapId}'+password+'#{chapChallenge}');
+        form.dst.value = redirectUrl;
+        form.submit();
+      }
+  else
+    script(type='text/javascript').
+      function submit(redirectUrl) {
+        const form = document.form;
+        form.dst.value = redirectUrl;
+        form.submit();
+      }

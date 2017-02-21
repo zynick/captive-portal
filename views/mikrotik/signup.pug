@@ -1,38 +1,32 @@
 extends ../layout
 
 block content
-    p#slogan
-        a(href=assets.url): img#logo(src=assets.logo)
-        =assets.slogan
+  p#slogan
+    a(href=assets.url): img#logo(src=assets.logo)
+    =assets.slogan
 
-    br
+  br
 
-    if data.message
-        p#message=data.message
-    if data.error
-        p#error=data.error
+  if error
+    p#error=error
 
-    if login.email
-        form(name='signupForm', method='POST', onSubmit='spinner(); return true;')
-            .form-group
-                input.form-control(type='text', name='username', value=data.username, placeholder='Email')
-            .form-group
-                input.form-control(type='password', name='password', placeholder='Password')
-            .form-group
-                input.form-control(type='password', name='password2', placeholder='Confirm Password')
-            .form-group
-                input.form-control(type='hidden', name='mac', value=data.mac)
-                input.form-control(type='hidden', name='queryString', value=data.queryString)
-                input.form-control(type='hidden', name='loginUrl', value=data.loginUrl)
-                button.form-control.btn.btn-info
-                    #signup-spinner.spinner(style='display:none')
-                    | SIGN UP
-            .form-group
-                br
-                a(href=data.loginUrl) LOGIN
+  if login.email
+    form(name='form', method='POST', onSubmit='spinner(); return true;')
+      .form-group
+        input.form-control(type='text', name='email', value=data.email, placeholder='Email')
+      .form-group
+        input(type='hidden', name='loginUrl', value=data.loginUrl)
+        input(type='hidden', name='mac', value=data.mac)
+        input(type='hidden', name='nas', value=data.nas)
+        input(type='hidden', name='chapId', value=data.chapId)
+        input(type='hidden', name='chapChallenge', value=data.chapChallenge)
+        input(type='hidden', name='redirectUrl', value=data.redirectUrl)
+        button.form-control.btn.btn-info
+          .spinner(style='display:none')
+          | SIGN UP
 
 append script
-    script(type='text/javascript').
-        function spinner() {
-            document.getElementById('signup-spinner').style.display = '';
-        }
+  script(type='text/javascript').
+    function spinner() {
+      document.getElementById('.spinner').style.display = '';
+    }

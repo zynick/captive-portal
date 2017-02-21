@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  if message
+    p#message=message
+
+  a(href=impressionUrl)
+    img#impression-img(src=impressionImg)
+  p
+    | Please wait 5 seconds, then click 
+    a(href=redirectUrl) here
+    | &nbsp;to continue surfing the web

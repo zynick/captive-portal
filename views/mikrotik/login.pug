@@ -32,7 +32,7 @@ block content
                 br
                 a(href=login.signupUrl) SIGN UP
 
-    if login.guestEnabled
+    if login.guest
         a(href=`${query["link-login-only"]}?username=T-${query["mac"]}`) LOGIN AS GUEST
 
 append script
