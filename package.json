@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "mini": "NODE_ENV=development PORT=80 DEBUG=portal:* node app",
+    "mini": "sudo NODE_ENV=development PORT=80 DEBUG=portal:* node app",
     "dev": "NODE_ENV=development PORT=3000 DEBUG=portal:* node app",
     "start": "NODE_ENV=production PORT=80 DEBUG=portal:error node app"
   },
