@@ -1,16 +1,16 @@
-extends ../layout
+extends ../pagelayout
 
-block content
-  p#slogan
-    a(href=assets.url): img#logo(src=assets.logo)
-    =assets.slogan
+block page-content
+  img.img-logo(src=logo)
 
   br
 
+  //-if message
+    p.message=message
   if error
-    p#error=error
+    p.error=error
 
-  if login.email
+  if isEmailEnabled
     form(name='form', method='POST', onSubmit='spinner(); return true;')
       .form-group
         input.form-control(type='text', name='email', value=data.email, placeholder='Email')

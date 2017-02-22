@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+
+  if message
+    .navbar-fixed-top
+      .message=message
+  if error
+    .navbar-fixed-top
+      .error=error
+
+  img.img-announcement(src=announcement)
+  //-img.img-announcement.visible-xs-block.visible-sm-block(src=announcements.sm)
+  //-img.img-announcement.visible-md-block(src=announcements.md)
+  //-img.img-announcement.visible-lg-block(src=announcements.lg)
+
+
+block footer
+
+  if isGuestEnabled
+    a(href=guestUrl) Login as guest
+    br
+
+  a.btn.btn-primary(href=buttonUrl) CONNECT &amp; VISIT PAGE

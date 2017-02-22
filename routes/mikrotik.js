@@ -4,28 +4,34 @@ const router = require('express').Router();
 const mikrotik = require('../controllers/mikrotik.js');
 
 
+router.use(mikrotik.init);
 router.use(mikrotik.getNAS);
 
-router.get('/welcome',
-  mikrotik.welcomeCheckNewUser,
-  mikrotik.welcomeRender);
+router.get('/connect',
+  mikrotik.connectCheckNewMac,
+  mikrotik.connectCheckGuestEnabled,
+  mikrotik.connectGenerateUrl,
+  mikrotik.connectRender);
 
-router.get('/signup', mikrotik.signupRender);
+router.get('/signup',
+  mikrotik.signupRender);
 router.post('/signup',
-  mikrotik.signupValidation,
-  mikrotik.signupCreateMAC,
+  mikrotik.signupEmailValidation,
+  mikrotik.signupCreateMac,
+  mikrotik.signupActionLog,
   mikrotik.signupRedirect,
-  mikrotik.signupErrorHandlerRender);
+  mikrotik.signupErrorRender);
 
 router.get('/guest',
-  mikrotik.guestValidation,
+  mikrotik.guestEnabledValidation,
   mikrotik.getAds,
   mikrotik.guestRender);
 
 router.get('/success',
-  mikrotik.successValidation,
+  mikrotik.successMacValidation,
   mikrotik.successGenerateToken,
   mikrotik.getAds,
   mikrotik.successRender);
+
 
 module.exports = router;

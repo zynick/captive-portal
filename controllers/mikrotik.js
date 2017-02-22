@@ -3,19 +3,37 @@
 const mongoose = require('mongoose');
 const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
+
 const NAS = mongoose.model('NAS');
-const Users = mongoose.model('Users');
 const MAC = mongoose.model('MAC');
 const Tokens = mongoose.model('Tokens');
 const admanager = require('../lib/admanager.js');
 
 
-// TODO jsonp
-// TODO do action log!
+// TODO jsonp... wtf how for BK
 
+const _admanagerCallbackErrorHandler = (req, next) =>
+  (err, httpRes) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (httpRes.statusCode !== 200) {
+      err = new Error(`Unable to connect to AD Server: ${httpRes.statusMessage}`);
+      err.status = httpRes.statusCode;
+      return next(err);
+    }
+
+    req.admanager = httpRes.body;
+    next();
+  };
+
+const init = (req, res, next) => {
+  req.bag = {};
+  next();
+};
 
 const getNAS = (req, res, next) => {
-
   const id = req.query.nas || req.body.nas;
 
   NAS
@@ -36,31 +54,17 @@ const getNAS = (req, res, next) => {
 };
 
 const getAds = (req, res, next) => {
-
   const { organization, id: nasId } = req.nas;
   const { mac, email } = req.query;
 
   admanager.asset(organization, nasId, mac, email,
-    (err, httpRes) => {
-      if (err) {
-        return next(err);
-      }
-
-      if (httpRes.statusCode !== 200) {
-        err = new Error(`Unable to query content from AD Server: ${httpRes.statusMessage}`);
-        err.status = httpRes.statusCode;
-        return next(err);
-      }
-
-      req.ads = httpRes.body;
-      next();
-    });
+    _admanagerCallbackErrorHandler(req, next));
 };
 
 
-/* Welcome */
+/* Connect */
 
-const welcomeCheckNewUser = (req, res, next) => {
+const connectCheckNewMac = (req, res, next) => {
   const { mac } = req.query;
   const { organization } = req.nas;
 
@@ -69,44 +73,69 @@ const welcomeCheckNewUser = (req, res, next) => {
     .maxTime(10000)
     .exec()
     .then(mac => {
-      req.isNewUser = !mac;
-      // req.mac = mac;
+      req.bag.isNewUser = !mac;
       next();
     })
     .catch(next);
 };
 
-const welcomeRender = (req, res, next) => {
+const connectCheckGuestEnabled = (req, res, next) => {
+  const { login } = req.nas;
+  const { trial } = req.query;
+  req.bag.isGuestEnabled = login.guest && trial === 'yes';
+  next();
+}
 
-  const { isNewUser, query } = req;
-  const { login, assets } = req.nas;
+const connectGenerateUrl = (req, res, next) => {
+  const { query, bag } = req;
   const queryString = querystring.stringify(query);
 
-  login.guest = login.guest && query.trial === 'yes';
-  login.signupUrl = `/mikrotik/signup?${queryString}`;
-  login.successUrl = `/mikrotik/success?${queryString}`;
-  login.guestUrl = `/mikrotik/guest?${queryString}`;
+  const page = bag.isNewUser ? 'signup' : 'success';
+  bag.buttonUrl = `/mikrotik/${page}?${queryString}`;
 
-  res.render('mikrotik/welcome', { isNewUser, query, login, assets });
+  bag.guestUrl = `/mikrotik/guest?${queryString}`;
+  next();
+}
+
+const connectRender = (req, res, next) => {
+  const { logo, announcement, announcements } = req.nas.assets;
+  const { message, error } = req.query;
+  const { isNewUser, isGuestEnabled, buttonUrl, guestUrl } = req.bag;
+
+  // TODO get announcement sm/md/lg file
+
+  res.render('mikrotik/connect', {
+    logo,
+    message,
+    error,
+    announcement,
+    announcements,
+    isGuestEnabled,
+    buttonUrl,
+    guestUrl
+  });
 };
 
 
 /* Signup */
 
 const signupRender = (req, res, next) => {
-  const {
-    query: data,
-    nas: { login, assets }
-  } = req;
-  res.render('mikrotik/signup', { data, login, assets });
+  const { logo } = req.nas.assets;
+  const isEmailEnabled = req.nas.login.email;
+  const data = req.query;
+
+  res.render('mikrotik/signup', {
+    logo,
+    isEmailEnabled,
+    data
+  });
 };
 
-const signupValidation = (req, res, next) => {
-
+const signupEmailValidation = (req, res, next) => {
   const { email } = req.body;
 
   if (!email) {
-    const err = new Error('Please fill in email');
+    const err = new Error('Please fill in email.');
     err.status = 499;
     return next(err);
   }
@@ -114,7 +143,7 @@ const signupValidation = (req, res, next) => {
   next();
 };
 
-const signupCreateMAC = (req, res, next) => {
+const signupCreateMac = (req, res, next) => {
   const { mac, email } = req.body;
   const { organization, id: createdFrom } = req.nas;
 
@@ -124,36 +153,52 @@ const signupCreateMAC = (req, res, next) => {
     .catch(next);
 };
 
+const signupActionLog = (req, res, next) => {
+  const { organization, id: nasId } = req.nas;
+  const { mac } = req.body;
+  const action = 'signup';
+  const payload = { type: 'Captive-Portal' };
+
+  // TODO query user id from db before posting to log
+  admanager.action(organization, nasId, mac, undefined, action, payload,
+    _admanagerCallbackErrorHandler(req, next)
+  );
+};
+
 const signupRedirect = (req, res, next) => {
   const { email, loginUrl, mac, nas, chapId, chapChallenge, redirectUrl } = req.body;
   const message = 'You have signed up successfully.';
-  const data = { email, loginUrl, mac, nas, chapId, chapChallenge, redirectUrl, message };
-  const queryString = querystring.stringify(data);
+  const query = { email, loginUrl, mac, nas, chapId, chapChallenge, redirectUrl, message };
+  const queryString = querystring.stringify(query);
   res.redirect(`/mikrotik/success?${queryString}`);
 };
 
-const signupErrorHandlerRender = (err, req, res, next) => {
-
+const signupErrorRender = (err, req, res, next) => {
   if (err.status !== 499 && err.name !== 'MongooseError' && err.name !== 'ValidationError') {
-    console.log(JSON.stringify(err));
     return next(err);
   }
 
-  error = err.message;
+  const { logo } = req.nas.assets;
+  const error = err.message;
+  const isEmailEnabled = req.nas.login.email;
   const data = req.body;
-  const { login, assets } = req.nas;
-  res.render('mikrotik/signup', { error, data, login, assets });
+
+  res.render('mikrotik/signup', {
+    logo,
+    error,
+    isEmailEnabled,
+    data
+  });
 };
 
 
 /* Guest */
 
-const guestValidation = (req, res, next) => {
+const guestEnabledValidation = (req, res, next) => {
+  const isGuestEnabled = req.nas.login.guest && req.query.trial === 'yes';
 
-  const isGuest = req.nas.login.guest && req.query.trial === 'yes';
-
-  if (!isGuest) {
-    const err = new Error('Guest login not allowed');
+  if (!isGuestEnabled) {
+    const err = new Error('Guest login is not allowed.');
     err.status = 400;
     return next(err);
   }
@@ -162,34 +207,37 @@ const guestValidation = (req, res, next) => {
 };
 
 const guestRender = (req, res, next) => {
+  const { logo } = req.nas.assets;
+  const { message, loginUrl, mac } = req.query;
 
-  const { message, loginUrl, mac, redirectUrl } = req.query;
-
-  let impressionImg, impressionUrl;
-  req.ads.every(asset => {
+  let adsImg, adsUrl;
+  req.admanager.every(asset => {
     if (asset.type !== 'board') {
       return true;
     }
-    impressionImg = asset.img;
-    impressionUrl = asset.url;
+    adsImg = asset.img;
+    adsUrl = asset.url;
     return false;
   });
+  adsUrl = `${loginUrl}?username=T-${mac}&dst=${adsUrl}`;
+
+  let { redirectUrl } = req.query;
+  redirectUrl = `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`;
 
   res.render('mikrotik/guest', {
+    logo,
     message,
-    impressionUrl: `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`,
-    impressionImg,
-    redirectUrl: `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`
+    adsImg,
+    adsUrl,
+    redirectUrl
   });
-
 };
 
 
 
 /* Success */
 
-const successValidation = (req, res, next) => {
-
+const successMacValidation = (req, res, next) => {
   const { organization } = req.nas;
   const { mac } = req.query;
 
@@ -199,7 +247,7 @@ const successValidation = (req, res, next) => {
     .exec()
     .then(doc => {
       if (!doc) {
-        const err = new Error('Invalid NAS or MAC');
+        const err = new Error('Invalid MAC access.');
         err.status = 400;
         return next(err);
       }
@@ -209,7 +257,6 @@ const successValidation = (req, res, next) => {
 };
 
 const successGenerateToken = (req, res, next) => {
-
   const { organization } = req.nas;
   const { mac } = req.query;
   const token = uuidV4().replace(/-/g, '');
@@ -219,24 +266,23 @@ const successGenerateToken = (req, res, next) => {
     .maxTime(10000)
     .exec()
     .then(doc => {
-      req.token = token;
+      req.bag.token = token;
       next();
     })
     .catch(next);
 };
 
 const successRender = (req, res, next) => {
-
   const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
-  const token = req.token;
+  const { token } = req.bag;
 
-  let impressionImg, impressionUrl;
-  req.ads.every(asset => {
+  let adsImg, adsUrl;
+  req.admanager.every(asset => {
     if (asset.type !== 'board') {
       return true;
     }
-    impressionImg = asset.img;
-    impressionUrl = asset.url;
+    adsImg = asset.img;
+    adsUrl = asset.url;
     return false;
   });
 
@@ -247,8 +293,8 @@ const successRender = (req, res, next) => {
     token,
     chapId,
     chapChallenge,
-    impressionUrl,
-    impressionImg,
+    adsUrl,
+    adsImg,
     redirectUrl
   });
 
@@ -256,24 +302,28 @@ const successRender = (req, res, next) => {
 
 
 module.exports = {
+  init,
   getNAS,
   getAds,
 
-  welcomeCheckNewUser,
-  welcomeRender,
+  connectCheckNewMac,
+  connectCheckGuestEnabled,
+  connectGenerateUrl,
+  connectRender,
 
   signupRender,
 
-  signupValidation,
-  signupCreateMAC,
+  signupEmailValidation,
+  signupCreateMac,
+  signupActionLog,
   signupRedirect,
-  signupErrorHandlerRender,
+  signupErrorRender,
 
-  guestValidation,
+  guestEnabledValidation,
   guestRender,
 
   // successActionLog,
-  successValidation,
+  successMacValidation,
   successGenerateToken,
   successRender
 };

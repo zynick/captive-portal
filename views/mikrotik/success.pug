@@ -1,11 +1,24 @@
 extends ../layout
 
 block content
-  if message
-    p#message=message
+  img.img-logo(src=logo)
 
-  a(href='#', onClick=`submit('${impressionUrl}'); return false;`)
-    img#impression-img(src=impressionImg)
+  br
+
+  if message
+    p.message=message
+  //-if error
+    p.error=error
+
+  br
+
+  img.img-impression.visible-xs-block.visible-sm-block(src=adsImg.sm)
+  img.img-impression.visible-md-block(src=adsImg.md)
+  img.img-impression.visible-lg-block(src=adsImg.lg)
+
+  p
+    a(onClick=`submit('${adsUrl}'); return false;`) Click Here to View Ad
+
   p
     | Please wait 5 seconds, then click 
     a(href='#', onClick=`submit('${redirectUrl}'); return false;`) here

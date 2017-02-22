@@ -1,14 +1,24 @@
 doctype html
 html
-    head
-        title= title
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        block css
-            link(rel='stylesheet', href='/css/bootstrap.min.css')
-            link(rel='stylesheet', href='/css/layout.css')
-    body
-        .site-wrapper
-            .site-wrapper-inner
-                .content-wrapper
-                    block content
-        block script
+  head
+    title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    block css
+      link(rel='stylesheet', href='/css/fonts.css')
+      link(rel='stylesheet', href='/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/css/layout.css')
+
+  body
+    .header.navbar-fixed-top
+      block header
+        img(src=logo)
+
+    .content-wrapper
+      .content
+        block content
+
+    .footer.navbar-fixed-bottom
+      block footer
+        //- button.btn.btn-primary CONNECT &amp; VISIT PAGE
+
+    block script

@@ -1,117 +1,182 @@
+
+/**
+ * Defaults
+ */
+
 .debug {
-    border: 1px solid black;
-}
-
-.debugr {
-    border: 1px solid red;
-}
-
-.debugg {
-    border: 1px solid green;
-}
-
-.debugb {
-    border: 1px solid blue;
-}
-
-.debugw {
-    border: 1px solid white;
+  border: 1px solid red;
 }
 
 html,
 body {
-    height: 100%;
-    background-color: #FFF;
+  height: 100%;
+  text-align: center;
+  font-family: 'Metropolis Thin';
+  font-family: 'Metropolis Light';
+  font-family: 'Metropolis Regular';
+  /*letter-spacing: .6px !important;*/
+  /*word-spacing: 1px !important;*/
 }
 
-body {
-    color: #333;
-    text-align: center;
+a.btn,
+input,
+textarea,
+keygen,
+select,
+button {
+  letter-spacing: .6px !important;
+  word-spacing: 1px !important;
 }
+
+
+
+/**
+ * Layouts
+ */
+
+.header img {
+  max-height: 10vh;
+  max-width: 100%;
+}
+
+/* use padding-top + height so the page wont scroll */
+.content-wrapper {
+  padding-top: 10vh;
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+}
+
+.content .navbar-fixed-top {
+  top: 10vh;
+}
+
+.footer {
+  background: rgba(0,0,0,0.5); /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7), rgba(0,0,0,1)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7), rgba(0,0,0,1)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7), rgba(0,0,0,1)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7), rgba(0,0,0,1)); /* Standard syntax */
+}
+
+.footer button,
+.footer a {
+  width: 80vw;
+  margin-bottom: 3vh;
+  height: 6vh;
+  line-height: 6vh;
+  padding: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Messages
+ */
+
+.message {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #060;
+}
+
+.error {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #A00;
+}
+
+
+/**
+ * Forms
+ */
 
 form {
-    margin: auto;
-    max-width: 300px;
-}
-
-.site-wrapper {
-    display: table;
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    /* For at least Firefox */
-}
-
-.site-wrapper-inner {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.content-wrapper {
-    margin: auto;
+  margin: auto;
+  max-width: 300px;
 }
 
 .form-group {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
-#message {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #060;
+
+/**
+ * Images
+ */
+
+/*.img-logo {
+  max-width: 80px;
+  max-height: 80px;
+  margin-right: 5px;
+}*/
+
+.img-announcement {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
-#error {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #900;
+.img-announcement-bak {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  max-width: 95%;
+  max-height: 80vh;
 }
 
-#logo {
-    max-width: 80px;
-    max-height: 80px;
-    margin-right: 5px;
+.img-impression {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  max-width: 95%;
+  max-height: 80vh;
 }
 
-#slogan {
-    /*margin-top: 10px;*/
-    font-size: 1.15em;
-}
 
-#impression-img {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 15px;
-    max-width: 95%;
-    max-height: 80vh;
-}
+/**
+ * Spinner (to be removed)
+ */
 
 .spinner {
-    position: absolute;
-    border: 4px solid transparent;
-    border-top: 4px solid;
-    border-right: 4px solid;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    -webkit-animation: spin 0.7s linear infinite;
-    animation: spin 0.7s linear infinite;
+  position: absolute;
+  border: 4px solid transparent;
+  border-top: 4px solid;
+  border-right: 4px solid;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 0.7s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
