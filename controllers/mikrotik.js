@@ -98,17 +98,14 @@ const connectGenerateUrl = (req, res, next) => {
 }
 
 const connectRender = (req, res, next) => {
-  const { logo, announcement, announcements } = req.nas.assets;
+  const { logo, announcements } = req.nas.assets;
   const { message, error } = req.query;
   const { isNewUser, isGuestEnabled, buttonUrl, guestUrl } = req.bag;
-
-  // TODO get announcement sm/md/lg file
 
   res.render('mikrotik/connect', {
     logo,
     message,
     error,
-    announcement,
     announcements,
     isGuestEnabled,
     buttonUrl,

@@ -15,10 +15,14 @@ html
 
     .content-wrapper
       .content
+        .navbar-fixed-top
+          if error
+            .alert.alert-danger=error
+          else if message
+            .alert.alert-success=message
         block content
 
     .footer.navbar-fixed-bottom
       block footer
-        //- button.btn.btn-primary CONNECT &amp; VISIT PAGE
 
     block script
