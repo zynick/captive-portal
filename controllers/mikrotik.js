@@ -311,39 +311,40 @@ const successRender = (req, res, next) => {
 
   // console.log(`################### ${JSON.stringify(req.admanager,null,2)}`);
   // TODO remove dev only
+  req.admanager.push({
+    type: 'board-sm',
+    img: '../img/impression-sm.jpg'
+  });
+  req.admanager.push({
+    type: 'board-md',
+    img: '../img/impression-md.jpg'
+  });
+  req.admanager.push({
+    type: 'board-lg',
+    img: '../img/impression-lg.jpg'
+  });
+  req.admanager.push({
+    type: 'url',
+    url: 'https://app.tideanalytics.com'
+  });
 
-  // req.admanager.push({
-  //   type: 'board-sm',
-  //   img: '../img/impression.jpg',
-  //   url: 'https://app.tideanalytics.com'
-  // });
-  // req.admanager.push({
-  //   type: 'board-md',
-  //   img: '../img/impression.jpg',
-  //   url: 'https://app.tideanalytics.com'
-  // });
-  // req.admanager.push({
-  //   type: 'board-lg',
-  //   img: '../img/impression.jpg',
-  //   url: 'https://app.tideanalytics.com'
-  // });
-
-  const impressions = {
-    sm: '../img/impression.jpg',
-    md: '../img/impression.jpg',
-    lg: '../img/impression.jpg',
-  };
-  const impressionUrl = 'https://app.tideanalytics.com';
-
-  // let adsImg, adsUrl;
-  // req.admanager.every(asset => {
-  //   if (asset.type !== 'board') {
-  //     return true;
-  //   }
-  //   adsImg = asset.img;
-  //   adsUrl = asset.url;
-  //   return false;
-  // });
+  let impressionImg = {}, impressionUrl;
+  req.admanager.forEach(asset => {
+    switch (asset.type) {
+      case 'board-sm':
+        impressionImg.sm = asset.img;
+        break;
+      case 'board-md':
+        impressionImg.md = asset.img;
+        break;
+      case 'board-lg':
+        impressionImg.lg = asset.img;
+        break;
+      case 'url':
+        impressionUrl = asset.url;
+        break;
+    }
+  });
 
   res.render('mikrotik/success', {
     logo,
@@ -354,12 +355,9 @@ const successRender = (req, res, next) => {
     token,
     chapId,
     chapChallenge,
-    // adsUrl,
-    // adsImg,
 
-    impressions,
+    impressionImg,
     impressionUrl,
-
     redirectUrl
   });
 

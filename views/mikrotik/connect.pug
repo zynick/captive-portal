@@ -9,24 +9,24 @@ append css
       right: 10vw;
     }
 
-    .img-announcement {
+    .img-full-page {
       height: 100%;
       width: 100%;
       object-fit: cover;
     }
 
     @media (max-width: 991px) {
-      .img-announcement {
+      .img-full-page {
         content: url('#{announcements.sm}');
       }
     }
     @media (min-width: 992px) and (max-width: 1199px) {
-      .img-announcement {
+      .img-full-page {
         content: url('#{announcements.md}');
       }
     }
     @media (min-width: 1200px) {
-      .img-announcement {
+      .img-full-page {
         content: url('#{announcements.lg}');
       }
     }
@@ -38,7 +38,7 @@ block content
   else if message
     .alert.alert-success=message
 
-  img.img-announcement
+  img.img-full-page
 
 
 block footer

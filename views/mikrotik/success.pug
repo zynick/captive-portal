@@ -9,26 +9,40 @@ append css
       right: 10vw;
     }
 
-    .img-impression {
+    .img-full-page {
       height: 100%;
       width: 100%;
       object-fit: cover;
     }
 
     @media (max-width: 991px) {
-      .img-impression {
-        content: url('#{impressions.sm}');
+      .img-full-page {
+        content: url('#{impressionImg.sm}');
       }
     }
     @media (min-width: 992px) and (max-width: 1199px) {
-      .img-impression {
-        content: url('#{impressions.md}');
+      .img-full-page {
+        content: url('#{impressionImg.md}');
       }
     }
     @media (min-width: 1200px) {
-      .img-impression {
-        content: url('#{impressions.lg}');
+      .img-full-page {
+        content: url('#{impressionImg.lg}');
       }
+    }
+
+    .link {
+      color: #FFF;
+      line-height: 40px;
+      margin-bottom: 15px;
+    }
+
+    .link a {
+      color: #FFF;
+    }
+
+    #redirect-link {
+      display: none;
     }
 
 
@@ -38,14 +52,17 @@ block content
   else if message
     .alert.alert-success=message
 
-  img.img-impression
+  img.img-full-page
 
 
 block footer
-  //- .shadow
-  p Please wait 3s
-  p: a(href='#', onClick=`submit('${redirectUrl}'); return false;`) Click here to proceed &gt;
-  a.btn.btn-primary.margin-bottom(onClick=`submit('${impressionUrl}'); return false;`) CLICK HERE TO VIEW AD
+  .shadow
+    #redirect-wait.link &nbsp;
+    #redirect-link.link
+      a(href='#', onClick=`submit('${redirectUrl}'); return false;`) Click here to proceed &gt;
+
+    a.btn.btn-primary.margin-bottom(onClick=`submit('${impressionUrl}'); return false;`) CLICK HERE TO VIEW AD
+
   form(name='form', method='POST', action=loginUrl)
     input(type='hidden', name='username', value=mac)
     input(type='hidden', name='password', value=token)
@@ -53,6 +70,8 @@ block footer
 
 
 append script
+  script(src='/js/timer.js')
+
   if chapChallenge
     script(src='/js/md5.js')
     script(type='text/javascript').
@@ -63,6 +82,7 @@ append script
         form.dst.value = redirectUrl;
         form.submit();
       }
+
   else
     script(type='text/javascript').
       function submit(redirectUrl) {
