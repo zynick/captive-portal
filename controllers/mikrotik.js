@@ -1,5 +1,11 @@
 'use strict';
 
+
+
+  throw new Error('obsolete. dont use this file.');
+
+
+
 const mongoose = require('mongoose');
 const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');

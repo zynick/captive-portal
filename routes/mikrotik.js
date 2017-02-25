@@ -1,40 +1,47 @@
 'use strict';
 
 const router = require('express').Router();
-const mikrotik = require('../controllers/mikrotik.js');
+
+const index = require('../controllers/mikrotik/index.js');
+const connect = require('../controllers/mikrotik/connect.js');
+const signup = require('../controllers/mikrotik/signup.js');
+const guest = require('../controllers/mikrotik/guest.js');
+const success = require('../controllers/mikrotik/success.js');
 
 
-router.use(mikrotik.init);
-router.use(mikrotik.getNAS);
+// TODO check action log
 
+router.use(index.init);
+router.use(index.getNAS);
+
+// TODO is it better to make the button to point to connect?
 router.get('/connect',
-  mikrotik.connectCheckNewMac,
-  // mikrotik.connectCheckGuestEnabled,
-  mikrotik.connectGenerateUrl,
-  mikrotik.connectRender);
+  connect.connectCheckNewMac,
+  connect.connectGenerateUrl,
+  connect.connectRender);
 
 router.get('/signup',
-  mikrotik.signupTypeFilter,
-  mikrotik.signupRender);
+  signup.signupTypeFilter,
+  signup.signupRender);
 
 router.post('/signup',
-  mikrotik.signupTypeFilter,
-  mikrotik.signupEmailValidation,
-  mikrotik.signupCreateMac,
-  mikrotik.signupActionLog,
-  mikrotik.signupRedirect,
-  mikrotik.signupErrorRender);
+  signup.signupTypeFilter,
+  signup.signupEmailValidation,
+  signup.signupCreateMac,
+  signup.signupActionLog,
+  signup.signupRedirect,
+  signup.signupErrorRender);
 
 router.get('/guest',
-  mikrotik.guestEnabledValidation,
-  mikrotik.getAds,
-  mikrotik.guestRender);
+  guest.guestEnabledValidation,
+  index.getAds,
+  guest.guestRender);
 
 router.get('/success',
-  mikrotik.successMacValidation,
-  mikrotik.successGenerateToken,
-  mikrotik.getAds,
-  mikrotik.successRender);
+  success.successMacValidation,
+  success.successGenerateToken,
+  index.getAds,
+  success.successRender);
 
 
 module.exports = router;

@@ -49,7 +49,7 @@ block content
 
   if isGuestEnabled
     .form-group
-      button.btn.btn-primary
+      a.btn.btn-primary
         | &nbsp; &nbsp;Sign in as Guest
 
   if isEmailEnabled
@@ -57,7 +57,7 @@ block content
     if isFacebookEnabled || isGoogleEnabled || isGuestEnabled || true
       .separator: span Or
 
-    form(name='form', method='POST', onSubmit='spinner(); return true;')  
+    form(name='form', method='POST')
       if formError
         .form-group
           .form-error=formError
@@ -71,13 +71,4 @@ block content
         input(type='hidden', name='chapId', value=data.chapId)
         input(type='hidden', name='chapChallenge', value=data.chapChallenge)
         input(type='hidden', name='redirectUrl', value=data.redirectUrl)
-      button.btn.btn-primary
-        .spinner(style='display:none')
-        | SIGN UP
-
-
-append script
-  script(type='text/javascript').
-    function spinner() {
-      document.getElementById('.spinner').style.display = '';
-    }
+      button.btn.btn-primary SIGN UP
