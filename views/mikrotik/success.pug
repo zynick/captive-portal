@@ -1,33 +1,56 @@
 extends ../layout
 
+append css
+  style.
+    .alert {
+      position: absolute;
+      margin-top: 20px;
+      left: 10vw;
+      right: 10vw;
+    }
+
+    .img-impression {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 991px) {
+      .img-impression {
+        content: url('#{impressions.sm}');
+      }
+    }
+    @media (min-width: 992px) and (max-width: 1199px) {
+      .img-impression {
+        content: url('#{impressions.md}');
+      }
+    }
+    @media (min-width: 1200px) {
+      .img-impression {
+        content: url('#{impressions.lg}');
+      }
+    }
+
+
 block content
-  img.img-logo(src=logo)
+  if error
+    .alert.alert-danger=error
+  else if message
+    .alert.alert-success=message
 
-  br
+  img.img-impression
 
-  if message
-    p.message=message
-  //-if error
-    p.error=error
 
-  br
-
-  img.img-impression.visible-xs-block.visible-sm-block(src=adsImg.sm)
-  img.img-impression.visible-md-block(src=adsImg.md)
-  img.img-impression.visible-lg-block(src=adsImg.lg)
-
-  p
-    a(onClick=`submit('${adsUrl}'); return false;`) Click Here to View Ad
-
-  p
-    | Please wait 5 seconds, then click 
-    a(href='#', onClick=`submit('${redirectUrl}'); return false;`) here
-    | &nbsp;to continue surfing the web
-
+block footer
+  //- .shadow
+  p Please wait 3s
+  p: a(href='#', onClick=`submit('${redirectUrl}'); return false;`) Click here to proceed &gt;
+  a.btn.btn-primary.margin-bottom(onClick=`submit('${impressionUrl}'); return false;`) CLICK HERE TO VIEW AD
   form(name='form', method='POST', action=loginUrl)
     input(type='hidden', name='username', value=mac)
     input(type='hidden', name='password', value=token)
     input(type='hidden', name='dst')
+
 
 append script
   if chapChallenge

@@ -305,28 +305,61 @@ const successGenerateToken = (req, res, next) => {
 };
 
 const successRender = (req, res, next) => {
+  const { logo } = req.nas.assets;
   const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
   const { token } = req.bag;
 
-  let adsImg, adsUrl;
-  req.admanager.every(asset => {
-    if (asset.type !== 'board') {
-      return true;
-    }
-    adsImg = asset.img;
-    adsUrl = asset.url;
-    return false;
-  });
+  // console.log(`################### ${JSON.stringify(req.admanager,null,2)}`);
+  // TODO remove dev only
+
+  // req.admanager.push({
+  //   type: 'board-sm',
+  //   img: '../img/impression.jpg',
+  //   url: 'https://app.tideanalytics.com'
+  // });
+  // req.admanager.push({
+  //   type: 'board-md',
+  //   img: '../img/impression.jpg',
+  //   url: 'https://app.tideanalytics.com'
+  // });
+  // req.admanager.push({
+  //   type: 'board-lg',
+  //   img: '../img/impression.jpg',
+  //   url: 'https://app.tideanalytics.com'
+  // });
+
+  const impressions = {
+    sm: '../img/impression.jpg',
+    md: '../img/impression.jpg',
+    lg: '../img/impression.jpg',
+  };
+  const impressionUrl = 'https://app.tideanalytics.com';
+
+  // let adsImg, adsUrl;
+  // req.admanager.every(asset => {
+  //   if (asset.type !== 'board') {
+  //     return true;
+  //   }
+  //   adsImg = asset.img;
+  //   adsUrl = asset.url;
+  //   return false;
+  // });
 
   res.render('mikrotik/success', {
+    logo,
+
     message,
     loginUrl,
     mac,
     token,
     chapId,
     chapChallenge,
-    adsUrl,
-    adsImg,
+    // adsUrl,
+    // adsImg,
+
+    impressions,
+    impressionUrl,
+
     redirectUrl
   });
 
