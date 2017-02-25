@@ -2,17 +2,18 @@
 
 const router = require('express').Router();
 
-const index = require('../controllers/mikrotik/index.js');
+const mikrotik = require('../controllers/mikrotik/index.js');
 const connect = require('../controllers/mikrotik/connect.js');
 const signup = require('../controllers/mikrotik/signup.js');
 const guest = require('../controllers/mikrotik/guest.js');
 const success = require('../controllers/mikrotik/success.js');
 
+// TODO test error page
 
 // TODO check action log
 
-router.use(index.init);
-router.use(index.getNAS);
+router.use(mikrotik.init);
+router.use(mikrotik.getNAS);
 
 // TODO is it better to make the button to point to connect?
 router.get('/connect',
@@ -34,13 +35,13 @@ router.post('/signup',
 
 router.get('/guest',
   guest.guestEnabledValidation,
-  index.getAds,
+  mikrotik.getAds,
   guest.guestRender);
 
 router.get('/success',
   success.successMacValidation,
   success.successGenerateToken,
-  index.getAds,
+  mikrotik.getAds,
   success.successRender);
 
 

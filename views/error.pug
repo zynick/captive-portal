@@ -1,7 +1,22 @@
 extends layout
 
+append css
+  style.
+    .header {
+      background-color: #FAF6F7;
+    }
+
+
 block content
-    h1 Error #{error.status}
-    p= error.message
-    if error.stack
-        pre.text-left= error.stack
+
+  br
+
+  h1 Error #{error.status}
+
+  div= error.message
+
+  if error.stack
+    br
+    br
+    div.text-left Debug Stack:
+    pre.text-left= error.stack

@@ -47,7 +47,6 @@ const successRender = (req, res, next) => {
   const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
   const { token } = req.bag;
 
-  // console.log(`################### ${JSON.stringify(req.admanager,null,2)}`);
   // TODO remove dev only
   req.admanager.push({
     type: 'board-sm',

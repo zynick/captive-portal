@@ -24,23 +24,24 @@ const _admanagerCallbackErrorHandler = (req, next) =>
   };
 
 const signupTypeFilter = (req, res, next) => {
-  // TODO test error page
-  // const err = new Error('test');
-  // err.status = 400;
-  // return next(err);
 
   const { bag } = req;
   const {
     facebook = false,
-      google = false,
-      guest = false,
-      email = false
+    google = false,
+    guest = false,
+    email = false
   } = req.nas.login;
 
   bag.isFacebookEnabled = facebook;
   bag.isGoogleEnabled = google;
   bag.isGuestEnabled = guest && req.query.trial === 'yes';
   bag.isEmailEnabled = email;
+
+  if (bag.isGuestEnabled) {
+    const queryString = querystring.stringify(req.query);
+    bag.guestUrl = `guest?${queryString}`;
+  }
 
   next();
 };
@@ -51,6 +52,7 @@ const signupRender = (req, res, next) => {
     isFacebookEnabled,
     isGoogleEnabled,
     isGuestEnabled,
+    guestUrl,
     isEmailEnabled
   } = req.bag;
   const data = req.query;
@@ -60,6 +62,7 @@ const signupRender = (req, res, next) => {
     isFacebookEnabled,
     isGoogleEnabled,
     isGuestEnabled,
+    guestUrl,
     isEmailEnabled,
     data
   });
@@ -116,6 +119,7 @@ const signupErrorRender = (err, req, res, next) => {
     isFacebookEnabled,
     isGoogleEnabled,
     isGuestEnabled,
+    guestUrl,
     isEmailEnabled
   } = req.bag;
   const formError = err.message;
@@ -127,6 +131,7 @@ const signupErrorRender = (err, req, res, next) => {
     isFacebookEnabled,
     isGoogleEnabled,
     isGuestEnabled,
+    guestUrl,
     isEmailEnabled,
     data
   });
