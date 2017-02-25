@@ -19,6 +19,7 @@ const macSchema = new Schema({
     },
 
     email: String,
+    mobile: String,
 
     createdFrom: String,    // created from which nasId or API
     created: {

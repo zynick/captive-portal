@@ -25,7 +25,9 @@ const nasSchema = new Schema({
       type: Boolean,
       required: 'Login is required.'
     },
-    guest: Boolean
+    guest: Boolean,
+    facebook: Boolean,
+    google: Boolean
   },
 
   assets: {

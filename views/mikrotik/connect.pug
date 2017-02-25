@@ -2,6 +2,19 @@ extends ../layout
 
 append css
   style.
+    .alert {
+      position: absolute;
+      margin-top: 20px;
+      left: 10vw;
+      right: 10vw;
+    }
+
+    .img-announcement {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
     @media (max-width: 991px) {
       .img-announcement {
         content: url('#{announcements.sm}');
@@ -18,8 +31,16 @@ append css
       }
     }
 
+
 block content
+  if error
+    .alert.alert-danger=error
+  else if message
+    .alert.alert-success=message
+
   img.img-announcement
 
+
 block footer
-  a.btn.btn-primary(href=buttonUrl) CONNECT
+  a.btn.btn-primary.margin-bottom(href=buttonUrl) CONNECT
+  //- .shadow

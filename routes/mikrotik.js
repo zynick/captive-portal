@@ -9,13 +9,16 @@ router.use(mikrotik.getNAS);
 
 router.get('/connect',
   mikrotik.connectCheckNewMac,
-  mikrotik.connectCheckGuestEnabled,
+  // mikrotik.connectCheckGuestEnabled,
   mikrotik.connectGenerateUrl,
   mikrotik.connectRender);
 
 router.get('/signup',
+  mikrotik.signupTypeFilter,
   mikrotik.signupRender);
+
 router.post('/signup',
+  mikrotik.signupTypeFilter,
   mikrotik.signupEmailValidation,
   mikrotik.signupCreateMac,
   mikrotik.signupActionLog,

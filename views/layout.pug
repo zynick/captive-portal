@@ -9,18 +9,12 @@ html
       link(rel='stylesheet', href='/css/layout.css')
 
   body
-    .header.navbar-fixed-top
+    .header.navbar
       block header
         img(src=logo)
 
-    .content-wrapper
-      .content
-        .navbar-fixed-top
-          if error
-            .alert.alert-danger=error
-          else if message
-            .alert.alert-success=message
-        block content
+    .content
+      block content
 
     .footer.navbar-fixed-bottom
       block footer

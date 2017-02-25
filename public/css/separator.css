@@ -1,0 +1,38 @@
+/**
+ * Separator
+ */
+
+.separator {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.separator > span {
+  position: relative;
+  display: inline-block;
+}
+
+.separator > span:before,
+.separator > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 100vw;
+  height: 1px;
+  background: red;
+  background: #DDDDDD;
+}
+
+.separator > span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.separator > span:after {
+  left: 100%;
+  margin-left: 15px;
+}
