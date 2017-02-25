@@ -17,27 +17,35 @@ const guestEnabledValidation = (req, res, next) => {
 
 const guestRender = (req, res, next) => {
   const { logo } = req.nas.assets;
-  const { message, loginUrl, mac } = req.query;
+  const { loginUrl, mac } = req.query;
 
-  let adsImg, adsUrl;
-  req.admanager.every(asset => {
-    if (asset.type !== 'board') {
-      return true;
+  let impressionImg = {}, impressionUrl;
+  req.admanager.forEach(asset => {
+    switch (asset.type) {
+      case 'board-sm':
+        impressionImg.sm = asset.img;
+        break;
+      case 'board-md':
+        impressionImg.md = asset.img;
+        break;
+      case 'board-lg':
+        impressionImg.lg = asset.img;
+        break;
+      case 'url':
+        impressionUrl = asset.url;
+        break;
     }
-    adsImg = asset.img;
-    adsUrl = asset.url;
-    return false;
   });
-  adsUrl = `${loginUrl}?username=T-${mac}&dst=${adsUrl}`;
+  impressionUrl = `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`;
 
   let { redirectUrl } = req.query;
   redirectUrl = `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`;
 
   res.render('mikrotik/guest', {
     logo,
-    message,
-    adsImg,
-    adsUrl,
+
+    impressionImg,
+    impressionUrl,
     redirectUrl
   });
 };

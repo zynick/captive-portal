@@ -47,24 +47,6 @@ const successRender = (req, res, next) => {
   const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
   const { token } = req.bag;
 
-  // TODO remove dev only
-  req.admanager.push({
-    type: 'board-sm',
-    img: '../img/impression-sm.jpg'
-  });
-  req.admanager.push({
-    type: 'board-md',
-    img: '../img/impression-md.jpg'
-  });
-  req.admanager.push({
-    type: 'board-lg',
-    img: '../img/impression-lg.jpg'
-  });
-  req.admanager.push({
-    type: 'url',
-    url: 'https://app.tideanalytics.com'
-  });
-
   let impressionImg = {}, impressionUrl;
   req.admanager.forEach(asset => {
     switch (asset.type) {

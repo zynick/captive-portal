@@ -8,9 +8,8 @@ const signup = require('../controllers/mikrotik/signup.js');
 const guest = require('../controllers/mikrotik/guest.js');
 const success = require('../controllers/mikrotik/success.js');
 
-// TODO test error page
 
-// TODO check action log
+// TODO check where to put in action log?
 
 router.use(mikrotik.init);
 router.use(mikrotik.getNAS);

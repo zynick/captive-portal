@@ -1,25 +1,45 @@
 extends ../layout
 
+append css
+  style.
+    @media (max-width: 991px) {
+      .img-full-page {
+        content: url('#{impressionImg.sm}');
+      }
+    }
+    @media (min-width: 992px) and (max-width: 1199px) {
+      .img-full-page {
+        content: url('#{impressionImg.md}');
+      }
+    }
+    @media (min-width: 1200px) {
+      .img-full-page {
+        content: url('#{impressionImg.lg}');
+      }
+    }
+
+    #redirect-link {
+      display: none;
+    }
+
+
 block content
-  img.img-logo(src=logo)
-
-  br
-
-  if message
-    p.message=message
   //-if error
-    p.error=error
+    .alert.alert-danger=error
+  //-else if message
+    .alert.alert-success=message
 
-  br
+  img.img-full-page
 
-  img.img-impression.visible-xs-block.visible-sm-block(src=adsImg.sm)
-  img.img-impression.visible-md-block(src=adsImg.md)
-  img.img-impression.visible-lg-block(src=adsImg.lg)
 
-  p
-    a(href=adsUrl) Click Here to View Ad
+block footer
+  .shadow
+    #redirect-wait.link &nbsp;
+    #redirect-link.link
+      a(href=redirectUrl) Click here to proceed &gt;
 
-  p
-    | Please wait 5 seconds, then click 
-    a(href=redirectUrl) here
-    | &nbsp;to continue surfing the web
+    a.btn.btn-primary.margin-bottom(href=impressionUrl) CLICK HERE TO VIEW AD
+
+
+append script
+  script(src='/js/timer.js')

@@ -2,19 +2,6 @@ extends ../layout
 
 append css
   style.
-    .alert {
-      position: absolute;
-      margin-top: 20px;
-      left: 10vw;
-      right: 10vw;
-    }
-
-    .img-full-page {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-
     @media (max-width: 991px) {
       .img-full-page {
         content: url('#{impressionImg.sm}');
@@ -31,25 +18,15 @@ append css
       }
     }
 
-    .link {
-      color: #FFF;
-      line-height: 40px;
-      margin-bottom: 15px;
-    }
-
-    .link a {
-      color: #FFF;
-    }
-
     #redirect-link {
       display: none;
     }
 
 
 block content
-  if error
+  //-if error
     .alert.alert-danger=error
-  else if message
+  if message
     .alert.alert-success=message
 
   img.img-full-page

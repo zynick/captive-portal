@@ -34,13 +34,12 @@ const connectGenerateUrl = (req, res, next) => {
 
 const connectRender = (req, res, next) => {
   const { logo, announcements } = req.nas.assets;
-  const { error, message } = req.query;
+  const { error } = req.query;
   const { buttonUrl } = req.bag;
 
   res.render('mikrotik/connect', {
     logo,
     error,
-    message,
     announcements,
     buttonUrl
   });
