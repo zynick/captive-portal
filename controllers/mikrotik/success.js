@@ -7,7 +7,23 @@ const MAC = mongoose.model('MAC');
 const Tokens = mongoose.model('Tokens');
 
 
-const successMacValidation = (req, res, next) => {
+const _admanagerCallbackErrorHandler = (req, next) =>
+  (err, httpRes) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (httpRes.statusCode !== 200) {
+      err = new Error(`Unable to connect to AD Server: ${httpRes.statusMessage}`);
+      err.status = httpRes.statusCode;
+      return next(err);
+    }
+
+    req.admanager = httpRes.body;
+    next();
+  };
+
+const macValidation = (req, res, next) => {
   const { organization } = req.nas;
   const { mac } = req.query;
 
@@ -26,7 +42,7 @@ const successMacValidation = (req, res, next) => {
     .catch(next);
 };
 
-const successGenerateToken = (req, res, next) => {
+const generateToken = (req, res, next) => {
   const { organization } = req.nas;
   const { mac } = req.query;
   const token = uuidV4().replace(/-/g, '');
@@ -42,7 +58,18 @@ const successGenerateToken = (req, res, next) => {
     .catch(next);
 };
 
-const successRender = (req, res, next) => {
+const actionLog = (req, res, next) => {
+  const { organization, id: nasId } = req.nas;
+  const { mac } = req.query;
+  const action = 'page-success';
+  const payload = { source: 'Captive-Portal' };
+
+  admanager.action(organization, nasId, mac, undefined, action, payload,
+    _admanagerCallbackErrorHandler(req, next)
+  );
+};
+
+const render = (req, res, next) => {
   const { logo } = req.nas.assets;
   const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
   const { token } = req.bag;
@@ -84,7 +111,8 @@ const successRender = (req, res, next) => {
 
 
 module.exports = {
-  successMacValidation,
-  successGenerateToken,
-  successRender
+  macValidation,
+  generateToken,
+  actionLog,
+  render
 };

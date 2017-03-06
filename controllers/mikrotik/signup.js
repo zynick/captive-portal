@@ -23,7 +23,7 @@ const _admanagerCallbackErrorHandler = (req, next) =>
     next();
   };
 
-const signupTypeFilter = (req, res, next) => {
+const typeFilter = (req, res, next) => {
 
   const { bag } = req;
   const {
@@ -46,7 +46,18 @@ const signupTypeFilter = (req, res, next) => {
   next();
 };
 
-const signupRender = (req, res, next) => {
+const actionLogGet = (req, res, next) => {
+  const { organization, id: nasId } = req.nas;
+  const { mac } = req.query;
+  const action = 'page-signup';
+  const payload = { source: 'Captive-Portal' };
+
+  admanager.action(organization, nasId, mac, undefined, action, payload,
+    _admanagerCallbackErrorHandler(req, next)
+  );
+};
+
+const render = (req, res, next) => {
   const { logo } = req.nas.assets;
   const {
     isFacebookEnabled,
@@ -68,7 +79,7 @@ const signupRender = (req, res, next) => {
   });
 };
 
-const signupEmailValidation = (req, res, next) => {
+const emailValidation = (req, res, next) => {
   const { email, mobile } = req.body;
 
   if (!email || !mobile) {
@@ -80,7 +91,7 @@ const signupEmailValidation = (req, res, next) => {
   next();
 };
 
-const signupCreateMac = (req, res, next) => {
+const createMac = (req, res, next) => {
   const { mac, email, mobile } = req.body;
   const { organization, id: createdFrom } = req.nas;
 
@@ -90,18 +101,18 @@ const signupCreateMac = (req, res, next) => {
     .catch(next);
 };
 
-const signupActionLog = (req, res, next) => {
+const actionLogPost = (req, res, next) => {
   const { organization, id: nasId } = req.nas;
   const { mac, email, mobile } = req.body;
-  const action = 'signup';
-  const payload = { type: 'Captive-Portal', email, mobile };
+  const action = 'user-signup';
+  const payload = { source: 'Captive-Portal', email, mobile };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
     _admanagerCallbackErrorHandler(req, next)
   );
 };
 
-const signupRedirect = (req, res, next) => {
+const redirect = (req, res, next) => {
   const { loginUrl, mac, nas, chapId, chapChallenge, redirectUrl } = req.body;
   const message = 'You have signed up successfully.';
   const query = { loginUrl, mac, nas, chapId, chapChallenge, redirectUrl, message };
@@ -109,7 +120,7 @@ const signupRedirect = (req, res, next) => {
   res.redirect(`/mikrotik/success?${queryString}`);
 };
 
-const signupErrorRender = (err, req, res, next) => {
+const errorRender = (err, req, res, next) => {
   if (err.status !== 499 && err.name !== 'MongooseError' && err.name !== 'ValidationError') {
     return next(err);
   }
@@ -139,12 +150,13 @@ const signupErrorRender = (err, req, res, next) => {
 
 
 module.exports = {
-  signupTypeFilter,
-  signupRender,
+  typeFilter,
+  actionLogGet,
+  render,
 
-  signupEmailValidation,
-  signupCreateMac,
-  signupActionLog,
-  signupRedirect,
-  signupErrorRender
+  emailValidation,
+  createMac,
+  actionLogPost,
+  redirect,
+  errorRender
 };

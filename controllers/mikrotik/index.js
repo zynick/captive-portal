@@ -54,31 +54,8 @@ const getAds = (req, res, next) => {
   const { mac, email } = req.query;
 
   admanager.asset(organization, nasId, mac, email,
-    _admanagerCallbackErrorHandler(req, next));
-
-  // TODO dev only, remove in prod
-  // admanager.asset(organization, nasId, mac, email,
-  //   _admanagerCallbackErrorHandler(req, (err) => {
-  //     if (err) { return next(err); }
-
-  //     req.admanager.push({
-  //       type: 'board-sm',
-  //       img: '../img/impression-sm.jpg'
-  //     });
-  //     req.admanager.push({
-  //       type: 'board-md',
-  //       img: '../img/impression-md.jpg'
-  //     });
-  //     req.admanager.push({
-  //       type: 'board-lg',
-  //       img: '../img/impression-lg.jpg'
-  //     });
-  //     req.admanager.push({
-  //       type: 'url',
-  //       url: 'https://app.tideanalytics.com'
-  //     });
-  //     next();
-  //   }));
+    _admanagerCallbackErrorHandler(req, next)
+  );
 };
 
 
