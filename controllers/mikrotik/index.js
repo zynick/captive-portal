@@ -8,7 +8,7 @@ const admanager = require('../../lib/admanager.js');
 
 // TODO jsonp... wtf how for BK
 
-const _admanagerCallbackErrorHandler = (req, next) =>
+const _assetCallbackErrorHandler = (req, next) =>
   (err, httpRes) => {
     if (err) {
       return next(err);
@@ -20,7 +20,7 @@ const _admanagerCallbackErrorHandler = (req, next) =>
       return next(err);
     }
 
-    req.admanager = httpRes.body;
+    req.ads = httpRes.body;
     next();
   };
 
@@ -54,7 +54,7 @@ const getAds = (req, res, next) => {
   const { mac, email } = req.query;
 
   admanager.asset(organization, nasId, mac, email,
-    _admanagerCallbackErrorHandler(req, next)
+    _assetCallbackErrorHandler(req, next)
   );
 };
 

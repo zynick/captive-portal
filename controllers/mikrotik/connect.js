@@ -8,7 +8,7 @@ const admanager = require('../../lib/admanager.js');
 
 
 // TODO refactor this code. put it somewhere that other controllers can share the code.
-const _admanagerCallbackErrorHandler = (req, next) =>
+const _actionCallbackErrorHandler = (req, next) =>
   (err, httpRes) => {
     if (err) {
       return next(err);
@@ -20,7 +20,6 @@ const _admanagerCallbackErrorHandler = (req, next) =>
       return next(err);
     }
 
-    req.admanager = httpRes.body;
     next();
   };
 
@@ -57,7 +56,7 @@ const actionLog = (req, res, next) => {
   const payload = { source: 'Captive-Portal' };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _admanagerCallbackErrorHandler(req, next)
+    _actionCallbackErrorHandler(req, next)
   );
 };
 

@@ -8,7 +8,7 @@ const Tokens = mongoose.model('Tokens');
 const admanager = require('../../lib/admanager.js');
 
 
-const _admanagerCallbackErrorHandler = (req, next) =>
+const _actionCallbackErrorHandler = (req, next) =>
   (err, httpRes) => {
     if (err) {
       return next(err);
@@ -20,7 +20,6 @@ const _admanagerCallbackErrorHandler = (req, next) =>
       return next(err);
     }
 
-    req.admanager = httpRes.body;
     next();
   };
 
@@ -66,7 +65,7 @@ const actionLog = (req, res, next) => {
   const payload = { source: 'Captive-Portal' };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _admanagerCallbackErrorHandler(req, next)
+    _actionCallbackErrorHandler(req, next)
   );
 };
 
@@ -76,7 +75,7 @@ const render = (req, res, next) => {
   const { token } = req.bag;
 
   let impressionImg = {}, impressionUrl;
-  req.admanager.forEach(asset => {
+  req.ads.forEach(asset => {
     switch (asset.type) {
       case 'board-sm':
         impressionImg.sm = asset.img;

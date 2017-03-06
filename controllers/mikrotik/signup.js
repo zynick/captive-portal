@@ -7,7 +7,7 @@ const MAC = mongoose.model('MAC');
 const admanager = require('../../lib/admanager.js');
 
 
-const _admanagerCallbackErrorHandler = (req, next) =>
+const _actionCallbackErrorHandler = (req, next) =>
   (err, httpRes) => {
     if (err) {
       return next(err);
@@ -19,7 +19,6 @@ const _admanagerCallbackErrorHandler = (req, next) =>
       return next(err);
     }
 
-    req.admanager = httpRes.body;
     next();
   };
 
@@ -53,7 +52,7 @@ const actionLogGet = (req, res, next) => {
   const payload = { source: 'Captive-Portal' };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _admanagerCallbackErrorHandler(req, next)
+    _actionCallbackErrorHandler(req, next)
   );
 };
 
@@ -108,7 +107,7 @@ const actionLogPost = (req, res, next) => {
   const payload = { source: 'Captive-Portal', email, mobile };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _admanagerCallbackErrorHandler(req, next)
+    _actionCallbackErrorHandler(req, next)
   );
 };
 
