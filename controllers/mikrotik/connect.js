@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const querystring = require('querystring');
 const log = require('debug')('portal:mikrotik');
 const MAC = mongoose.model('MAC');
+const admanager = require('../../lib/admanager.js');
 
 
 // TODO refactor this code. put it somewhere that other controllers can share the code.

@@ -1,6 +1,7 @@
 'use strict';
 
 const log = require('debug')('portal:mikrotik');
+const admanager = require('../../lib/admanager.js');
 
 
 const _admanagerCallbackErrorHandler = (req, next) =>
