@@ -2,9 +2,9 @@
 
 const mongoose = require('mongoose');
 const querystring = require('querystring');
-const log = require('debug')('portal:mikrotik');
+const log = require('debug')('portal:connect');
 const MAC = mongoose.model('MAC');
-const admanager = require('../../lib/admanager.js');
+const admanager = require('../lib/admanager.js');
 
 
 // TODO refactor this code. put it somewhere that other controllers can share the code.
@@ -43,9 +43,8 @@ const generateUrl = (req, res, next) => {
   const queryString = querystring.stringify(query);
 
   const page = bag.isNewUser ? 'signup' : 'success';
-  bag.buttonUrl = `/mikrotik/${page}?${queryString}`;
+  bag.buttonUrl = `/${page}?${queryString}`;
 
-  // bag.guestUrl = `/mikrotik/guest?${queryString}`;
   next();
 };
 
@@ -65,7 +64,7 @@ const render = (req, res, next) => {
   const { error } = req.query;
   const { buttonUrl } = req.bag;
 
-  res.render('mikrotik/connect', {
+  res.render('connect', {
     logo,
     error,
     announcements,

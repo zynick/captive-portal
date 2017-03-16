@@ -1,7 +1,7 @@
 'use strict';
 
-const log = require('debug')('portal:mikrotik');
-const admanager = require('../../lib/admanager.js');
+const log = require('debug')('portal:guest');
+const admanager = require('../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -42,9 +42,7 @@ const actionLog = (req, res, next) => {
   );
 };
 
-const render = (req, res, next) => {
-  const { logo } = req.nas.assets;
-  const { loginUrl, mac } = req.query;
+const processAds = (req, res, next) => {
 
   let impressionImg = {}, impressionUrl;
   req.ads.forEach(asset => {
@@ -63,14 +61,19 @@ const render = (req, res, next) => {
         break;
     }
   });
-  impressionUrl = `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`;
 
-  let { redirectUrl } = req.query;
-  redirectUrl = `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`;
+  req.bag.impressionImg = impressionImg;
+  req.bag.impressionUrl = impressionUrl;
 
-  res.render('mikrotik/guest', {
+  next();
+}
+
+const render = (req, res, next) => {
+  const { logo } = req.nas.assets;
+  const { impressionImg, impressionUrl, redirectUrl } = req.bag;
+
+  res.render('guest', {
     logo,
-
     impressionImg,
     impressionUrl,
     redirectUrl
@@ -81,5 +84,6 @@ const render = (req, res, next) => {
 module.exports = {
   enabledValidation,
   actionLog,
+  processAds,
   render
 };

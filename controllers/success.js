@@ -2,10 +2,10 @@
 
 const mongoose = require('mongoose');
 const uuidV4 = require('uuid/v4');
-const log = require('debug')('portal:mikrotik');
+const log = require('debug')('portal:success');
 const MAC = mongoose.model('MAC');
 const Tokens = mongoose.model('Tokens');
-const admanager = require('../../lib/admanager.js');
+const admanager = require('../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -92,7 +92,7 @@ const render = (req, res, next) => {
     }
   });
 
-  res.render('mikrotik/success', {
+  res.render('success', {
     logo,
 
     message,

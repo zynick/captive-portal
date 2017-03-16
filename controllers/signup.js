@@ -2,9 +2,9 @@
 
 const mongoose = require('mongoose');
 const querystring = require('querystring');
-const log = require('debug')('portal:mikrotik');
+const log = require('debug')('portal:signup');
 const MAC = mongoose.model('MAC');
-const admanager = require('../../lib/admanager.js');
+const admanager = require('../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -67,7 +67,7 @@ const render = (req, res, next) => {
   } = req.bag;
   const data = req.query;
 
-  res.render('mikrotik/signup', {
+  res.render('signup', {
     logo,
     isFacebookEnabled,
     isGoogleEnabled,
@@ -116,7 +116,7 @@ const redirect = (req, res, next) => {
   const message = 'You have signed up successfully.';
   const query = { loginUrl, mac, nas, chapId, chapChallenge, redirectUrl, message };
   const queryString = querystring.stringify(query);
-  res.redirect(`/mikrotik/success?${queryString}`);
+  res.redirect(`/success?${queryString}`);
 };
 
 const errorRender = (err, req, res, next) => {
@@ -135,7 +135,7 @@ const errorRender = (err, req, res, next) => {
   const formError = err.message;
   const data = req.body;
 
-  res.render('mikrotik/signup', {
+  res.render('signup', {
     logo,
     formError,
     isFacebookEnabled,

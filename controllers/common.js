@@ -1,9 +1,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const log = require('debug')('portal:mikrotik');
+const log = require('debug')('portal:common');
 const NAS = mongoose.model('NAS');
-const admanager = require('../../lib/admanager.js');
+const admanager = require('../lib/admanager.js');
 
 
 // TODO jsonp... wtf how for BK
@@ -23,6 +23,7 @@ const _assetCallbackErrorHandler = (req, next) =>
     req.ads = httpRes.body;
     next();
   };
+
 
 const init = (req, res, next) => {
   req.bag = {};
