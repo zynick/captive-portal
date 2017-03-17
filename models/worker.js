@@ -11,4 +11,4 @@ const workerSchema = new Schema({
 
 }, {collection: 'worker'});
 
-mongoose.model('worker', workerSchema);
+mongoose.model('Worker', workerSchema);
