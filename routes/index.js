@@ -2,16 +2,17 @@
 
 const router = require('express').Router();
 const { NODE_ENV } = require('../config.js');
+
+// TODO refactor this
 const controller = require('../controllers/index.js');
-
-// const cambium = require('../controllers/cambium.js');
-const ap = require('../controllers/ap/index.js');
-
 const common = require('../controllers/common.js');
 const connect = require('../controllers/connect.js');
 const signup = require('../controllers/signup.js');
 const guest = require('../controllers/guest.js');
 const success = require('../controllers/success.js');
+
+const ap = require('../controllers/ap/index.js');
+const cambium = require('../controllers/ap/cambium.js');
 
 
 if (NODE_ENV !== 'production') {
@@ -21,7 +22,7 @@ if (NODE_ENV !== 'production') {
 router.get('/', controller.index);
 router.use('/api', require('./api'));
 
-// router.use('/cambium', parser.cambium, ...);
+router.get('/cambium', cambium.parse);
 
 router.get('/connect',
   common.init,
