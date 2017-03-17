@@ -15,6 +15,10 @@ const addWorker = (req, res) => {
 
 };
 
+const pong = (req, res) => {
+  res.jsonp('pong');
+};
+
 module.exports = {
-  addWorker
+  addWorker, pong
 };
