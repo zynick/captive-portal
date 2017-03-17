@@ -2,15 +2,38 @@
 
 const Worker = require('mongoose').model('Worker');
 
-const addWorker = (req, res) => {
+const addWorker = (req, res, next) => {
 
   const {type, identifier} = req.body;
 
   new Worker({type, identifier})
-    .save(() => {
-      setTimeout(() => {
-        res.status(200).end();
-      }, 1000);
+    .save((err) => {
+      if (err) { return next(err); }
+      setTimeout(() => { res.status(200).end(); }, 1000);
+    });
+
+};
+
+const listWorkers = (req, res, next) => {
+
+  Worker
+    .find()
+    .exec((err, workers) => {
+      if (err) { return next(err); }
+      return res.jsonp(workers);
+    });
+
+};
+
+const getEarliestActivated = (req, res, next) => {
+
+  Worker
+    .find()
+    .sort('lastActivated')
+    .limit(1)
+    .exec( (err, workers) => {
+      if (err) { return next(err); }
+      return res.jsonp(workers[0]);
     });
 
 };
@@ -20,5 +43,5 @@ const pong = (req, res) => {
 };
 
 module.exports = {
-  addWorker, pong
+  addWorker, listWorkers, getEarliestActivated, pong
 };
