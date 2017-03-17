@@ -9,6 +9,6 @@ const workerSchema = new Schema({
   lastActivated: {type: Date, index: true, default: Date.now}
   identifier:    String,
 
-}, {collection: 'worker'});
+});
 
 mongoose.model('Worker', workerSchema);
