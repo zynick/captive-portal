@@ -5,7 +5,10 @@ append css
     .header {
       background-color: #FAF6F7;
     }
-
+    .padded {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
 
 block content
 
@@ -18,5 +21,6 @@ block content
   if error.stack
     br
     br
-    div.text-left Debug Stack:
-    pre.text-left= error.stack
+    div.padded
+      div.text-left Debug Stack:
+      pre.text-left= error.stack
