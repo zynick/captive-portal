@@ -6,7 +6,7 @@ const Schema   = mongoose.Schema;
 const workerSchema = new Schema({
 
   type:          {type: String, index: true},
-  lastActivated: {type: Date, index: true, default: Date.now}
+  lastActivated: {type: Date, index: true, default: Date.now},
   identifier:    String,
 
 });
