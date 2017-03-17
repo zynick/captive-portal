@@ -21,6 +21,7 @@ if (NODE_ENV !== 'production') {
 
 router.get('/', controller.index);
 router.use('/api', require('./api'));
+router.use('/worker', require('./worker'));
 
 router.get('/cambium', cambium.parse);
 

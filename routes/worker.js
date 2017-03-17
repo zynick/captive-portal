@@ -5,9 +5,8 @@ const controller = require('../controllers/index.js');
 const worker     = require('../controllers/worker.js');
 
 
-router.use(api.tokenValidation);
-
-router.post('/add', api.addWorker);
+router.get('/ping', worker.pong());
+router.post('/add', worker.addWorker);
 
 router.use(controller.badRequest);
 router.use(controller.errorHandlerJSON);
