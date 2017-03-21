@@ -19,6 +19,10 @@ const generateUrl = (req, res, next) => {
   next();
 };
 
+const generateGuestForm = (req, res, next) => {
+  next();
+};
+
 const generateSuccessForm = (req, res, next) => {
 
   const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;

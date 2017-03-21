@@ -4,33 +4,28 @@ const mikrotik = require('./mikrotik.js');
 const cambium = require('./cambium.js');
 
 
-const generateUrl = (req, res, next) => {
-  const { type } = req.query;
+const _getFunction = (fn) => {
+  return (req, res, next) => {
+    const { type } = req.query;
 
-  if (type === 'mikrotik') {
-    mikrotik.generateUrl(req, res, next);
-  } else if (type === 'cambium') {
-    cambium.generateUrl(req, res, next);
-  } else {
-    const err = new Error('invalid type parameter');
-    next(err);
-  }
-};
+    if (type === 'mikrotik') {
+      mikrotik[fn](req, res, next);
+    } else if (type === 'cambium') {
+      cambium[fn](req, res, next);
+    } else {
+      const err = new Error('invalid type parameter');
+      next(err);
+    }
+  };
+}
 
-const generateSuccessForm = (req, res, next) => {
-  const { type } = req.query;
+const generateUrl = _getFunction('generateUrl');
+const generateGuestForm = _getFunction('generateGuestForm');
+const generateSuccessForm = _getFunction('generateSuccessForm');
 
-  if (type === 'mikrotik') {
-    mikrotik.generateSuccessForm(req, res, next);
-  } else if (type === 'cambium') {
-    cambium.generateSuccessForm(req, res, next);
-  } else {
-    const err = new Error('invalid type parameter');
-    next(err);
-  }
-};
 
 module.exports = {
   generateUrl,
+  generateGuestForm,
   generateSuccessForm
 };

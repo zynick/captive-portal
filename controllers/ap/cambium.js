@@ -77,6 +77,10 @@ const generateUrl = (req, res, next) => {
   next();
 };
 
+const generateGuestForm = (req, res, next) => {
+  next();
+};
+
 const generateSuccessForm = (req, res, next) => {
   next();
 };
@@ -84,5 +88,6 @@ const generateSuccessForm = (req, res, next) => {
 module.exports = {
   parse,
   generateUrl,
+  generateGuestForm,
   generateSuccessForm
 };
