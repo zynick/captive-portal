@@ -112,9 +112,8 @@ const actionLogPost = (req, res, next) => {
 };
 
 const redirect = (req, res, next) => {
-  const { loginUrl, mac, nas, chapId, chapChallenge, redirectUrl } = req.body;
-  const message = 'You have signed up successfully.';
-  const query = { loginUrl, mac, nas, chapId, chapChallenge, redirectUrl, message };
+  let query = req.body;
+  query.message = 'You have signed up successfully.';
   const queryString = querystring.stringify(query);
   res.redirect(`/success?${queryString}`);
 };

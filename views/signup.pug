@@ -34,14 +34,13 @@ block content
 
   .title Sign In To Proceed
 
-  //- TODO remove all true in production. it's for dev showcase only.
-  if isFacebookEnabled || true
+  if isFacebookEnabled
     .form-group
       button.btn.btn-primary.btn-facebook
         i.fa.fa-facebook(aria-hidden=true)
         | &nbsp; &nbsp;Sign in with Facebook
 
-  if isGoogleEnabled || true
+  if isGoogleEnabled
     .form-group
       button.btn.btn-danger.btn-google
         i.fa.fa-google(aria-hidden=true)
@@ -54,21 +53,30 @@ block content
 
   if isEmailEnabled
 
-    if isFacebookEnabled || isGoogleEnabled || isGuestEnabled || true
+    if isFacebookEnabled || isGoogleEnabled || isGuestEnabled
       .separator: span Or
 
     form(name='form', method='POST')
       if formError
         .form-group
           .form-error=formError
+
       .form-group
         input.form-control(type='email', name='email', value=data.email, placeholder='Email')
       .form-group
         input.form-control(type='number', name='mobile', value=data.mobile, placeholder='Mobile')
-        input(type='hidden', name='loginUrl', value=data.loginUrl)
-        input(type='hidden', name='mac', value=data.mac)
-        input(type='hidden', name='nas', value=data.nas)
-        input(type='hidden', name='chapId', value=data.chapId)
-        input(type='hidden', name='chapChallenge', value=data.chapChallenge)
-        input(type='hidden', name='redirectUrl', value=data.redirectUrl)
+
+        each value, key in data
+          - var isVisibleData = key === 'email' || key === 'mobile'
+          if !isVisibleData
+            input(type='hidden', name=key, value=value)
+
+        //- input(type='hidden', name='loginUrl', value=data.loginUrl)
+        //- input(type='hidden', name='mac', value=data.mac)
+        //- input(type='hidden', name='nas', value=data.nas)
+        //- input(type='hidden', name='chapId', value=data.chapId)
+        //- input(type='hidden', name='chapChallenge', value=data.chapChallenge)
+        //- input(type='hidden', name='redirectUrl', value=data.redirectUrl)
+        //- input(type='hidden', name='type', value=data.type)
+
       button.btn.btn-primary SIGN UP
