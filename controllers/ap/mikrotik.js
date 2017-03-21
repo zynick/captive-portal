@@ -1,5 +1,7 @@
 'use strict';
 
+const md5 = require('md5');
+
 
 const generateUrl = (req, res, next) => {
   const { loginUrl, mac, redirectUrl } = req.query;
@@ -14,18 +16,16 @@ const generateUrl = (req, res, next) => {
 const generateSuccessForm = (req, res, next) => {
 
   // prepare the form properly
-  const { loginUrl, mac, redirectUrl } = req.query;
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
   const { token, impressionUrl } = req.bag;
-
-  // TODO do chap challenge properly
-  // form.password.value = md5('#{chapId}'+password+'#{chapChallenge}');
+  const password = chapId ? md5(`${chapId}${token}${chapChallenge}`) : token;
 
   const redirectForm = {
     url: loginUrl,
     method: 'POST',
     body: {
       username: mac,
-      password: token,
+      password: password,
       dst: redirectUrl
     }
   };
@@ -35,7 +35,7 @@ const generateSuccessForm = (req, res, next) => {
     method: 'POST',
     body: {
       username: mac,
-      password: token,
+      password: password,
       dst: impressionUrl
     }
   };
