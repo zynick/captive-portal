@@ -1,0 +1,24 @@
+//- form
+form(name='form', method='POST', action=loginUrl)
+  input(type='hidden', name='username', value=mac)
+  input(type='hidden', name='password', value=token)
+  input(type='hidden', name='dst')
+
+//- scripts
+if chapChallenge
+  script(src='/js/md5.js')
+  script(type='text/javascript').
+    function submit(redirectUrl) {
+      const form = document.form;
+      const password = form.password.value;
+      form.password.value = md5('#{chapId}'+password+'#{chapChallenge}');
+      form.dst.value = redirectUrl;
+      form.submit();
+    }
+else
+  script(type='text/javascript').
+    function submit(redirectUrl) {
+      const form = document.form;
+      form.dst.value = redirectUrl;
+      form.submit();
+    }
