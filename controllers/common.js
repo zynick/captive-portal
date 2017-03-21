@@ -59,9 +59,36 @@ const getAds = (req, res, next) => {
   );
 };
 
+const processAds = (req, res, next) => {
+
+  let impressionImg = {}, impressionUrl;
+  req.ads.forEach(asset => {
+    switch (asset.type) {
+      case 'board-sm':
+        impressionImg.sm = asset.img;
+        break;
+      case 'board-md':
+        impressionImg.md = asset.img;
+        break;
+      case 'board-lg':
+        impressionImg.lg = asset.img;
+        break;
+      case 'url':
+        impressionUrl = asset.url;
+        break;
+    }
+  });
+
+  req.bag.impressionImg = impressionImg;
+  req.bag.impressionUrl = impressionUrl;
+
+  next();
+};
+
 
 module.exports = {
   init,
   getNAS,
-  getAds
+  getAds,
+  processAds
 };

@@ -35,15 +35,18 @@ block content
 block footer
   .shadow
     #redirect-wait.link &nbsp;
-    #redirect-link.link
-      a(href='#', onClick=`submit('${redirectUrl}'); return false;`) Click here to proceed &gt;
+    //-#redirect-link.link: a(href='#', onClick=`submit('${redirectUrl}'); return false;`) Click here to proceed &gt;
+    //-a.btn.btn-primary.margin-bottom(onClick=`submit('${impressionUrl}'); return false;`) CLICK HERE TO VIEW AD
+    #redirect-link.link: a(href='#', onClick=`document.redirectForm.submit(); return false;`) Click here to proceed &gt;
+    a.btn.btn-primary.margin-bottom(onClick=`document.impressionForm.submit(); return false;`) CLICK HERE TO VIEW AD
 
-    a.btn.btn-primary.margin-bottom(onClick=`submit('${impressionUrl}'); return false;`) CLICK HERE TO VIEW AD
+  form(name='redirectForm', method=redirectForm.method, action=redirectForm.url)
+    each value, key in redirectForm.body
+      input(type='hidden', name=key, value=value)
+
+  form(name='impressionForm', method=impressionForm.method, action=impressionForm.url)
+    each value, key in impressionForm.body
+      input(type='hidden', name=key, value=value)
 
 append script
   script(src='/js/timer.js')
-
-  if typeMikrotik
-    include includes/mikrotik
-  if typeCambium
-    include includes/cambium

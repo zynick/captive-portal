@@ -11,6 +11,42 @@ const generateUrl = (req, res, next) => {
   next();
 };
 
+const generateSuccessForm = (req, res, next) => {
+
+  // prepare the form properly
+  const { loginUrl, mac, redirectUrl } = req.query;
+  const { token, impressionUrl } = req.bag;
+
+  // TODO do chap challenge properly
+  // form.password.value = md5('#{chapId}'+password+'#{chapChallenge}');
+
+  const redirectForm = {
+    url: loginUrl,
+    method: 'POST',
+    body: {
+      username: mac,
+      password: token,
+      dst: redirectUrl
+    }
+  };
+
+  const impressionForm = {
+    url: loginUrl,
+    method: 'POST',
+    body: {
+      username: mac,
+      password: token,
+      dst: impressionUrl
+    }
+  };
+
+  req.bag.redirectForm = redirectForm;
+  req.bag.impressionForm = impressionForm;
+
+  next();
+};
+
 module.exports = {
-  generateUrl
+  generateUrl,
+  generateSuccessForm
 };

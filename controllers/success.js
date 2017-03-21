@@ -71,40 +71,15 @@ const actionLog = (req, res, next) => {
 
 const render = (req, res, next) => {
   const { logo } = req.nas.assets;
-  const { message, loginUrl, mac, chapId, chapChallenge, redirectUrl } = req.query;
-  const { token } = req.bag;
-
-  let impressionImg = {}, impressionUrl;
-  req.ads.forEach(asset => {
-    switch (asset.type) {
-      case 'board-sm':
-        impressionImg.sm = asset.img;
-        break;
-      case 'board-md':
-        impressionImg.md = asset.img;
-        break;
-      case 'board-lg':
-        impressionImg.lg = asset.img;
-        break;
-      case 'url':
-        impressionUrl = asset.url;
-        break;
-    }
-  });
+  const { message } = req.query;
+  const { impressionImg, redirectForm, impressionForm } = req.bag;
 
   res.render('success', {
     logo,
-
     message,
-    loginUrl,
-    mac,
-    token,
-    chapId,
-    chapChallenge,
-
     impressionImg,
-    impressionUrl,
-    redirectUrl
+    redirectForm,
+    impressionForm
   });
 
 };

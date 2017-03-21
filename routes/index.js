@@ -55,8 +55,8 @@ router.get('/guest',
   common.getNAS,
   guest.enabledValidation,
   common.getAds,
-  guest.processAds,
-  ap.generateUrl,
+  common.processAds,
+  ap.generateUrl, // TODO change to generateGuestForm
   guest.actionLog,
   guest.render);
 
@@ -66,6 +66,8 @@ router.get('/success',
   success.macValidation,
   success.generateToken,
   common.getAds,
+  common.processAds,
+  ap.generateSuccessForm,
   success.actionLog,
   success.render);
 
