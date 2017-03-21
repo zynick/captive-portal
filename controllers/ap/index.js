@@ -3,9 +3,8 @@
 const mikrotik = require('./mikrotik.js');
 const cambium = require('./cambium.js');
 
-
-const _getFunction = (fn) => {
-  return (req, res, next) => {
+const _getFunction = (fn) =>
+  (req, res, next) => {
     const { type } = req.query;
 
     if (type === 'mikrotik') {
@@ -17,15 +16,9 @@ const _getFunction = (fn) => {
       next(err);
     }
   };
-}
-
-const generateUrl = _getFunction('generateUrl');
-const generateGuestForm = _getFunction('generateGuestForm');
-const generateSuccessForm = _getFunction('generateSuccessForm');
-
 
 module.exports = {
-  generateUrl,
-  generateGuestForm,
-  generateSuccessForm
+  generateUrl: _getFunction('generateUrl'),
+  generateGuestForm: _getFunction('generateGuestForm'),
+  generateSuccessForm: _getFunction('generateSuccessForm')
 };
