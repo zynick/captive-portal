@@ -63,7 +63,7 @@ curl -X POST \
   const p2 = ga_srvr;
   const p3 = encodeURIComponent(ga_Qv);
 
-  const url = `/connect?nas=${nas}&mac=${mac}&loginUrl=${loginUrl}&redirectUrl=${redirectUrl}&trial=${trial}&error=${error}&p1=${p1}&p2=${p2}&type=cambium`;
+  const url = `/connect?nas=${nas}&mac=${mac}&loginUrl=${loginUrl}&redirectUrl=${redirectUrl}&trial=${trial}&error=${error}&p1=${p1}&p2=${p2}&p3=${p3}&type=cambium`;
   res.redirect(url);
 };
 
