@@ -29,15 +29,21 @@ const generateGuestForm = (req, res, next) => {
   const { impressionUrl } = req.bag;
 
   const redirectForm = {
-    url: `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`,
+    url: loginUrl,
     method: 'GET',
-    body: {}
+    body: {
+      username: `T-${mac}`,
+      dst: redirectUrl
+    }
   };
 
   const impressionForm = {
-    url: `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`,
+    url: loginUrl,
     method: 'GET',
-    body: {}
+    body: {
+      username: `T-${mac}`,
+      dst: impressionUrl
+    }
   };
 
   req.bag.redirectForm = redirectForm;
