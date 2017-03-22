@@ -56,7 +56,7 @@ router.get('/guest',
   guest.enabledValidation,
   common.getAds,
   common.processAds,
-  ap.generateUrl, // TODO change to generateGuestForm
+  ap.generateGuestForm,
   guest.actionLog,
   guest.render);
 

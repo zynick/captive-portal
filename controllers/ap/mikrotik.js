@@ -9,17 +9,40 @@ const _octalStringToBinary = octalString => {
   return Buffer.from(arr).toString('binary');
 }
 
+// TODO 2: add a function to process bk's API
+// TODO 2: add a function to process bk's API
+// TODO 2: add a function to process bk's API
+
 const generateUrl = (req, res, next) => {
   const { loginUrl, mac, redirectUrl } = req.query;
   const { impressionUrl } = req.bag;
 
-  req.bag.impressionUrl = `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`;
   req.bag.redirectUrl = `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`;
+  req.bag.impressionUrl = `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`;
 
   next();
 };
 
 const generateGuestForm = (req, res, next) => {
+
+  const { loginUrl, mac, redirectUrl } = req.query;
+  const { impressionUrl } = req.bag;
+
+  const redirectForm = {
+    url: `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`,
+    method: 'GET',
+    body: {}
+  };
+
+  const impressionForm = {
+    url: `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`,
+    method: 'GET',
+    body: {}
+  };
+
+  req.bag.redirectForm = redirectForm;
+  req.bag.impressionForm = impressionForm;
+
   next();
 };
 
@@ -60,5 +83,6 @@ const generateSuccessForm = (req, res, next) => {
 
 module.exports = {
   generateUrl,
+  generateGuestForm,
   generateSuccessForm
 };

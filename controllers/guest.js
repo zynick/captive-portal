@@ -44,13 +44,13 @@ const actionLog = (req, res, next) => {
 
 const render = (req, res, next) => {
   const { logo } = req.nas.assets;
-  const { impressionImg, impressionUrl, redirectUrl } = req.bag;
+  const { impressionImg, redirectForm, impressionForm } = req.bag;
 
   res.render('guest', {
     logo,
     impressionImg,
-    impressionUrl,
-    redirectUrl
+    redirectForm,
+    impressionForm
   });
 };
 
