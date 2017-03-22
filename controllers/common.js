@@ -6,8 +6,6 @@ const NAS = mongoose.model('NAS');
 const admanager = require('../lib/admanager.js');
 
 
-// TODO jsonp... wtf how for BK
-
 const _assetCallbackErrorHandler = (req, next) =>
   (err, httpRes) => {
     if (err) {

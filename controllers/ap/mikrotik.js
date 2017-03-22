@@ -13,16 +13,6 @@ const _octalStringToBinary = octalString => {
 // TODO 2: add a function to process bk's API
 // TODO 2: add a function to process bk's API
 
-const generateUrl = (req, res, next) => {
-  const { loginUrl, mac, redirectUrl } = req.query;
-  const { impressionUrl } = req.bag;
-
-  req.bag.redirectUrl = `${loginUrl}?username=T-${mac}&dst=${redirectUrl}`;
-  req.bag.impressionUrl = `${loginUrl}?username=T-${mac}&dst=${impressionUrl}`;
-
-  next();
-};
-
 const generateGuestForm = (req, res, next) => {
 
   const { loginUrl, mac, redirectUrl } = req.query;
@@ -88,7 +78,6 @@ const generateSuccessForm = (req, res, next) => {
 };
 
 module.exports = {
-  generateUrl,
   generateGuestForm,
   generateSuccessForm
 };

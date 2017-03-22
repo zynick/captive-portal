@@ -18,7 +18,6 @@ const _getFunction = (fn) =>
   };
 
 module.exports = {
-  generateUrl: _getFunction('generateUrl'),
   generateGuestForm: _getFunction('generateGuestForm'),
   generateSuccessForm: _getFunction('generateSuccessForm')
 };
