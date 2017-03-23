@@ -1,10 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const uuidV4 = require('uuid/v4');
-const log = require('debug')('portal:success');
 const MAC = mongoose.model('MAC');
-const Tokens = mongoose.model('Tokens');
 const admanager = require('../lib/admanager.js');
 
 
@@ -23,7 +20,7 @@ const _actionCallbackErrorHandler = (req, next) =>
     next();
   };
 
-const macValidation = (req, res, next) => {
+const validate = (req, res, next) => {
   const { organization } = req.nas;
   const { mac } = req.query;
 
@@ -40,36 +37,6 @@ const macValidation = (req, res, next) => {
       next();
     })
     .catch(next);
-};
-
-const generateToken = (req, res, next) => {
-  const { organization } = req.nas;
-  const { mac } = req.query;
-
-  Tokens
-    .findOne({ organization, mac })
-    .maxTime(10000)
-    .exec()
-    .then(doc => {
-
-      if (doc) {
-        req.bag.token = doc.token;
-        return next();
-      }
-
-      const token = uuidV4().replace(/-/g, '');
-
-      new Tokens({ organization, mac, token })
-        .save()
-        .then(doc => {
-          req.bag.token = token;
-          return next();
-        })
-        .catch(next);
-
-    })
-    .catch(next);
-
 };
 
 const actionLog = (req, res, next) => {
@@ -100,8 +67,7 @@ const render = (req, res, next) => {
 
 
 module.exports = {
-  macValidation,
-  generateToken,
+  validate,
   actionLog,
   render
 };

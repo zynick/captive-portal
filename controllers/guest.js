@@ -19,7 +19,7 @@ const _actionCallbackErrorHandler = (req, next) =>
     next();
   };
 
-const enabledValidation = (req, res, next) => {
+const validate = (req, res, next) => {
   const isGuestEnabled = req.nas.login.guest && req.query.trial === 'yes';
 
   if (!isGuestEnabled) {
@@ -56,7 +56,7 @@ const render = (req, res, next) => {
 
 
 module.exports = {
-  enabledValidation,
+  validate,
   actionLog,
   render
 };

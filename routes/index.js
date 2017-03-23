@@ -3,16 +3,15 @@
 const router = require('express').Router();
 const { NODE_ENV } = require('../config.js');
 
-// TODO refactor this
+const ap = require('../controllers/ap/index.js');
+const cambium = require('../controllers/ap/cambium.js');
 const controller = require('../controllers/index.js');
 const common = require('../controllers/common.js');
 const connect = require('../controllers/connect.js');
 const signup = require('../controllers/signup.js');
 const guest = require('../controllers/guest.js');
+const seamless = require('../controllers/seamless.js');
 const success = require('../controllers/success.js');
-
-const ap = require('../controllers/ap/index.js');
-const cambium = require('../controllers/ap/cambium.js');
 
 
 if (NODE_ENV !== 'production') {
@@ -26,7 +25,19 @@ router.use('/worker', require('./worker'));
 
 router.get('/cambium', cambium.parse);
 
+// this is assuming user has already signed up.
+// what if user haven't sign up yet?
+router.get('/seamless',
+  seamless.validate,
+  common.init,
+  common.getNAS,
+  common.generateToken,
+  ap.generateSuccessForm,
+  seamless.json,
+  controller.errorHandlerJSON);
+
 router.get('/connect',
+  connect.checkSeamless,
   common.init,
   common.getNAS,
   connect.checkNewMac,
@@ -45,7 +56,7 @@ router.post('/signup',
   common.init,
   common.getNAS,
   signup.typeFilter,
-  signup.emailValidation,
+  signup.validate,
   signup.createMac,
   signup.actionLogPost,
   signup.redirect,
@@ -54,7 +65,7 @@ router.post('/signup',
 router.get('/guest',
   common.init,
   common.getNAS,
-  guest.enabledValidation,
+  guest.validate,
   common.getAds,
   common.processAds,
   ap.generateGuestForm,
@@ -64,8 +75,8 @@ router.get('/guest',
 router.get('/success',
   common.init,
   common.getNAS,
-  success.macValidation,
-  success.generateToken,
+  success.validate,
+  common.generateToken,
   common.getAds,
   common.processAds,
   ap.generateSuccessForm,

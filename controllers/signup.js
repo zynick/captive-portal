@@ -78,7 +78,7 @@ const render = (req, res, next) => {
   });
 };
 
-const emailValidation = (req, res, next) => {
+const validate = (req, res, next) => {
   const { email, mobile } = req.body;
 
   if (!email || !mobile) {
@@ -152,7 +152,7 @@ module.exports = {
   actionLogGet,
   render,
 
-  emailValidation,
+  validate,
   createMac,
   actionLogPost,
   redirect,

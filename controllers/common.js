@@ -1,8 +1,10 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const log = require('debug')('portal:common');
+const querystring = require('querystring');
+const uuidV4 = require('uuid/v4');
 const NAS = mongoose.model('NAS');
+const Tokens = mongoose.model('Tokens');
 const admanager = require('../lib/admanager.js');
 
 
@@ -21,7 +23,6 @@ const _assetCallbackErrorHandler = (req, next) =>
     req.ads = httpRes.body;
     next();
   };
-
 
 const init = (req, res, next) => {
   req.bag = {};
@@ -44,6 +45,35 @@ const getNAS = (req, res, next) => {
 
       req.nas = nas;
       next();
+    })
+    .catch(next);
+};
+
+const generateToken = (req, res, next) => {
+  const { organization } = req.nas;
+  const { mac } = req.query;
+
+  Tokens
+    .findOne({ organization, mac })
+    .maxTime(10000)
+    .exec()
+    .then(doc => {
+
+      if (doc) {
+        req.bag.token = doc.token;
+        return next();
+      }
+
+      const token = uuidV4().replace(/-/g, '');
+
+      new Tokens({ organization, mac, token })
+        .save()
+        .then(doc => {
+          req.bag.token = token;
+          return next();
+        })
+        .catch(next);
+
     })
     .catch(next);
 };
@@ -88,5 +118,6 @@ module.exports = {
   init,
   getNAS,
   getAds,
+  generateToken,
   processAds
 };

@@ -8,11 +8,7 @@ const _octalStringToBinary = octalString => {
   let arr = octalString.substr(1).split('\\');
   arr = arr.map(octal => parseInt(octal, 8));
   return Buffer.from(arr).toString('binary');
-}
-
-// TODO 2: add a function to process bk's API
-// TODO 2: add a function to process bk's API
-// TODO 2: add a function to process bk's API
+};
 
 const generateGuestForm = (req, res, next) => {
 
@@ -48,9 +44,12 @@ const generateSuccessForm = (req, res, next) => {
   const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
   const { token, impressionUrl } = req.bag;
 
-  const chapIdBin = _octalStringToBinary(chapId);
-  const chapChallengeBin = _octalStringToBinary(chapChallenge);
-  const password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
+  let password = token;
+  if (chapId) {
+    const chapIdBin = _octalStringToBinary(chapId);
+    const chapChallengeBin = _octalStringToBinary(chapChallenge);
+    password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
+  }
 
   const redirectForm = {
     url: loginUrl,

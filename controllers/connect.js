@@ -23,6 +23,19 @@ const _actionCallbackErrorHandler = (req, next) =>
     next();
   };
 
+const checkSeamless = (req, res, next) => {
+  const { 'user-agent': userAgent, accept } = req.headers;
+
+  // redirect if request coming from app
+  const isFromApp = userAgent === 'ACE Mobile App' && accept === 'application/json';
+  if (isFromApp) {
+    const queryString = querystring.stringify(req.query);
+    return res.redirect(`/seamless?${queryString}`);
+  }
+
+  next();
+};
+
 const checkNewMac = (req, res, next) => {
   const { mac } = req.query;
   const { organization } = req.nas;
@@ -74,6 +87,7 @@ const render = (req, res, next) => {
 
 
 module.exports = {
+  checkSeamless,
   checkNewMac,
   generateUrl,
   actionLog,
