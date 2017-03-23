@@ -1,6 +1,7 @@
 'use strict';
 
 const md5 = require('md5');
+const log = require('debug')('portal:mikrotik');
 
 
 const _octalStringToBinary = octalString => {
@@ -50,6 +51,10 @@ const generateSuccessForm = (req, res, next) => {
   const chapIdBin = _octalStringToBinary(chapId);
   const chapChallengeBin = _octalStringToBinary(chapChallenge);
   const password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
+
+log(`  chapId: ${chapId}, chapIdBin: ${chapIdBin}`);
+log(`  chapChallenge: ${chapChallenge}, chapChallengeBin: ${chapChallengeBin}`);
+log(`  token: ${token}, password: ${password}`);
 
   const redirectForm = {
     url: loginUrl,
