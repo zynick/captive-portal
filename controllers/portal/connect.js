@@ -2,9 +2,8 @@
 
 const mongoose = require('mongoose');
 const querystring = require('querystring');
-const log = require('debug')('portal:connect');
 const MAC = mongoose.model('MAC');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 // TODO refactor this code. put it somewhere that other controllers can share the code.
@@ -30,7 +29,7 @@ const checkSeamless = (req, res, next) => {
   const isFromApp = userAgent === 'ACE Mobile App' && accept === 'application/json';
   if (isFromApp) {
     const queryString = querystring.stringify(req.query);
-    return res.redirect(`/seamless?${queryString}`);
+    return res.redirect(`/portal/seamless?${queryString}`);
   }
 
   next();
@@ -56,7 +55,7 @@ const generateUrl = (req, res, next) => {
   const queryString = querystring.stringify(query);
 
   const page = bag.isNewUser ? 'signup' : 'success';
-  bag.buttonUrl = `/${page}?${queryString}`;
+  bag.buttonUrl = `/portal/${page}?${queryString}`;
 
   next();
 };

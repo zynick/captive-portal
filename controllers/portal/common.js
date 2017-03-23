@@ -5,7 +5,7 @@ const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
 const NAS = mongoose.model('NAS');
 const Tokens = mongoose.model('Tokens');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const _assetCallbackErrorHandler = (req, next) =>

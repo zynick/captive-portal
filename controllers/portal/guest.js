@@ -1,7 +1,7 @@
 'use strict';
 
 const log = require('debug')('portal:guest');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>

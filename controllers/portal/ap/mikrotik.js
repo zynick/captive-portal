@@ -1,7 +1,6 @@
 'use strict';
 
 const md5 = require('md5');
-const log = require('debug')('portal:mikrotik');
 
 
 const _octalStringToBinary = octalString => {

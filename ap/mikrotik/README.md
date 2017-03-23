@@ -1,6 +1,13 @@
 
 # MikroTik Hotspot Pages
 
+## Setup
+
+```
+1. copy login.html
+2. delete alogin.html (if exist) from server /hotspot directory
+```
+
 ## The Logic Flow of Setting Up Mikrotik Hotspot Page
 
 http://wiki.mikrotik.com/wiki/Manual:Customizing_Hotspot#Serving_Servlet_Pages

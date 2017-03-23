@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const MAC = mongoose.model('MAC');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>

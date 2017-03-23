@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const querystring = require('querystring');
 const log = require('debug')('portal:signup');
 const MAC = mongoose.model('MAC');
-const admanager = require('../lib/admanager.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -39,7 +39,7 @@ const typeFilter = (req, res, next) => {
 
   if (bag.isGuestEnabled) {
     const queryString = querystring.stringify(req.query);
-    bag.guestUrl = `guest?${queryString}`;
+    bag.guestUrl = `/portal/guest?${queryString}`;
   }
 
   next();
@@ -115,7 +115,7 @@ const redirect = (req, res, next) => {
   let query = req.body;
   query.message = 'You have signed up successfully.';
   const queryString = querystring.stringify(query);
-  res.redirect(`/success?${queryString}`);
+  res.redirect(`/portal/success?${queryString}`);
 };
 
 const errorRender = (err, req, res, next) => {

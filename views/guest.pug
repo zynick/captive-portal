@@ -36,8 +36,6 @@ block footer
   .shadow
     #redirect-wait.link &nbsp;
     #redirect-link.link: a(href='#', onClick=`document.redirectForm.submit(); return false;`) Click here to proceed &gt;
-    //- #redirect-link.link: a(href=redirectUrl) Click here to proceed &gt;
-    //- a.btn.btn-primary.margin-bottom(href=impressionUrl) CLICK HERE TO VIEW AD
     a.btn.btn-primary.margin-bottom(onClick=`document.impressionForm.submit(); return false;`) CLICK HERE TO VIEW AD
 
   form(name='redirectForm', method=redirectForm.method, action=redirectForm.url)
