@@ -60,7 +60,6 @@ const generateToken = (req, res, next) => {
       const token = uuidV4().replace(/-/g, '');
 
       new Tokens({ organization, mac, token })
-        .maxTime(10000)
         .save()
         .then(doc => {
           req.bag.token = token;
