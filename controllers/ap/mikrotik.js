@@ -52,10 +52,6 @@ const generateSuccessForm = (req, res, next) => {
   const chapChallengeBin = _octalStringToBinary(chapChallenge);
   const password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
 
-log(`  chapId: ${chapId}, chapIdBin: ${chapIdBin}`);
-log(`  chapChallenge: ${chapChallenge}, chapChallengeBin: ${chapChallengeBin}`);
-log(`  token: ${token}, password: ${password}`);
-
   const redirectForm = {
     url: loginUrl,
     method: 'POST',
