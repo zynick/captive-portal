@@ -45,17 +45,33 @@ const macValidation = (req, res, next) => {
 const generateToken = (req, res, next) => {
   const { organization } = req.nas;
   const { mac } = req.query;
-  const token = uuidV4().replace(/-/g, '');
 
   Tokens
-    .findOneAndUpdate({ organization, mac }, { organization, mac, token }, { upsert: true })
+    .findOne({ organization, mac })
     .maxTime(10000)
     .exec()
     .then(doc => {
-      req.bag.token = token;
-      next();
+
+      if (doc) {
+        req.bag.token = doc.token;
+        return next();
+      }
+
+      const token = uuidV4().replace(/-/g, '');
+
+      Tokens
+        .create({ organization, mac, token })
+        .maxTime(10000)
+        .exec()
+        .then(doc => {
+          req.bag.token = token;
+          return next();
+        })
+        .catch(next);
+
     })
     .catch(next);
+
 };
 
 const actionLog = (req, res, next) => {
