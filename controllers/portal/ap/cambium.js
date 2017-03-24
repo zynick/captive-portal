@@ -14,7 +14,8 @@ const parse = (req, res, next) => {
 
   const nas = ga_ap_mac.replace(/-/g, ':');
   const mac = ga_cmac.replace(/-/g, ':');
-  const loginUrl = `https://${ga_srvr}:444/cgi-bin/hotspot_login.cgi`;
+  const loginUrl = `http://${ga_srvr}:880/cgi-bin/hotspot_login.cgi`;
+  // const loginUrl = `https://${ga_srvr}:444/cgi-bin/hotspot_login.cgi`;
 
   const redirectUrl = ga_orig_url;
   const error =
