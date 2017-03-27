@@ -18,10 +18,10 @@ router.get('/cambium', cambium.parse);
 router.use(common.init);
 router.use(common.getNAS);
 
-// this is assuming user has already signed up.
-// what if user haven't sign up yet?
+
+router.use('/seamless', seamless.validate);
+
 router.get('/seamless',
-  seamless.validate,
   common.checkNewMac,
   seamless.redirectNewMac,
   common.generateToken,
@@ -30,13 +30,11 @@ router.get('/seamless',
   controller.errorHandlerJSON);
 
 router.get('/seamless/register',
-  seamless.validate,
   ap.generateBody,
   seamless.registerJSON,
   controller.errorHandlerJSON);
 
 router.post('/seamless/register',
-  seamless.validate,
   seamless.signupMac,
   seamless.actionLog,
   seamless.generateToken,

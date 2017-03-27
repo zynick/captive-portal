@@ -6,6 +6,7 @@ const uuidV4 = require('uuid/v4');
 const Tokens = mongoose.model('Tokens');
 const MAC = mongoose.model('MAC');
 const { HOST } = require('../../config.js');
+const admanager = require('../../lib/admanager.js');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -55,7 +56,7 @@ const registerJSON = (req, res, next) => {
 
   const { body } = req.bag;
   body.mac = req.query.mac;
-  body.nasId = req.nas.id;
+  body.nas = req.nas.id;
 
   const json = {
     url,
@@ -75,7 +76,7 @@ const signupMac = (req, res, next) => {
     email = '',
     mobile = '',
     userId = '',
-    nasId: createdFrom
+    nas: createdFrom
   } = req.body;
 
   new MAC({ mac, organization, email, mobile, userId, createdFrom })
@@ -91,13 +92,13 @@ const actionLog = (req, res, next) => {
     email = '',
     mobile = '',
     userId = '',
-    nasId
+    nas
   } = req.body;
 
   const action = 'user-signup';
   const payload = { source: 'Captive-Portal', email, mobile };
 
-  admanager.action(organization, nasId, mac, userId, action, payload,
+  admanager.action(organization, nas, mac, userId, action, payload,
     _actionCallbackErrorHandler(req, next)
   );
 };
