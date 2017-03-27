@@ -8,17 +8,17 @@ const api = require('../controllers/api.js');
 router.use(api.tokenValidation);
 
 router.post('/authenticate',
-    api.formValidation,
-    api.hashPassword,
-    api.authenticateUser,
-    api.authenticateResponse);
+  api.formValidation,
+  api.hashPassword,
+  api.authenticateUser,
+  api.authenticateResponse);
 
 router.post('/registration',
-    api.formValidation,
-    api.hashPassword,
-    api.registerUser,
-    api.registerActionLog,
-    api.registerResponse);
+  api.formValidation,
+  api.hashPassword,
+  api.registerUser,
+  api.registerActionLog,
+  api.registerResponse);
 
 router.use(controller.badRequest);
 router.use(controller.errorHandlerJSON);

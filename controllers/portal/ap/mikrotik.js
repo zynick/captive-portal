@@ -109,6 +109,7 @@ const generateSuccessForm2 = (req, res, next) => {
   // TODO name it to a generic form perhaps? this is fucking confusing but i'm doing this just for BK to test first
   req.bag.impressionForm = seamlessForm;
 
+  next();
 };
 
 module.exports = {
