@@ -78,8 +78,9 @@ const generateSuccessForm = (req, res, next) => {
 
 const generateBody = (req, res, next) => {
   // TODO why not pass the whole req.query shit to body for BK?
-  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
-  req.bag.body = { loginUrl, mac, redirectUrl, chapId, chapChallenge };
+  // const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
+  // req.bag.body = { loginUrl, mac, redirectUrl, chapId, chapChallenge };
+  req.bag.body = req.query;
   next();
 };
 
