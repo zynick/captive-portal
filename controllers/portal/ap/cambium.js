@@ -69,8 +69,18 @@ const generateSuccessForm = (req, res, next) => {
   next();
 };
 
+const generateBody = (req, res, next) => {
+  next();
+};
+
+const generateSuccessForm2 = (req, res, next) => {
+  next();
+};
+
 module.exports = {
   parse,
   generateGuestForm,
-  generateSuccessForm
+  generateSuccessForm,
+  generateBody,
+  generateSuccessForm2
 };

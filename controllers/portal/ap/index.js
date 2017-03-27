@@ -3,7 +3,7 @@
 const mikrotik = require('./mikrotik.js');
 const cambium = require('./cambium.js');
 
-const _getFunction = (fn) =>
+const _getFunction = fn =>
   (req, res, next) => {
     const { type } = req.query;
 
@@ -19,5 +19,7 @@ const _getFunction = (fn) =>
 
 module.exports = {
   generateGuestForm: _getFunction('generateGuestForm'),
-  generateSuccessForm: _getFunction('generateSuccessForm')
+  generateSuccessForm: _getFunction('generateSuccessForm'),
+  generateBody: _getFunction('generateBody'),
+  generateSuccessForm2: _getFunction('generateSuccessForm2')
 };

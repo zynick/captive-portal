@@ -76,7 +76,43 @@ const generateSuccessForm = (req, res, next) => {
   next();
 };
 
+const generateBody = (req, res, next) => {
+  // TODO why not pass the whole req.query shit to body for BK?
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
+  req.bag.body = { loginUrl, mac, redirectUrl, chapId, chapChallenge };
+  next();
+};
+
+const generateSuccessForm2 = (req, res, next) => {
+
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.body;
+  const { token } = req.bag;
+
+  let password = token;
+  if (chapId) {
+    const chapIdBin = _octalStringToBinary(chapId);
+    const chapChallengeBin = _octalStringToBinary(chapChallenge);
+    password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
+  }
+
+  const seamlessForm = {
+    url: loginUrl,
+    method: 'POST',
+    body: {
+      username: mac,
+      password: password,
+      dst: redirectUrl
+    }
+  };
+
+  // TODO name it to a generic form perhaps? this is fucking confusing but i'm doing this just for BK to test first
+  req.bag.impressionForm = seamlessForm;
+
+};
+
 module.exports = {
   generateGuestForm,
-  generateSuccessForm
+  generateSuccessForm,
+  generateBody,
+  generateSuccessForm2
 };

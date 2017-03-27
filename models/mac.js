@@ -20,6 +20,7 @@ const macSchema = new Schema({
 
     email: String,
     mobile: String,
+    userId: String,
 
     createdFrom: String,    // created from which nasId or API
     created: {

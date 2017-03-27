@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
+const MAC = mongoose.model('MAC');
 const NAS = mongoose.model('NAS');
 const Tokens = mongoose.model('Tokens');
 const admanager = require('../../lib/admanager.js');
@@ -44,6 +45,21 @@ const getNAS = (req, res, next) => {
       }
 
       req.nas = nas;
+      next();
+    })
+    .catch(next);
+};
+
+const checkNewMac = (req, res, next) => {
+  const { mac } = req.query;
+  const { organization } = req.nas;
+
+  MAC
+    .findOne({ mac, organization })
+    .maxTime(10000)
+    .exec()
+    .then(mac => {
+      req.bag.isNewUser = !mac;
       next();
     })
     .catch(next);
@@ -113,11 +129,11 @@ const processAds = (req, res, next) => {
   next();
 };
 
-
 module.exports = {
   init,
   getNAS,
   getAds,
   generateToken,
+  checkNewMac,
   processAds
 };

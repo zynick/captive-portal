@@ -13,7 +13,6 @@ const seamless = require('../controllers/portal/seamless.js');
 const success = require('../controllers/portal/success.js');
 
 
-
 router.get('/cambium', cambium.parse);
 
 router.use(common.init);
@@ -23,14 +22,32 @@ router.use(common.getNAS);
 // what if user haven't sign up yet?
 router.get('/seamless',
   seamless.validate,
+  common.checkNewMac,
+  seamless.redirectNewMac,
   common.generateToken,
   ap.generateSuccessForm,
   seamless.json,
   controller.errorHandlerJSON);
 
+router.get('/seamless/register',
+  seamless.validate,
+  ap.generateBody,
+  seamless.registerJSON,
+  controller.errorHandlerJSON);
+
+router.post('/seamless/register',
+  seamless.validate,
+  seamless.signupMac,
+  seamless.actionLog,
+  seamless.generateToken,
+  ap.generateSuccessForm2,
+  seamless.json,
+  controller.errorHandlerJSON);
+
+
 router.get('/connect',
   connect.checkSeamless,
-  connect.checkNewMac,
+  common.checkNewMac,
   connect.generateUrl,
   connect.actionLog,
   connect.render);

@@ -1,8 +1,6 @@
 'use strict';
 
-const mongoose = require('mongoose');
 const querystring = require('querystring');
-const MAC = mongoose.model('MAC');
 const admanager = require('../../lib/admanager.js');
 
 
@@ -33,21 +31,6 @@ const checkSeamless = (req, res, next) => {
   }
 
   next();
-};
-
-const checkNewMac = (req, res, next) => {
-  const { mac } = req.query;
-  const { organization } = req.nas;
-
-  MAC
-    .findOne({ mac, organization })
-    .maxTime(10000)
-    .exec()
-    .then(mac => {
-      req.bag.isNewUser = !mac;
-      next();
-    })
-    .catch(next);
 };
 
 const generateUrl = (req, res, next) => {
@@ -87,7 +70,6 @@ const render = (req, res, next) => {
 
 module.exports = {
   checkSeamless,
-  checkNewMac,
   generateUrl,
   actionLog,
   render
