@@ -13,7 +13,7 @@ services:
     environment:
       - AD_HOST=manager-api-dev.tideanalytics.com
       - AD_KEY=DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4
-      - DEBUG=portal:*
+      - DEBUG=*
       - MONGO=localhost:27017/radius-dev
       - NODE_ENV=development
       - PORT=3000
