@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
 const Tokens = mongoose.model('Tokens');
 const MAC = mongoose.model('MAC');
@@ -37,7 +38,8 @@ const validate = (req, res, next) => {
 
 const redirectNewMac = (req, res, next) => {
   if (req.bag.isNewUser) {
-    return res.redirect('/portal/seamless/register');
+    const queryString = querystring.stringify(req.query);
+    return res.redirect(`/portal/seamless/register?${queryString}`);
   }
 
   next();
