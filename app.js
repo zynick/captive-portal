@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const http = require('http');
 const path = require('path');
 
-const log = debug('portal:app');
+const log = debug('portal');
 const logError = debug('portal:error');
 const { MONGO, PORT } = require('./config.js');
 
