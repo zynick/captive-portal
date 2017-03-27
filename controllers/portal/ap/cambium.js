@@ -70,11 +70,11 @@ const generateSuccessForm = (req, res, next) => {
 };
 
 const generateBody = (req, res, next) => {
-  next();
+  next(new Error('not implemented yet.'));
 };
 
 const generateSuccessForm2 = (req, res, next) => {
-  next();
+  next(new Error('not implemented yet.'));
 };
 
 module.exports = {
