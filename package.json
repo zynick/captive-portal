@@ -1,10 +1,9 @@
 {
   "name": "captive-portal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
-    "mini": "sudo NODE_ENV=development PORT=80 DEBUG=portal:* node app",
-    "dev": "NODE_ENV=development PORT=3000 DEBUG=portal:* node app",
+    "dev": "NODE_ENV=development PORT=3000 DEBUG=* node app",
     "start": "NODE_ENV=production PORT=80 DEBUG=portal:error node app"
   },
   "dependencies": {

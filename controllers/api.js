@@ -58,7 +58,7 @@ const registerUser = (req, res, next) => {
 
 const registerActionLog = (req, res, next) => {
     /**
-     * TODO this requires further discussion:
+     * this requires further discussion:
      * it's not implemented for App API yet because
      * admanager.action requires mac & nas_id which App doesn't have
      */

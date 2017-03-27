@@ -11,11 +11,11 @@ services:
     # volumes:
     #   - .:/app
     environment:
-      - AD_HOST=connect-dev-api.tideanalytics.com
+      - AD_HOST=manager-api-dev.tideanalytics.com
       - AD_KEY=DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4
       - DEBUG=portal:*
-      - MONGO=localhost:27017/radius
-      - NODE_ENV=staging
+      - MONGO=localhost:27017/radius-dev
+      - NODE_ENV=development
       - PORT=3000
 
   # database:
