@@ -3,8 +3,8 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development PORT=3000 DEBUG=portal* node app",
-    "start": "NODE_ENV=production PORT=80 DEBUG=portal:error node app"
+    "dev": "NODE_ENV=development DEBUG=portal* node app",
+    "start": "NODE_ENV=production DEBUG=portal:error PORT=80 node app"
   },
   "dependencies": {
     "argon2": "^0.15.0",
