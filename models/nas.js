@@ -37,8 +37,6 @@ const nasSchema = new Schema({
     },
     url: String,
 
-    announcement: String, // TODO remove
-
     announcements: {
       sm: String,
       md: String,
