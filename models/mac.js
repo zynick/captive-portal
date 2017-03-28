@@ -7,31 +7,31 @@ const Schema = mongoose.Schema;
 
 const macSchema = new Schema({
 
-    mac: {
-        type: String,
-        required: 'MAC is required.',
-        index: true
-    },
+  mac: {
+    type: String,
+    required: 'MAC is required.',
+    index: true
+  },
 
-    organization: {
-        type: String,
-        required: 'Organization is required.'
-    },
+  organization: {
+    type: String,
+    required: 'Organization is required.'
+  },
 
-    email: String,
-    mobile: String,
-    userId: String,
+  email: String,
+  mobile: String,
+  userId: String,
 
-    createdFrom: String,    // created from which nasId or API
-    created: {
-        type: Date,
-        default: Date.now
-    }
+  createdFrom: String, // created from which nasId or API
+  created: {
+    type: Date,
+    default: Date.now
+  }
 
 }, {
-    versionKey: false,
-    collection: 'mac',
-    autoIndex: NODE_ENV !== 'production'
+  versionKey: false,
+  collection: 'mac',
+  autoIndex: NODE_ENV !== 'production'
 });
 
 macSchema.index({ organization: 1, mac: 1 }, { unique: 'MAC already exists.' });
@@ -39,12 +39,12 @@ macSchema.plugin(uniqueValidator);
 
 // Error Handling Middleware
 const errorHandler = (err, doc, next) => {
-    // TODO refactor: what will happen if only check and change via err.name === 'ValidationError'?
-    err.originalMessage = err.message;
-    const keys = Object.keys(err.errors);
-    err.message = keys[0] ? err.errors[keys[0]].message : err.message;
-    err.status = 400;
-    next(err);
+  // TODO refactor: what will happen if only check and change via err.name === 'ValidationError'?
+  err.originalMessage = err.message;
+  const keys = Object.keys(err.errors);
+  err.message = keys[0] ? err.errors[keys[0]].message : err.message;
+  err.status = 400;
+  next(err);
 };
 
 macSchema.post('save', errorHandler);

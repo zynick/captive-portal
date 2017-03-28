@@ -105,7 +105,8 @@ const getAds = (req, res, next) => {
 
 const processAds = (req, res, next) => {
 
-  let impressionImg = {}, impressionUrl;
+  let impressionImg = {};
+  let impressionUrl;
   req.ads.forEach(asset => {
     switch (asset.type) {
       case 'board-sm':
