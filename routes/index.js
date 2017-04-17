@@ -11,7 +11,6 @@ if (NODE_ENV !== 'production') {
 
 router.get('/', controller.index);
 
-router.use('/api', require('./api'));
 router.use('/portal', require('./portal'));
 router.use('/worker', require('./worker'));
 
