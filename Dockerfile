@@ -13,4 +13,4 @@ RUN rm -rf /var/cache/apk/*
 
 EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+CMD [ "node", "app" ]
