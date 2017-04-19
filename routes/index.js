@@ -12,7 +12,6 @@ if (NODE_ENV !== 'production') {
 router.get('/', controller.index);
 
 router.use('/portal', require('./portal'));
-router.use('/worker', require('./worker'));
 
 router.use(controller.notFound);
 router.use(controller.errorHandlerRender);
