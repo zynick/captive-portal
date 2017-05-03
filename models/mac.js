@@ -37,9 +37,7 @@ const macSchema = new Schema({
 macSchema.index({ organization: 1, mac: 1 }, { unique: 'MAC already exists.' });
 macSchema.plugin(uniqueValidator);
 
-// Error Handling Middleware
 const errorHandler = (err, doc, next) => {
-  // TODO refactor: what will happen if only check and change via err.name === 'ValidationError'?
   err.originalMessage = err.message;
   const keys = Object.keys(err.errors);
   err.message = keys[0] ? err.errors[keys[0]].message : err.message;
