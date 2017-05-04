@@ -3,10 +3,11 @@
 const mongoose = require('mongoose');
 const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
-const Tokens = mongoose.model('Tokens');
-const MAC = mongoose.model('MAC');
 const { HOST } = require('../../config.js');
 const admanager = require('../../lib/admanager.js');
+
+const Tokens = mongoose.model('Tokens');
+const MAC = mongoose.model('MAC');
 
 
 const _actionCallbackErrorHandler = (req, next) =>
@@ -38,6 +39,7 @@ const validate = (req, res, next) => {
 };
 
 const redirectNewMac = (req, res, next) => {
+
   if (req.bag.isNewUser) {
     const queryString = querystring.stringify(req.query);
     return res.redirect(`/portal/seamless/register?${queryString}`);
@@ -46,11 +48,11 @@ const redirectNewMac = (req, res, next) => {
   next();
 };
 
-const json = (req, res, next) => {
+const json = (req, res) => {
   res.json(req.bag.impressionForm); // TODO name it to a generic form perhaps?
 };
 
-const registerJSON = (req, res, next) => {
+const registerJSON = (req, res) => {
 
   const url = `${HOST}/portal/seamless/register`;
 
@@ -81,7 +83,7 @@ const signupMac = (req, res, next) => {
 
   new MAC({ mac, organization, email, mobile, userId, createdFrom })
     .save()
-    .then(mac => next())
+    .then(() => next())
     .catch(next);
 };
 
@@ -123,7 +125,7 @@ const generateToken = (req, res, next) => {
 
       new Tokens({ organization, mac, token })
         .save()
-        .then(doc => {
+        .then(() => {
           req.bag.token = token;
           return next();
         })
