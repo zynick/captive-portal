@@ -1,7 +1,6 @@
 'use strict';
 
 const router = require('express').Router();
-const controller = require('../controllers/index.js');
 
 const ap = require('../controllers/portal/ap/index.js');
 const cambium = require('../controllers/portal/ap/cambium.js');
@@ -9,7 +8,6 @@ const common = require('../controllers/portal/common.js');
 const connect = require('../controllers/portal/connect.js');
 const signup = require('../controllers/portal/signup.js');
 const guest = require('../controllers/portal/guest.js');
-const seamless = require('../controllers/portal/seamless.js');
 const success = require('../controllers/portal/success.js');
 
 
@@ -18,30 +16,7 @@ router.get('/cambium', cambium.parse);
 router.use(common.init);
 router.use(common.getNAS);
 
-
-router.use('/seamless', seamless.validate);
-
-router.get('/seamless',
-  common.checkNewMac,
-  seamless.redirectNewMac,
-  common.generateToken,
-  ap.generateSuccessForm,
-  seamless.json,
-  controller.errorHandlerJSON);
-
-router.get('/seamless/register',
-  ap.generateBody,
-  seamless.registerJSON,
-  controller.errorHandlerJSON);
-
-router.post('/seamless/register',
-  seamless.signupMac,
-  seamless.actionLog,
-  seamless.generateToken,
-  ap.generateSuccessForm2,
-  seamless.json,
-  controller.errorHandlerJSON);
-
+router.use('/seamless', require('./seamless'));
 
 router.get('/connect',
   connect.checkSeamless,
