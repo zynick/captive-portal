@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const querystring = require('querystring');
 const uuidV4 = require('uuid/v4');
 const MAC = mongoose.model('MAC');
 const NAS = mongoose.model('NAS');
@@ -84,7 +83,7 @@ const generateToken = (req, res, next) => {
 
       new Tokens({ organization, mac, token })
         .save()
-        .then(doc => {
+        .then(() => {
           req.bag.token = token;
           return next();
         })

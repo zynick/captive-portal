@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 const querystring = require('querystring');
-const log = require('debug')('portal:signup');
 const MAC = mongoose.model('MAC');
 const admanager = require('../../lib/admanager.js');
 

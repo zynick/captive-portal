@@ -1,6 +1,5 @@
 'use strict';
 
-const log = require('debug')('portal:guest');
 const admanager = require('../../lib/admanager.js');
 
 
@@ -42,7 +41,7 @@ const actionLog = (req, res, next) => {
   );
 };
 
-const render = (req, res, next) => {
+const render = (req, res) => {
   const { logo } = req.nas.assets;
   const { impressionImg, redirectForm, impressionForm } = req.bag;
 

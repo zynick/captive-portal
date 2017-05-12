@@ -50,7 +50,7 @@ const actionLog = (req, res, next) => {
   );
 };
 
-const render = (req, res, next) => {
+const render = (req, res) => {
   const { logo } = req.nas.assets;
   const { message } = req.query;
   const { impressionImg, redirectForm, impressionForm } = req.bag;

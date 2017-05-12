@@ -54,7 +54,7 @@ const actionLog = (req, res, next) => {
   );
 };
 
-const render = (req, res, next) => {
+const render = (req, res) => {
   const { logo, announcements } = req.nas.assets;
   const { error } = req.query;
   const { buttonUrl } = req.bag;
