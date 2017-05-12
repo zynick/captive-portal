@@ -19,7 +19,7 @@ const debug = (req, res, next) => {
 
 const index = (req, res) => {
   res.json(`ACE-TIDE Captive Portal v${version}`);
-}
+};
 
 const badRequest = (req, res, next) => {
   const err = new Error('Bad Request');
