@@ -1,6 +1,9 @@
 'use strict';
 
-const parse = (req, res, next) => {
+/* cambium uses camelcase for its parameter */
+/* jshint camelcase:false */
+
+const parse = (req, res) => {
 
   const {
     ga_ap_mac,
@@ -18,15 +21,20 @@ const parse = (req, res, next) => {
   // const loginUrl = `https://${ga_srvr}:444/cgi-bin/hotspot_login.cgi`;
 
   const redirectUrl = ga_orig_url;
-  const error =
-    ga_error_code === 'timeout' ? 'Authentication server failed to respond, retry again in few minutes' :
-    ga_error_code === 'reject' ? 'The username or password you entered is incorrect' :
-    ga_error_code === 'not-found' ? 'The authentication server not available, contact network admin' : '';
+  let error = '';
+  if (ga_error_code === 'timeout') {
+    error = 'Authentication server failed to respond, retry again in few minutes';
+  } else if (ga_error_code === 'reject') {
+    error = 'The username or password you entered is incorrect';
+  } else if (ga_error_code === 'not-found') {
+    error = 'The authentication server not available, contact network admin';
+  }
   const p1 = ga_nas_id;
   const p2 = ga_srvr;
   const p3 = encodeURIComponent(ga_Qv);
 
-  const url = `/portal/connect?nas=${nas}&mac=${mac}&loginUrl=${loginUrl}&redirectUrl=${redirectUrl}&error=${error}&p1=${p1}&p2=${p2}&p3=${p3}&type=cambium`;
+  const url = `/portal/connect?nas=${nas}&mac=${mac}&loginUrl=${loginUrl}` +
+      `&redirectUrl=${redirectUrl}&error=${error}&p1=${p1}&p2=${p2}&p3=${p3}&type=cambium`;
   res.redirect(url);
 };
 
@@ -46,7 +54,8 @@ const generateSuccessForm = (req, res, next) => {
   const ga_Qv = encodeURIComponent(p3);
 
   const redirectForm = {
-    url: `${loginUrl}?ga_ap_mac=${ga_ap_mac}&ga_nas_id=${ga_nas_id}&ga_srvr=${ga_srvr}&ga_cmac=${ga_cmac}&ga_Qv=${ga_Qv}&ga_orig_url=${redirectUrl}`,
+    url: `${loginUrl}?ga_ap_mac=${ga_ap_mac}&ga_nas_id=${ga_nas_id}&ga_srvr=${ga_srvr}` +
+      `&ga_cmac=${ga_cmac}&ga_Qv=${ga_Qv}&ga_orig_url=${redirectUrl}`,
     method: 'POST',
     body: {
       ga_user: mac,
@@ -55,7 +64,8 @@ const generateSuccessForm = (req, res, next) => {
   };
 
   const impressionForm = {
-    url: `${loginUrl}?ga_ap_mac=${ga_ap_mac}&ga_nas_id=${ga_nas_id}&ga_srvr=${ga_srvr}&ga_cmac=${ga_cmac}&ga_Qv=${ga_Qv}&ga_orig_url=${impressionUrl}`,
+    url: `${loginUrl}?ga_ap_mac=${ga_ap_mac}&ga_nas_id=${ga_nas_id}&ga_srvr=${ga_srvr}` +
+      `&ga_cmac=${ga_cmac}&ga_Qv=${ga_Qv}&ga_orig_url=${impressionUrl}`,
     method: 'POST',
     body: {
       ga_user: mac,
