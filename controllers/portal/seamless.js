@@ -65,13 +65,12 @@ const registerJSON = (req, res) => {
     method: 'POST',
     body,
     register: true,
-  }
+  };
 
   res.json(json);
 };
 
-// TODO rename
-const signupMac = (req, res, next) => {
+const registerMac = (req, res, next) => {
   const {
     mac,
     organization = 'unknown',
@@ -141,7 +140,7 @@ module.exports = {
   json,
   registerJSON,
 
-  signupMac,
+  registerMac,
   actionLog,
   generateToken
 };

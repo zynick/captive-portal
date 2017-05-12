@@ -22,7 +22,7 @@ router.get('/register',
   seamless.registerJSON);
 
 router.post('/register',
-  seamless.signupMac,
+  seamless.registerMac,
   seamless.actionLog,
   seamless.generateToken,
   ap.generateSuccessForm2,
