@@ -33,7 +33,7 @@ const notFound = (req, res, next) => {
   next(err);
 };
 
-const errorHandlerJSON = (err, req, res, next) => {
+const errorHandlerJSON = (err, req, res, next) => { /* jshint unused: false */
   const { status = 500, message = 'Internal Server Error' } = err;
   const error = { status, message };
   // hide stacktrace in production, show otherwise
@@ -43,7 +43,7 @@ const errorHandlerJSON = (err, req, res, next) => {
     .json({ error });
 };
 
-const errorHandlerRender = (err, req, res, next) => {
+const errorHandlerRender = (err, req, res, next) => { /* jshint unused: false */
   const { status = 500, message = 'Internal Server Error' } = err;
   const error = { status, message };
   // hide stacktrace in production, show otherwise
