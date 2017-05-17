@@ -41,7 +41,7 @@ const validate = (req, res, next) => {
 const redirectNewMacToRegister = (req, res, next) => {
 
   if (req.bag.isNewMac) {
-    const queryString = querystring.stringify(req.query);
+    const queryString = querystring.stringify(req.bag.input);
     return res.redirect(`/portal/seamless/register?${queryString}`);
   }
 
@@ -50,16 +50,14 @@ const redirectNewMacToRegister = (req, res, next) => {
 
 const json = (req, res) => {
   res.json(req.bag.seamlessForm);
-  // res.json(req.bag.impressionForm);
 };
 
 const registerJSON = (req, res) => {
 
   const url = `${HOST}/portal/seamless/register`;
 
-  const { body } = req.bag;
-  body.mac = req.query.mac;
-  body.nas = req.nas.id;
+  const body = req.bag.input;
+  body.nas = req.bag.nas.id;
 
   const json = {
     url,
@@ -79,7 +77,7 @@ const registerMac = (req, res, next) => {
     mobile = '',
     userId = '',
     nas: createdFrom
-  } = req.body;
+  } = req.bag.input;
 
   new MAC({ mac, organization, email, mobile, userId, createdFrom })
     .save()
@@ -95,7 +93,7 @@ const actionLog = (req, res, next) => {
     mobile = '',
     userId = '',
     nas
-  } = req.body;
+  } = req.bag.input;
 
   const action = 'user-signup';
   const payload = { source: 'Captive-Portal', email, mobile };
@@ -105,12 +103,11 @@ const actionLog = (req, res, next) => {
   );
 };
 
-// very similar to common.generateToken because of different input.
-// TODO refactor & merge (move all input from req.query/req.body to req.bag)?
+// this seamless.generateToken is very similar to common.generateToken
+// the only difference is the input.
+// TODO refactor & merge? can it be done?
 const generateToken = (req, res, next) => {
-  const { organization, mac } = req.body;
-  // const { organization } = req.nas;
-  // const { mac } = req.query;
+  const { organization, mac } = req.bag.input;
 
   Tokens
     .findOne({ organization, mac })

@@ -20,14 +20,9 @@ const _generatePassword = (token, chapId, chapChallenge) => {
 };
 
 
-const generateBody = (req, res, next) => {
-  req.bag.body = req.query; // TODO change it to req.bag.data?
-  next();
-};
-
 const generateGuestForm = (req, res, next) => {
 
-  const { loginUrl, mac, redirectUrl } = req.query;
+  const { loginUrl, mac, redirectUrl } = req.bag.input;
   const { impressionUrl } = req.bag;
 
   const redirectForm = {
@@ -56,7 +51,7 @@ const generateGuestForm = (req, res, next) => {
 
 const generateSuccessForm = (req, res, next) => {
 
-  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.bag.input;
   const { token, impressionUrl } = req.bag;
   const password = _generatePassword(token, chapId, chapChallenge);
 
@@ -88,7 +83,7 @@ const generateSuccessForm = (req, res, next) => {
 
 const generateSeamlessForm = (req, res, next) => {
 
-  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.bag.input;
   const { token } = req.bag;
   const password = _generatePassword(token, chapId, chapChallenge);
 
@@ -107,32 +102,9 @@ const generateSeamlessForm = (req, res, next) => {
   next();
 };
 
-const generateSeamlessFormFromBody = (req, res, next) => {
-
-  // the below line is the only difference between generateSeamlessForm. refactor?
-  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.body;
-  const { token } = req.bag;
-  const password = _generatePassword(token, chapId, chapChallenge);
-
-  const seamlessForm = {
-    url: loginUrl,
-    method: 'POST',
-    body: {
-      username: mac,
-      password: password,
-      dst: redirectUrl
-    }
-  };
-
-  req.bag.seamless = seamlessForm;
-
-  next();
-};
 
 module.exports = {
-  generateBody,
   generateGuestForm,
   generateSuccessForm,
-  generateSeamlessForm,
-  generateSeamlessFormFromBody
+  generateSeamlessForm
 };

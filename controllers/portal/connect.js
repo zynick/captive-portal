@@ -26,7 +26,7 @@ const checkSeamless = (req, res, next) => {
   // redirect if request coming from app
   const isFromApp = userAgent === 'ACE Mobile App' && accept === 'application/json';
   if (isFromApp) {
-    const queryString = querystring.stringify(req.query);
+    const queryString = querystring.stringify(req.bag.input);
     return res.redirect(`/portal/seamless?${queryString}`);
   }
 
@@ -34,18 +34,17 @@ const checkSeamless = (req, res, next) => {
 };
 
 const generateUrl = (req, res, next) => {
-  const { query, bag } = req;
-  const queryString = querystring.stringify(query);
+  const queryString = querystring.stringify(req.bag.input);
 
-  const page = bag.isNewMac ? 'signup' : 'success';
-  bag.buttonUrl = `/portal/${page}?${queryString}`;
+  const page = req.bag.isNewMac ? 'signup' : 'success';
+  req.bag.buttonUrl = `/portal/${page}?${queryString}`;
 
   next();
 };
 
 const actionLog = (req, res, next) => {
-  const { organization, id: nasId } = req.nas;
-  const { mac } = req.query;
+  const { organization, id: nasId } = req.bag.nas;
+  const { mac } = req.bag.input;
   const action = 'page-connect';
   const payload = { source: 'Captive-Portal' };
 
@@ -55,8 +54,8 @@ const actionLog = (req, res, next) => {
 };
 
 const render = (req, res) => {
-  const { logo, announcements } = req.nas.assets;
-  const { error } = req.query;
+  const { error } = req.bag.input;
+  const { logo, announcements } = req.bag.nas.assets;
   const { buttonUrl } = req.bag;
 
   res.render('connect', {

@@ -20,17 +20,21 @@ const _assetCallbackErrorHandler = (req, next) =>
       return next(err);
     }
 
-    req.ads = httpRes.body;
+    req.bag.ads = httpRes.body;
     next();
   };
 
 const init = (req, res, next) => {
   req.bag = {};
+
+  // move req.query / req.body to req.bag.input
+  req.bag.input = Object.keys(req.query).length ? req.query : req.body;
+
   next();
 };
 
 const getNAS = (req, res, next) => {
-  const id = req.query.nas || req.body.nas;
+  const id = req.bag.input.nas;
 
   NAS
     .findOne({ id })
@@ -43,15 +47,15 @@ const getNAS = (req, res, next) => {
         return next(err);
       }
 
-      req.nas = nas;
+      req.bag.nas = nas;
       next();
     })
     .catch(next);
 };
 
 const checkNewMac = (req, res, next) => {
-  const { mac } = req.query;
-  const { organization } = req.nas;
+  const { organization } = req.bag.nas;
+  const { mac } = req.bag.input;
 
   MAC
     .findOne({ mac, organization })
@@ -65,8 +69,8 @@ const checkNewMac = (req, res, next) => {
 };
 
 const generateToken = (req, res, next) => {
-  const { organization } = req.nas;
-  const { mac } = req.query;
+  const { organization } = req.bag.nas;
+  const { mac } = req.bag.input;
 
   Tokens
     .findOne({ organization, mac })
@@ -94,8 +98,8 @@ const generateToken = (req, res, next) => {
 };
 
 const getAds = (req, res, next) => {
-  const { organization, id: nasId } = req.nas;
-  const { mac, email } = req.query;
+  const { organization, id: nasId } = req.bag.nas;
+  const { mac, email } = req.bag.input;
 
   admanager.asset(organization, nasId, mac, email,
     _assetCallbackErrorHandler(req, next)
@@ -106,7 +110,8 @@ const processAds = (req, res, next) => {
 
   let impressionImg = {};
   let impressionUrl;
-  req.ads.forEach(asset => {
+
+  req.bag.ads.forEach(asset => {
     switch (asset.type) {
       case 'board-sm':
         impressionImg.sm = asset.img;

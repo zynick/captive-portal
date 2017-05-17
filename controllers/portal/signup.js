@@ -29,15 +29,15 @@ const typeFilter = (req, res, next) => {
     google = false,
     guest = false,
     email = false
-  } = req.nas.login;
+  } = bag.nas.login;
 
   bag.isFacebookEnabled = facebook;
   bag.isGoogleEnabled = google;
-  bag.isGuestEnabled = guest && req.query.trial === 'yes';
+  bag.isGuestEnabled = guest && bag.input.trial === 'yes';
   bag.isEmailEnabled = email;
 
   if (bag.isGuestEnabled) {
-    const queryString = querystring.stringify(req.query);
+    const queryString = querystring.stringify(bag.input);
     bag.guestUrl = `/portal/guest?${queryString}`;
   }
 
@@ -45,8 +45,8 @@ const typeFilter = (req, res, next) => {
 };
 
 const actionLogGet = (req, res, next) => {
-  const { organization, id: nasId } = req.nas;
-  const { mac } = req.query;
+  const { organization, id: nasId } = req.bag.nas;
+  const { mac } = req.bag.input;
   const action = 'page-signup';
   const payload = { source: 'Captive-Portal' };
 
@@ -55,8 +55,8 @@ const actionLogGet = (req, res, next) => {
   );
 };
 
-const render = (req, res, next) => {
-  const { logo } = req.nas.assets;
+const render = (req, res) => {
+  const { logo } = req.bag.nas.assets;
   const {
     isFacebookEnabled,
     isGoogleEnabled,
@@ -64,7 +64,7 @@ const render = (req, res, next) => {
     guestUrl,
     isEmailEnabled
   } = req.bag;
-  const data = req.query;
+  const data = req.bag.input;
 
   res.render('signup', {
     logo,
@@ -78,7 +78,7 @@ const render = (req, res, next) => {
 };
 
 const validate = (req, res, next) => {
-  const { email, mobile } = req.body;
+  const { email, mobile } = req.bag.input;
 
   if (!email || !mobile) {
     const err = new Error('Please fill in email and mobile.');
@@ -90,18 +90,18 @@ const validate = (req, res, next) => {
 };
 
 const createMac = (req, res, next) => {
-  const { mac, email, mobile } = req.body;
-  const { organization, id: createdFrom } = req.nas;
+  const { organization, id: createdFrom } = req.bag.nas;
+  const { mac, email, mobile } = req.bag.input;
 
-  new MAC({ mac, organization, email, mobile, createdFrom })
+  new MAC({ organization, mac, email, mobile, createdFrom })
     .save()
-    .then(mac => next())
+    .then(() => next())
     .catch(next);
 };
 
 const actionLogPost = (req, res, next) => {
-  const { organization, id: nasId } = req.nas;
-  const { mac, email, mobile } = req.body;
+  const { organization, id: nasId } = req.bag.nas;
+  const { mac, email, mobile } = req.bag.input;
   const action = 'user-signup';
   const payload = { source: 'Captive-Portal', email, mobile };
 
@@ -110,10 +110,10 @@ const actionLogPost = (req, res, next) => {
   );
 };
 
-const redirect = (req, res, next) => {
-  let query = req.body;
-  query.message = 'You have signed up successfully.';
-  const queryString = querystring.stringify(query);
+const redirect = (req, res) => {
+  const { input } = req.bag;
+  input.message = 'You have signed up successfully.';
+  const queryString = querystring.stringify(input);
   res.redirect(`/portal/success?${queryString}`);
 };
 
@@ -122,7 +122,7 @@ const errorRender = (err, req, res, next) => {
     return next(err);
   }
 
-  const { logo } = req.nas.assets;
+  const { logo } = req.bag.nas.assets;
   const {
     isFacebookEnabled,
     isGoogleEnabled,
@@ -131,7 +131,7 @@ const errorRender = (err, req, res, next) => {
     isEmailEnabled
   } = req.bag;
   const formError = err.message;
-  const data = req.body;
+  const data = req.bag.input;
 
   res.render('signup', {
     logo,

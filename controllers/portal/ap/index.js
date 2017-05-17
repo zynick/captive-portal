@@ -5,7 +5,7 @@ const cambium = require('./cambium.js');
 
 const _getFunction = fn =>
   (req, res, next) => {
-    const type = req.query.type || req.body.type;
+    const { type } = req.bag.input;
 
     if (type === 'mikrotik') {
       mikrotik[fn](req, res, next);
@@ -18,9 +18,7 @@ const _getFunction = fn =>
   };
 
 module.exports = {
-  generateBody: _getFunction('generateBody'),
   generateGuestForm: _getFunction('generateGuestForm'),
   generateSuccessForm: _getFunction('generateSuccessForm'),
-  generateSeamlessForm: _getFunction('generateSeamlessForm'),
-  generateSeamlessFormFromBody: _getFunction('generateSeamlessFormFromBody')
+  generateSeamlessForm: _getFunction('generateSeamlessForm')
 };

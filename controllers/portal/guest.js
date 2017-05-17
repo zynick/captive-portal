@@ -19,7 +19,9 @@ const _actionCallbackErrorHandler = (req, next) =>
   };
 
 const validate = (req, res, next) => {
-  const isGuestEnabled = req.nas.login.guest && req.query.trial === 'yes';
+  const { trial } = req.bag.input;
+  const { guest } = req.bag.nas.login;
+  const isGuestEnabled = guest && trial === 'yes';
 
   if (!isGuestEnabled) {
     const err = new Error('Guest login is not allowed.');
@@ -31,8 +33,8 @@ const validate = (req, res, next) => {
 };
 
 const actionLog = (req, res, next) => {
-  const { organization, id: nasId } = req.nas;
-  const { mac } = req.query;
+  const { organization, id: nasId } = req.bag.nas;
+  const { mac } = req.bag.input;
   const action = 'page-guest';
   const payload = { source: 'Captive-Portal' };
 
@@ -42,7 +44,7 @@ const actionLog = (req, res, next) => {
 };
 
 const render = (req, res) => {
-  const { logo } = req.nas.assets;
+  const { logo } = req.bag.nas.assets;
   const { impressionImg, redirectForm, impressionForm } = req.bag;
 
   res.render('guest', {

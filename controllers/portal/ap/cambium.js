@@ -39,19 +39,13 @@ const parse = (req, res) => {
 };
 
 
-// TODO test this shit
-const generateBody = (req, res, next) => {
-  req.bag.body = req.query; // TODO change it to req.bag.data?
-  next();
-};
-
 const generateGuestForm = (req, res, next) => {
   next(new Error('Guest login is not supported by Cambium.'));
 };
 
 const generateSuccessForm = (req, res, next) => {
 
-  const { loginUrl, nas, mac, p1, p2, p3, redirectUrl } = req.query;
+  const { loginUrl, nas, mac, p1, p2, p3, redirectUrl } = req.bag.input;
   const { token, impressionUrl } = req.bag;
 
   const ga_ap_mac = nas.replace(/:/g, '-');
@@ -88,7 +82,7 @@ const generateSuccessForm = (req, res, next) => {
 
 const generateSeamlessForm = (req, res, next) => {
 
-  const { loginUrl, nas, mac, p1, p2, p3, redirectUrl } = req.query;
+  const { loginUrl, nas, mac, p1, p2, p3, redirectUrl } = req.bag.input;
   const { token } = req.bag;
 
   const ga_ap_mac = nas.replace(/:/g, '-');
@@ -112,37 +106,10 @@ const generateSeamlessForm = (req, res, next) => {
   next();
 };
 
-const generateSeamlessFormFromBody = (req, res, next) => {
-
-  const { loginUrl, nas, mac, p1, p2, p3, redirectUrl } = req.body;
-  const { token } = req.bag;
-
-  const ga_ap_mac = nas.replace(/:/g, '-');
-  const ga_nas_id = p1;
-  const ga_srvr = p2;
-  const ga_cmac = mac.replace(/:/g, '-');
-  const ga_Qv = encodeURIComponent(p3);
-
-  const seamlessForm = {
-    url: `${loginUrl}?ga_ap_mac=${ga_ap_mac}&ga_nas_id=${ga_nas_id}&ga_srvr=${ga_srvr}` +
-      `&ga_cmac=${ga_cmac}&ga_Qv=${ga_Qv}&ga_orig_url=${redirectUrl}`,
-    method: 'POST',
-    body: {
-      ga_user: mac,
-      ga_pass: token
-    }
-  };
-
-  req.bag.seamlessForm = seamlessForm;
-
-  next();
-};
 
 module.exports = {
   parse,
-  generateBody,
   generateGuestForm,
   generateSuccessForm,
-  generateSeamlessForm,
-  generateSeamlessFormFromBody
+  generateSeamlessForm
 };

@@ -18,14 +18,13 @@ router.get('/',
   seamless.json);
 
 router.get('/register',
-  ap.generateBody,
   seamless.registerJSON);
 
 router.post('/register',
   seamless.registerMac,
   seamless.actionLog,
   seamless.generateToken,
-  ap.generateSeamlessFormFromBody,
+  ap.generateSeamlessForm,
   seamless.json);
 
 router.use(controller.errorHandlerJSON);
