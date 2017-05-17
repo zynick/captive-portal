@@ -38,9 +38,9 @@ const validate = (req, res, next) => {
   next();
 };
 
-const redirectNewMac = (req, res, next) => {
+const redirectNewMacToRegister = (req, res, next) => {
 
-  if (req.bag.isNewUser) {
+  if (req.bag.isNewMac) {
     const queryString = querystring.stringify(req.query);
     return res.redirect(`/portal/seamless/register?${queryString}`);
   }
@@ -49,7 +49,8 @@ const redirectNewMac = (req, res, next) => {
 };
 
 const json = (req, res) => {
-  res.json(req.bag.impressionForm); // TODO name it to a generic form perhaps?
+  res.json(req.bag.seamlessForm);
+  // res.json(req.bag.impressionForm);
 };
 
 const registerJSON = (req, res) => {
@@ -104,6 +105,8 @@ const actionLog = (req, res, next) => {
   );
 };
 
+// very similar to common.generateToken because of different input.
+// TODO refactor & merge (move all input from req.query/req.body to req.bag)?
 const generateToken = (req, res, next) => {
   const { organization, mac } = req.body;
   // const { organization } = req.nas;
@@ -136,7 +139,7 @@ const generateToken = (req, res, next) => {
 
 module.exports = {
   validate,
-  redirectNewMac,
+  redirectNewMacToRegister,
   json,
   registerJSON,
 

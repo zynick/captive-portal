@@ -18,8 +18,9 @@ const _getFunction = fn =>
   };
 
 module.exports = {
+  generateBody: _getFunction('generateBody'),
   generateGuestForm: _getFunction('generateGuestForm'),
   generateSuccessForm: _getFunction('generateSuccessForm'),
-  generateBody: _getFunction('generateBody'),
-  generateSuccessForm2: _getFunction('generateSuccessForm2')
+  generateSeamlessForm: _getFunction('generateSeamlessForm'),
+  generateSeamlessFormFromBody: _getFunction('generateSeamlessFormFromBody')
 };

@@ -12,9 +12,9 @@ router.use(seamless.validate);
 
 router.get('/',
   common.checkNewMac,
-  seamless.redirectNewMac,
+  seamless.redirectNewMacToRegister,
   common.generateToken,
-  ap.generateSuccessForm,
+  ap.generateSeamlessForm,
   seamless.json);
 
 router.get('/register',
@@ -25,7 +25,7 @@ router.post('/register',
   seamless.registerMac,
   seamless.actionLog,
   seamless.generateToken,
-  ap.generateSuccessForm2,
+  ap.generateSeamlessFormFromBody,
   seamless.json);
 
 router.use(controller.errorHandlerJSON);

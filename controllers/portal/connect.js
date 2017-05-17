@@ -37,7 +37,7 @@ const generateUrl = (req, res, next) => {
   const { query, bag } = req;
   const queryString = querystring.stringify(query);
 
-  const page = bag.isNewUser ? 'signup' : 'success';
+  const page = bag.isNewMac ? 'signup' : 'success';
   bag.buttonUrl = `/portal/${page}?${queryString}`;
 
   next();

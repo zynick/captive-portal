@@ -58,7 +58,7 @@ const checkNewMac = (req, res, next) => {
     .maxTime(10000)
     .exec()
     .then(mac => {
-      req.bag.isNewUser = !mac;
+      req.bag.isNewMac = !mac;
       next();
     })
     .catch(next);

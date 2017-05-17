@@ -9,6 +9,22 @@ const _octalStringToBinary = octalString => {
   return Buffer.from(arr).toString('binary');
 };
 
+const _generatePassword = (token, chapId, chapChallenge) => {
+  if (chapId) {
+    const chapIdBin = _octalStringToBinary(chapId);
+    const chapChallengeBin = _octalStringToBinary(chapChallenge);
+    return chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
+  } else {
+    return token;
+  }
+};
+
+
+const generateBody = (req, res, next) => {
+  req.bag.body = req.query; // TODO change it to req.bag.data?
+  next();
+};
+
 const generateGuestForm = (req, res, next) => {
 
   const { loginUrl, mac, redirectUrl } = req.query;
@@ -42,13 +58,7 @@ const generateSuccessForm = (req, res, next) => {
 
   const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
   const { token, impressionUrl } = req.bag;
-
-  let password = token;
-  if (chapId) {
-    const chapIdBin = _octalStringToBinary(chapId);
-    const chapChallengeBin = _octalStringToBinary(chapChallenge);
-    password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
-  }
+  const password = _generatePassword(token, chapId, chapChallenge);
 
   const redirectForm = {
     url: loginUrl,
@@ -76,25 +86,11 @@ const generateSuccessForm = (req, res, next) => {
   next();
 };
 
-const generateBody = (req, res, next) => {
-  // TODO why not pass the whole req.query shit to body for BK?
-  // const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
-  // req.bag.body = { loginUrl, mac, redirectUrl, chapId, chapChallenge };
-  req.bag.body = req.query;
-  next();
-};
+const generateSeamlessForm = (req, res, next) => {
 
-const generateSuccessForm2 = (req, res, next) => {
-
-  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.body;
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.query;
   const { token } = req.bag;
-
-  let password = token;
-  if (chapId) {
-    const chapIdBin = _octalStringToBinary(chapId);
-    const chapChallengeBin = _octalStringToBinary(chapChallenge);
-    password = chapId ? md5(chapIdBin + token + chapChallengeBin) : token;
-  }
+  const password = _generatePassword(token, chapId, chapChallenge);
 
   const seamlessForm = {
     url: loginUrl,
@@ -106,15 +102,37 @@ const generateSuccessForm2 = (req, res, next) => {
     }
   };
 
-  // TODO name it to a generic form perhaps? this is fucking confusing but i'm doing this just for BK to test first
-  req.bag.impressionForm = seamlessForm;
+  req.bag.seamlessForm = seamlessForm;
+
+  next();
+};
+
+const generateSeamlessFormFromBody = (req, res, next) => {
+
+  // the below line is the only difference between generateSeamlessForm. refactor?
+  const { loginUrl, mac, redirectUrl, chapId, chapChallenge } = req.body;
+  const { token } = req.bag;
+  const password = _generatePassword(token, chapId, chapChallenge);
+
+  const seamlessForm = {
+    url: loginUrl,
+    method: 'POST',
+    body: {
+      username: mac,
+      password: password,
+      dst: redirectUrl
+    }
+  };
+
+  req.bag.seamless = seamlessForm;
 
   next();
 };
 
 module.exports = {
+  generateBody,
   generateGuestForm,
   generateSuccessForm,
-  generateBody,
-  generateSuccessForm2
+  generateSeamlessForm,
+  generateSeamlessFormFromBody
 };
