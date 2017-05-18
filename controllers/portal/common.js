@@ -27,8 +27,8 @@ const _assetCallbackErrorHandler = (req, next) =>
 const init = (req, res, next) => {
   req.bag = {};
 
-  // move req.query / req.body to req.bag.input
-  req.bag.input = Object.keys(req.query).length ? req.query : req.body;
+  // move req.body / req.query to req.bag.input
+  req.bag.input = Object.keys(req.body).length ? req.body : req.query;
 
   next();
 };
