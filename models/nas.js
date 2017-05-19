@@ -55,16 +55,4 @@ const nasSchema = new Schema({
 
 nasSchema.plugin(uniqueValidator);
 
-// Error Handling Middleware
-const errorHandler = (err, doc, next) => {
-  err.originalMessage = err.message;
-  const keys = Object.keys(err.errors);
-  err.message = keys[0] ? err.errors[keys[0]].message : err.message;
-  err.status = 400;
-  next(err);
-};
-
-nasSchema.post('save', errorHandler);
-nasSchema.post('update', errorHandler);
-
 mongoose.model('NAS', nasSchema);

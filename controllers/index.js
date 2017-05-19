@@ -33,10 +33,39 @@ const notFound = (req, res, next) => {
   next(err);
 };
 
+const mongooseHandlerJSON = (err, req, res, next) => { /* jshint unused: false */
+  if(err.name !== 'ValidationError') {
+    return next(err);
+  }
+
+  const { status = 400 } = err;
+  const key = Object.keys(err.errors)[0];
+  const { message = 'Validation Error' } = err.errors[key];
+  const error = { status, message };
+  if (NODE_ENV !== 'production') { error.stack = err.stack; }
+  res
+    .status(status)
+    .json({ error });
+};
+
+const mongooseHandlerRender = (err, req, res, next) => { /* jshint unused: false */
+  if(err.name !== 'ValidationError') {
+    return next(err);
+  }
+
+  const { status = 400 } = err;
+  const key = Object.keys(err.errors)[0];
+  const { message = 'Validation Error' } = err.errors[key];
+  const error = { status, message };
+  if (NODE_ENV !== 'production') { error.stack = err.stack; }
+  res
+    .status(status)
+    .render('error', { error });
+};
+
 const errorHandlerJSON = (err, req, res, next) => { /* jshint unused: false */
   const { status = 500, message = 'Internal Server Error' } = err;
   const error = { status, message };
-  // hide stacktrace in production, show otherwise
   if (NODE_ENV !== 'production') { error.stack = err.stack; }
   res
     .status(status)
@@ -46,7 +75,6 @@ const errorHandlerJSON = (err, req, res, next) => { /* jshint unused: false */
 const errorHandlerRender = (err, req, res, next) => { /* jshint unused: false */
   const { status = 500, message = 'Internal Server Error' } = err;
   const error = { status, message };
-  // hide stacktrace in production, show otherwise
   if (NODE_ENV !== 'production') { error.stack = err.stack; }
   res
     .status(status)
@@ -59,6 +87,8 @@ module.exports = {
   index,
   badRequest,
   notFound,
+  mongooseHandlerJSON,
+  mongooseHandlerRender,
   errorHandlerJSON,
   errorHandlerRender
 };

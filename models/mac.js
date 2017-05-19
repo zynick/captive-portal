@@ -37,15 +37,4 @@ const macSchema = new Schema({
 macSchema.index({ organization: 1, mac: 1 }, { unique: 'MAC already exists.' });
 macSchema.plugin(uniqueValidator);
 
-const errorHandler = (err, doc, next) => {
-  err.originalMessage = err.message;
-  const keys = Object.keys(err.errors);
-  err.message = keys[0] ? err.errors[keys[0]].message : err.message;
-  err.status = 400;
-  next(err);
-};
-
-macSchema.post('save', errorHandler);
-macSchema.post('update', errorHandler);
-
 mongoose.model('MAC', macSchema);

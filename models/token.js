@@ -9,17 +9,17 @@ const tokenSchema = new Schema({
 
   organization: {
     type: String,
-    required: true
+    required: 'Organization is required.'
   },
 
   mac: {
     type: String,
-    required: true
+    required: 'MAC is required.'
   },
 
   token: {
     type: String,
-    required: true
+    required: 'Token is required.'
   }
 
 }, {

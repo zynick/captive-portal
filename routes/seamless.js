@@ -27,7 +27,9 @@ router.post('/register',
   ap.generateSeamlessForm,
   seamless.json);
 
-router.use(controller.errorHandlerJSON);
+router.use(
+  controller.mongooseHandlerJSON,
+  controller.errorHandlerJSON);
 
 
 module.exports = router;

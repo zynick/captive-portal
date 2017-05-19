@@ -13,8 +13,10 @@ router.get('/', controller.index);
 
 router.use('/portal', require('./portal'));
 
-router.use(controller.notFound);
-router.use(controller.errorHandlerRender);
+router.use(
+  controller.notFound,
+  controller.mongooseHandlerRender,
+  controller.errorHandlerRender);
 
 
 module.exports = router;
