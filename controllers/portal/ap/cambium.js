@@ -21,14 +21,14 @@ const parse = (req, res) => {
   // const loginUrl = `https://${ga_srvr}:444/cgi-bin/hotspot_login.cgi`;
 
   const redirectUrl = ga_orig_url;
-  let error = '';
-  if (ga_error_code === 'timeout') {
-    error = 'Authentication server failed to respond, retry again in few minutes';
-  } else if (ga_error_code === 'reject') {
-    error = 'The username or password you entered is incorrect';
-  } else if (ga_error_code === 'not-found') {
-    error = 'The authentication server not available, contact network admin';
-  }
+  const error =
+    ga_error_code === 'timeout' ?
+      'Authentication server failed to respond, retry again in few minutes' :
+    ga_error_code === 'reject' ?
+      'The username or password you entered is incorrect' :
+    ga_error_code === 'not-found' ?
+      'The authentication server not available, contact network admin' :
+      '';
   const p1 = ga_nas_id;
   const p2 = ga_srvr;
   const p3 = encodeURIComponent(ga_Qv);
