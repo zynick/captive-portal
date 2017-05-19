@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const { NODE_ENV } = require('../config.js');
 const Schema = mongoose.Schema;
 
@@ -27,6 +28,7 @@ const tokenSchema = new Schema({
   autoIndex: NODE_ENV !== 'production'
 });
 
-tokenSchema.index({ organization: 1, mac: 1 }, { unique: 1 });
+tokenSchema.index({ organization: 1, mac: 1 }, { unique: 'Token already exists' });
+tokenSchema.plugin(uniqueValidator);
 
 mongoose.model('Tokens', tokenSchema);
