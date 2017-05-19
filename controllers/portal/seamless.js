@@ -2,11 +2,8 @@
 
 const mongoose = require('mongoose');
 const querystring = require('querystring');
-const uuidV4 = require('uuid/v4');
 const { HOST } = require('../../config.js');
 const admanager = require('../../lib/admanager.js');
-
-const Tokens = mongoose.model('Tokens');
 const MAC = mongoose.model('MAC');
 
 
