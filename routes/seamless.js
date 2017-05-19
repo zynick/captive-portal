@@ -23,7 +23,7 @@ router.get('/register',
 router.post('/register',
   seamless.registerMac,
   seamless.actionLog,
-  seamless.generateToken,
+  common.generateToken,
   ap.generateSeamlessForm,
   seamless.json);
 

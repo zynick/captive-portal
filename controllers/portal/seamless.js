@@ -72,12 +72,12 @@ const registerJSON = (req, res) => {
 const registerMac = (req, res, next) => {
   const {
     mac,
-    organization = 'unknown',
     email = '',
     mobile = '',
     userId = '',
     nas: createdFrom
   } = req.bag.input;
+  const { organization } = req.bag.nas;
 
   new MAC({ mac, organization, email, mobile, userId, createdFrom })
     .save()
@@ -88,12 +88,12 @@ const registerMac = (req, res, next) => {
 const actionLog = (req, res, next) => {
   const {
     mac,
-    organization = 'unknown',
     email = '',
     mobile = '',
     userId = '',
     nas
   } = req.bag.input;
+  const { organization } = req.bag.nas;
 
   const action = 'user-signup';
   const payload = { source: 'Captive-Portal', email, mobile };
@@ -103,36 +103,6 @@ const actionLog = (req, res, next) => {
   );
 };
 
-// this seamless.generateToken is very similar to common.generateToken
-// the only difference is the input.
-// TODO refactor & merge? can it be done?
-const generateToken = (req, res, next) => {
-  const { organization, mac } = req.bag.input;
-
-  Tokens
-    .findOne({ organization, mac })
-    .maxTime(10000)
-    .exec()
-    .then(doc => {
-
-      if (doc) {
-        req.bag.token = doc.token;
-        return next();
-      }
-
-      const token = uuidV4().replace(/-/g, '');
-
-      new Tokens({ organization, mac, token })
-        .save()
-        .then(() => {
-          req.bag.token = token;
-          return next();
-        })
-        .catch(next);
-
-    })
-    .catch(next);
-};
 
 module.exports = {
   validate,
@@ -141,6 +111,5 @@ module.exports = {
   registerJSON,
 
   registerMac,
-  actionLog,
-  generateToken
+  actionLog
 };
