@@ -12,7 +12,7 @@ const _getFunction = fn =>
     } else if (type === 'cambium') {
       cambium[fn](req, res, next);
     } else {
-      const err = new Error('Invalid type parameter.');
+      const err = new Error(`Paremeter type:${type} is not supported.`);
       next(err);
     }
   };
