@@ -2,23 +2,8 @@
 
 const querystring = require('querystring');
 const admanager = require('../../lib/admanager.js');
+const admanagerController = require('../admanager.js');
 
-
-// TODO refactor this code. put it somewhere that other controllers can share the code.
-const _actionCallbackErrorHandler = (req, next) =>
-  (err, httpRes) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (httpRes.statusCode !== 200) {
-      err = new Error(`Unable to connect to AD Server: ${httpRes.statusMessage}`);
-      err.status = httpRes.statusCode;
-      return next(err);
-    }
-
-    next();
-  };
 
 const checkSeamless = (req, res, next) => {
   const { 'user-agent': userAgent, accept } = req.headers;
@@ -49,7 +34,7 @@ const actionLog = (req, res, next) => {
   const payload = { source: 'Captive-Portal' };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _actionCallbackErrorHandler(req, next)
+    admanagerController.generateCallbackErrorHandler(next)
   );
 };
 

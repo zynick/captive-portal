@@ -4,22 +4,8 @@ const mongoose = require('mongoose');
 const querystring = require('querystring');
 const MAC = mongoose.model('MAC');
 const admanager = require('../../lib/admanager.js');
+const admanagerController = require('../admanager.js');
 
-
-const _actionCallbackErrorHandler = (req, next) =>
-  (err, httpRes) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (httpRes.statusCode !== 200) {
-      err = new Error(`Unable to connect to AD Server: ${httpRes.statusMessage}`);
-      err.status = httpRes.statusCode;
-      return next(err);
-    }
-
-    next();
-  };
 
 const typeFilter = (req, res, next) => {
 
@@ -51,7 +37,7 @@ const actionLogGet = (req, res, next) => {
   const payload = { source: 'Captive-Portal' };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _actionCallbackErrorHandler(req, next)
+    admanagerController.generateCallbackErrorHandler(next)
   );
 };
 
@@ -106,7 +92,7 @@ const actionLogPost = (req, res, next) => {
   const payload = { source: 'Captive-Portal', email, mobile };
 
   admanager.action(organization, nasId, mac, undefined, action, payload,
-    _actionCallbackErrorHandler(req, next)
+    admanagerController.generateCallbackErrorHandler(next)
   );
 };
 

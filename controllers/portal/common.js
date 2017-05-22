@@ -6,23 +6,8 @@ const MAC = mongoose.model('MAC');
 const NAS = mongoose.model('NAS');
 const Tokens = mongoose.model('Tokens');
 const admanager = require('../../lib/admanager.js');
+const admanagerController = require('../admanager.js');
 
-
-const _assetCallbackErrorHandler = (req, next) =>
-  (err, httpRes) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (httpRes.statusCode !== 200) {
-      err = new Error(`Unable to connect to AD Server: ${httpRes.statusMessage}`);
-      err.status = httpRes.statusCode;
-      return next(err);
-    }
-
-    req.bag.ads = httpRes.body;
-    next();
-  };
 
 const init = (req, res, next) => {
   req.bag = {};
@@ -102,7 +87,7 @@ const getAds = (req, res, next) => {
   const { mac, email } = req.bag.input;
 
   admanager.asset(organization, nasId, mac, email,
-    _assetCallbackErrorHandler(req, next)
+    admanagerController.generateCallbackErrorHandler(next)
   );
 };
 
