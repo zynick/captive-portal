@@ -9,10 +9,10 @@ services:
     ports:
       - "5000:3000"
     environment:
-      - AD_HOST=manager-api-dev.tideanalytics.com
-      - AD_KEY=DuS6YR9aCMJc0345mPNAkAIzaSyCChtVm4UlxD4
+      - AD_HOST=
+      - AD_KEY=
       - DEBUG=portal*,admanager
-      - HOST=https://captive-portal-dev.tideanalytics.com
+      - HOST=
       - MONGO=localhost:27017/radius-dev
       - NODE_ENV=development
       - PORT=3000
